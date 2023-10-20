@@ -1,0 +1,41 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$defs": {
+        "bookingRef":{ 
+            "type":"string"
+        },
+        "user_id":{
+            "type":"string"
+        },
+        "name":{
+            "type":"string"
+        },
+        "goal":{
+            "type":"string"
+        }
+    },
+    "type":"object",
+    "properties": {
+        "bookingRef":{
+            "$ref": "#/$defs/bookingRef"
+        },
+        "user_id":{
+            "$ref": "#/$defs/user_id"
+        },
+        "name":{
+            "$ref": "#/$defs/name"
+        },
+        "goal":{
+            "$ref": "#/$defs/goal"
+        }
+    },
+    "required": [
+        "bookingRef",
+        "user_id",
+        "name",
+        "goal"
+    ],
+    "additionalProperties": false
+
+
+}

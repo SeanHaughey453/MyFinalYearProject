@@ -1,0 +1,74 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$defs": {
+        "monday":{
+            "type": "object"
+
+        },
+        "tuesday":{
+            "type": "object"
+        },
+        "wednesday":{
+            "type": "object"
+        },
+        "thursday":{
+            "type": "object"
+        },
+        "friday":{
+            "type": "object"
+        },
+        "saturday":{
+            "type": "object"
+        },
+        "sunday":{
+            "type": "object"
+        },
+        "weekCommencing":{
+            "type": "string"
+        },
+        "ptId":{
+            "type": "string"
+        }
+
+    },
+    "type":"object",
+    "properties": {
+        "monday":{
+            "$ref": "file:/app/api/json_schema/schedule/day.schema.json"
+        },
+        "tuesday":{
+            "$ref": "file:/app/api/json_schema/schedule/day.schema.json"
+        },
+        "wednesday":{
+            "$ref": "file:/app/api/json_schema/schedule/day.schema.json"
+        },
+        "thursday":{
+            "$ref": "file:/app/api/json_schema/schedule/day.schema.json"
+        },
+        "friday":{
+            "$ref": "file:/app/api/json_schema/schedule/day.schema.json"
+        },
+        "saturday":{
+            "$ref": "file:/app/api/json_schema/schedule/day.schema.json"
+        },
+        "sunday":{
+            "$ref": "file:/app/api/json_schema/schedule/day.schema.json"
+        },
+        "weekCommencing":{
+            "$ref": "#/$defs/weekCommencing"
+        }
+    },
+    "required": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday",
+        "weekCommencing"
+    ],
+    "additionalProperties": false
+
+
+}

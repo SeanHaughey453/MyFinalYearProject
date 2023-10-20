@@ -1,0 +1,20 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$defs": {
+        "placeholder":{
+            "type": "string"
+        }
+    },
+    "type":"object",
+    "properties": {
+        "placeholder":{
+            "$ref": "#/$defs/placeholder"
+        }
+    },
+    "required": [
+        "placeholder"
+    ],
+    "additionalProperties": false
+
+
+}

@@ -1,0 +1,55 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$defs": {
+        "firstName":{
+            "type": "string"
+        },
+        "surname":{
+            "type": "string"
+        },
+        "email":{
+            "type": "string"
+        },
+        "username":{
+            "type": "string"
+        },
+        "password":{
+            "type": "string"
+        },
+        "clients": {"type" : "list"},
+        "coworkers": {"type" : "list"}
+
+    },
+    "type": "object",
+    "properties": {
+        "firstName":{
+            "$ref": "#/$defs/firstName"
+        },
+        "surname":{
+            "$ref": "#/$defs/surname"
+        },
+        "email":{
+            "$ref": "#/$defs/email"
+        },
+        "username":{
+            "$ref": "#/$defs/username"
+        },
+        "password":{
+            "$ref": "#/$defs/password"
+        },
+        "clients":{
+            "$ref": "#/$defs/clients"
+        },
+        "coworkers": {
+            "$ref": "#/$defs/coworkers"
+        }
+    },
+    "required": [
+        "firstName",
+        "surname",
+        "email",
+        "username",
+        "password"
+    ],
+    "additionalProperties": false
+}

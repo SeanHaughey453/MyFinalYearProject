@@ -1,0 +1,24 @@
+FROM python:3.11 as base
+
+FROM base as api
+WORKDIR /app
+
+COPY api /app/api
+COPY common /app/common
+
+COPY build/requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+
+ENV PYTHONPATH "${PYTHONPATH}:/"
+ENV PAP_LOG_CONFIG "/app/common/log-config.yaml"
+
+ENTRYPOINT [ "python", "api/main.py", "--host=0.0.0.0"]
+
+
+FROM base as tester
+COPY api /app/api
+COPY common /app/common
+COPY build/requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
+WORKDIR /app
+ENTRYPOINT ["/bin/bash"]

@@ -1,0 +1,31 @@
+version: '3'
+networks:
+  pythonApi:
+    driver: bridge
+
+services:
+  arangodb:
+    image: arangodb/arangodb:latest
+    environment:
+      ARANGO_ROOT_PASSWORD: root
+      ARANGO_USERNAME: root
+      ARANGO_PASSWORD: root
+    ports:
+      - 8529:8529
+    networks:
+      - pythonApi
+
+  papi:
+    build:
+      context: ./modules
+      dockerfile: apiDockerfile
+      target: api
+    image: papi
+    ports:
+      - 5000:5000
+    depends_on:
+      - arangodb
+    environment:
+      ARANGO_URL: http://arangodb:8529
+    networks:
+      - pythonApi

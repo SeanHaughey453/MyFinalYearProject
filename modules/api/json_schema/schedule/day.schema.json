@@ -1,0 +1,135 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$defs": {
+        "0800":{ 
+            "type":"object"
+        },
+        "0900":{
+            "type":"object"
+        },
+        "1000":{
+            "type":"object"
+        },
+        "1100":{
+            "type":"object"
+        },
+        "1200":{
+            "type":"object"
+        },
+        "1300":{
+            "type":"object"
+        },
+        "1400":{
+            "type":"object"
+        },
+        "1500":{
+            "type":"object"
+        },
+        "1600":{
+            "type":"object"
+        },
+        "1700":{
+            "type":"object"
+        },
+        "1800":{
+            "type":"object"
+            
+        }
+    },
+    "type":"object",
+    "properties": {
+        "0800":{
+           "oneOf": [
+                {  "$ref": "file:/app/api/json_schema/schedule/booking.schema.json"},
+                {  "$ref": "file:/app/api/json_schema/schedule/break.schema.json" },
+                {  "$ref": "file:/app/api/json_schema/schedule/placeholder.schema.json" }
+            ]
+        },
+        "0900":{
+            "oneOf": [
+                {  "$ref": "file:/app/api/json_schema/schedule/booking.schema.json"},
+                {  "$ref": "file:/app/api/json_schema/schedule/break.schema.json" },
+                {  "$ref": "file:/app/api/json_schema/schedule/placeholder.schema.json" }
+            ]
+        },
+        "1000":{
+            "oneOf": [
+                {  "$ref": "file:/app/api/json_schema/schedule/booking.schema.json"},
+                {  "$ref": "file:/app/api/json_schema/schedule/break.schema.json" },
+                {  "$ref": "file:/app/api/json_schema/schedule/placeholder.schema.json" }
+            ]
+        },
+        "1100":{
+            "oneOf": [
+                {  "$ref": "file:/app/api/json_schema/schedule/booking.schema.json"},
+                {  "$ref": "file:/app/api/json_schema/schedule/break.schema.json" },
+                {  "$ref": "file:/app/api/json_schema/schedule/placeholder.schema.json" }
+            ]
+        },
+        "1200":{
+            "oneOf": [
+                {  "$ref": "file:/app/api/json_schema/schedule/booking.schema.json"},
+                {  "$ref": "file:/app/api/json_schema/schedule/break.schema.json" },
+                {  "$ref": "file:/app/api/json_schema/schedule/placeholder.schema.json" }
+            ]
+        },
+        "1300":{
+            "oneOf": [
+                {  "$ref": "file:/app/api/json_schema/schedule/booking.schema.json"},
+                {  "$ref": "file:/app/api/json_schema/schedule/break.schema.json" },
+                {  "$ref": "file:/app/api/json_schema/schedule/placeholder.schema.json" }
+            ]
+        },
+        "1400":{
+            "oneOf": [
+                {  "$ref": "file:/app/api/json_schema/schedule/booking.schema.json"},
+                {  "$ref": "file:/app/api/json_schema/schedule/break.schema.json" },
+                {  "$ref": "file:/app/api/json_schema/schedule/placeholder.schema.json" }
+            ]
+        },
+        "1500":{
+            "oneOf": [
+                {  "$ref": "file:/app/api/json_schema/schedule/booking.schema.json"},
+                {  "$ref": "file:/app/api/json_schema/schedule/break.schema.json" },
+                {  "$ref": "file:/app/api/json_schema/schedule/placeholder.schema.json" }
+            ]
+        },
+        "1600":{
+            "oneOf": [
+                {  "$ref": "file:/app/api/json_schema/schedule/booking.schema.json"},
+                {  "$ref": "file:/app/api/json_schema/schedule/break.schema.json" },
+                {  "$ref": "file:/app/api/json_schema/schedule/placeholder.schema.json" }
+            ]
+        },
+        "1700":{
+            "oneOf": [
+                {  "$ref": "file:/app/api/json_schema/schedule/booking.schema.json"},
+                {  "$ref": "file:/app/api/json_schema/schedule/break.schema.json" },
+                {  "$ref": "file:/app/api/json_schema/schedule/placeholder.schema.json" }
+            ]
+        },
+        "1800":{
+            "oneOf": [
+                {  "$ref": "file:/app/api/json_schema/schedule/booking.schema.json"},
+                {  "$ref": "file:/app/api/json_schema/schedule/break.schema.json" },
+                {  "$ref": "file:/app/api/json_schema/schedule/placeholder.schema.json" }
+            ]
+        }
+    },
+    "required": [
+        "0800",
+        "0900",
+        "1000",
+        "1100",
+        "1200",
+        "1300",
+        "1400",
+        "1500",
+        "1600",
+        "1700",
+        "1800"
+    ],
+    "additionalProperties": false
+
+
+}
