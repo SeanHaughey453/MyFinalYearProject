@@ -8,7 +8,7 @@ from api.schedule_api import Scedule_API, Scedule_API_API_Errors
 from common.data_store_arango import DataStoreArangoDb
 from pyArango.theExceptions import DocumentNotFoundError
 
-from api.controller.auth.auth import Account, Login, Signup, StaffAccount, StaffLogin, StaffSignup
+from api.controller.auth.auth import Account, Login, Signup, StaffAccount, StaffAmmendClient, StaffAmmendCoWorker, StaffLogin, StaffSignup
 from api.controller.resources.schedule import ModifyScheduleStaff, Schedules, Schedule
 
 ARANGO_URL = os.environ.get('ARANGO_URL', 'http://localhost:8529')
@@ -65,13 +65,15 @@ def create_app() -> Flask:
     api.add_resource(StaffSignup, '/v1/staff/signup')
     api.add_resource(StaffLogin, '/v1/staff/login')
     api.add_resource(StaffAccount, '/v1/staff/account/<username>', '/v1/staff/account/edit/<username>', '/v1/staff/account/delete/<username>')
+    api.add_resource(StaffAmmendCoWorker, '/v1/staff/account/<username>/coworker/edit', '/v1/staff/account/<username>/coworker/delete')
+    api.add_resource(StaffAmmendClient, '/v1/staff/account/<username>/client/edit', '/v1/staff/account/<username>/client/delete')
 
     #Members
 
     #Schedules
     api.add_resource(Schedules, schedulesUrl)
     api.add_resource(Schedule, baseScheduleUrl, specificScheduleUrl)
-    api.add_resource(ModifyScheduleStaff, specificScheduleUrl+'admin')
+    api.add_resource(ModifyScheduleStaff, specificScheduleUrl+'admin/add' )
 
 
     return app

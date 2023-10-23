@@ -31,7 +31,6 @@ class DataStoreArangoDb:
     return response
 
   def get_item(self, key: str) -> Optional[Dict[str, Any]]:
-    print('key', key)
     return self.__getitem__(key)
 
   def __setitem__(self, key: str, data: Dict[str, Any]):
@@ -103,7 +102,6 @@ class DataStoreArangoDb:
   def run_query(self, query: str) -> List[Dict[str, Any]]:
     """Executes an AQL query and returns the results as a list of dictionaries."""
     results = []
-    print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',query)
     try:
         aql_query = self._db.AQLQuery(query, rawResults=True)
         for doc in aql_query:

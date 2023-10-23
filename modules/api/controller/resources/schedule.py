@@ -24,7 +24,6 @@ class Schedule(Resource):
     @jwt_required()
     @role_required('staff')
     def patch(self, scheduleId: str):
-        print('scheduleId', scheduleId)
         response = self.logic.patch(scheduleId, request.json)
         return response, 200
 

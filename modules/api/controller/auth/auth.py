@@ -2,6 +2,7 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource, request
 from api.controller.logic.user_logic import StaffUserLogic, UserLogic
 from api.models.users import User
+from api.controller.common import role_required
 
 
 class Signup(Resource):
@@ -53,7 +54,6 @@ class Account(Resource):
     @jwt_required()
     def patch(self, username: str):
         current_user = get_jwt_identity()
-        print('current_user_id', current_user)
         updated_data = request.json
         updated_user = self.user_logic.jwt_update_user_details(current_user['user_id'], username, updated_data)
         return {'message': f'Your details have been updated successfully', 'details': updated_user}, 200
@@ -61,7 +61,6 @@ class Account(Resource):
     @jwt_required()
     def delete(self, username: str):
         current_user = get_jwt_identity()
-        print(current_user)
         self.user_logic.jwt_delete_user(current_user['user_id'], username)
         return {'message': 'User deleted'}, 204
 
@@ -83,3 +82,36 @@ class StaffAccount(Account):
         super().__init__()
         self.resource = "staff_users"
         self.user_logic = StaffUserLogic(self.resource, self.user)
+
+class StaffAmmendCoWorker(Resource):
+    TYPE_OF_LIST = "coworkers"
+    MY_ACTIONS= ["append", "remove"]
+
+    def __init__(self):
+        self.resource = "staff_users"
+        self.user = User('', '') 
+        self.user_logic = StaffUserLogic(self.resource, self.user)
+
+    @jwt_required()
+    def patch(self, username):
+        
+        current_user = get_jwt_identity()
+        updated_data = request.json
+       
+        updated_user = self.user_logic.action_user_list(current_user, username, updated_data['coworkers'][0], self.MY_ACTIONS[0], self.TYPE_OF_LIST)
+        return {'message': f'Your details have been updated successfully', 'details': updated_user}, 200
+
+    @jwt_required()
+    def delete(self, username):
+        current_user = get_jwt_identity()
+        updated_data = request.json
+       
+        updated_user = self.user_logic.action_user_list(current_user, username, updated_data['coworkers'][0], self.MY_ACTIONS[1], self.TYPE_OF_LIST)
+        return {'message': f'Your details have been updated successfully', 'details': updated_user}, 200
+
+class StaffAmmendClient(StaffAmmendCoWorker):
+    TYPE_OF_LIST = "clients"
+
+    def __init__(self):
+        super().__init__()
+

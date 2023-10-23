@@ -29,7 +29,6 @@ class ScheduleResourceManager(ResourceManager):
     
     def get_by_username(self, username):
         res = self._data_manager.get_by_username(username)
-        print(res)
         self._logger.info("Resource: {}".format(res))
         return res
 

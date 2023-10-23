@@ -15,7 +15,9 @@
         },
         "password":{
             "type": "string"
-        }
+        },
+        "clients": {"type" : "list"},
+        "coworkers": {"type" : "list"}
     },
     "type": "object",
     "properties": {
@@ -33,8 +35,14 @@
         },
         "password":{
             "$ref": "#/$defs/password"
+        },
+        "clients":{
+            "$ref": "#/$defs/clients"
+        },
+        "coworkers": {
+            "$ref": "#/$defs/coworkers"
         }
-    },
+    },    
     "required": [
     ],
     "additionalProperties": false

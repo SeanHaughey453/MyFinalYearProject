@@ -29,8 +29,6 @@ class DatastoreManager:
         return method(id)
     
     def get_from_resource(self, id: str, key=None):
-        print('id',id)
-        print(self._resource)
 
         method_name = "get_from_resource_{}".format(self._resource)
         method = getattr(self, method_name)
@@ -88,9 +86,7 @@ class DatastoreManager:
     
 ###### SCHEDULE METHODS #####
     def get_from_resource_schedule(self, id: str):
-        print('id',id)
         resource = self._data_store_schedules.get_item(id)
-        print('resource', resource)
         return resource
 
     def get_all_from_resource_schedule(self, id = None):
