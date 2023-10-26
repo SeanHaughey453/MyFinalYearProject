@@ -78,8 +78,8 @@ class StaffUserLogic(UserLogic):
         ''' this is a fairly complicated function it handles 4 different endpoints and deals with them all 
             dynamically and reuses code
             
-            append_and_remove_dict stores the executions that will be getting called inside the eval() function
-            it also formats the value stored to handle the type of list (client or coworker) 
+            a_or_r_from_current_user_str stores the executions that will be getting called inside the eval() function
+            it also formats the variables used within it to handle the type of list (client or coworker) 
             
             because of how i have built out the resource managers to get the client resource i then needed to target the
             user resource manager as oppose to staff one which i have defined both in __init__
@@ -89,24 +89,33 @@ class StaffUserLogic(UserLogic):
             NOTE TO SELF - i used eval because when i tried using get_attr it bombed out
               as get_attr searches at a class level
             '''
-        append_and_remove_dict = {"append":f"current_user['{type_of_list}'].append(other_user['id'])",
-                               "remove":f"current_user['{type_of_list}'].remove(other_user['id'])"}
-       
-        if not self.check_matching_id_and_username(username, current_user_jwt['user_id']):
-            raise InvalidCredentials('User details do not match this account')
-        current_user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id'])
-        other_user = self.client_rsrc_manager.get_rsrc(other_user_id) if type_of_list == 'clients' else self.rsrc_manager.get_rsrc(other_user_id)
+        
+        a_or_r_from_current_user_str = f"current_user['{type_of_list}'].{action}(other_user['id'])"
+        change_set = {type_of_list: None}
+        self._is_current_user(username, current_user_jwt['user_id'])
+        current_user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id'])#if these users dont exist the validation will be handled in get_rsrc()
+        other_user = self.client_rsrc_manager.get_rsrc(other_user_id) if type_of_list == 'clients' \
+            else self.rsrc_manager.get_rsrc(other_user_id)
         #if these users dont exist the validation will be handled in get_rsrc()
-        if action == 'append' and other_user['id'] in current_user[type_of_list]:
-            raise ResourceConflictException('this user is already in the list')
-        if other_user['role'] != 'staff' and type_of_list == 'coworkers':
-            raise UnauthorizedException('This user is not authorised to become a coworker')
+        self._check_if_user_in_list(action, other_user['id'], current_user[type_of_list])
+        self._check_if_user_canbe_coworker(other_user['role'], type_of_list)
         
-        eval(append_and_remove_dict[action])
-        response = self.rsrc_manager.update_rsrc(current_user, current_user['id'])
+        eval(a_or_r_from_current_user_str)
+        change_set[type_of_list] = current_user[type_of_list]
+        response = self.rsrc_manager.update_rsrc(change_set, current_user['id'])
         return response
+    
+    def _is_current_user(self, username, current_user_id):
+        if not self.check_matching_id_and_username(username,current_user_id):
+            raise InvalidCredentials('User details do not match this account')
         
+    def _check_if_user_in_list(self, action, other_user_id, list_of_users):
+        if action == 'append' and other_user_id in list_of_users:
+           raise ResourceConflictException('this user is already in the list')
         
+    def _check_if_user_canbe_coworker(self, other_user_id, type_of_list):
+         if other_user_id != 'staff' and type_of_list == 'coworkers':
+            raise UnauthorizedException('This user is not authorised to become a coworker')
 
         
 

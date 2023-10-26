@@ -96,17 +96,17 @@ class StaffAmmendCoWorker(Resource):
     def patch(self, username):
         
         current_user = get_jwt_identity()
-        updated_data = request.json
+        data_to_add = request.json
        
-        updated_user = self.user_logic.action_user_list(current_user, username, updated_data['coworkers'][0], self.MY_ACTIONS[0], self.TYPE_OF_LIST)
+        updated_user = self.user_logic.action_user_list(current_user, username, data_to_add[self.TYPE_OF_LIST][0], self.MY_ACTIONS[0], self.TYPE_OF_LIST)
         return {'message': f'Your details have been updated successfully', 'details': updated_user}, 200
 
     @jwt_required()
     def delete(self, username):
         current_user = get_jwt_identity()
-        updated_data = request.json
+        data_to_add = request.json
        
-        updated_user = self.user_logic.action_user_list(current_user, username, updated_data['coworkers'][0], self.MY_ACTIONS[1], self.TYPE_OF_LIST)
+        updated_user = self.user_logic.action_user_list(current_user, username, data_to_add[self.TYPE_OF_LIST][0], self.MY_ACTIONS[1], self.TYPE_OF_LIST)
         return {'message': f'Your details have been updated successfully', 'details': updated_user}, 200
 
 class StaffAmmendClient(StaffAmmendCoWorker):
