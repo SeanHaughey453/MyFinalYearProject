@@ -15,7 +15,10 @@
         },
         "password":{
             "type": "string"
-        }
+        },
+        "goals":{"type":"array" },
+        "bookingcredits":{"type":"array"  },
+        "usedbookingcredits":{"type":"array" }
     },
     "type": "object",
     "properties": {
@@ -33,6 +36,15 @@
         },
         "password":{
             "$ref": "#/$defs/password"
+        },
+        "goals":{
+            "$ref": "#/$defs/goals"
+        },
+        "bookingcredits":{
+            "$ref": "#/$defs/bookingcredits"
+        },
+        "usedbookingcredits":{
+            "$ref": "#/$defs/usedbookingcredits"
         }
     },
     "required": [
@@ -40,7 +52,8 @@
         "surname",
         "email",
         "username",
-        "password"
+        "password",
+        "goals"
     ],
     "additionalProperties": false
 }

@@ -1,5 +1,3 @@
-
-
 from api.rsrc_manager import ResourceManager
 
 

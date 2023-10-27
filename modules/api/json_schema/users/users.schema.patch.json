@@ -15,6 +15,12 @@
         },
         "password":{
             "type": "string"
+        },
+        "goals":{
+            "type":"list"
+        },
+        "bookingcredits":{
+            "type":"list"
         }
     },
     "type": "object",
@@ -33,6 +39,12 @@
         },
         "password":{
             "$ref": "#/$defs/password"
+        },
+        "goals":{
+            "$ref": "#/$defs/goals"
+        },
+        "bookingcredits":{
+            "$ref": "#/$defs/bookingcredits"
         }
     },
     "required": [

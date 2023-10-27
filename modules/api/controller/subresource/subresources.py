@@ -10,7 +10,7 @@ class BaseSubResource(Resource):
 
     def __init__(self):
         self.resource = "schedule"
-        self.subresource = "day"
+        self.subresource = "Filled in at Child Classes"
         self.logic = ScheduleSubresourceLogic(self.resource, self.subresource)
 
     def get(self, schedule_id: str):

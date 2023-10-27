@@ -5,6 +5,7 @@ from flask_jwt_extended import get_jwt_identity
 from api.controller.logic.base_logic import BaseLogic
 from api.error_handling import ResourceConflictException, ResourceNotFoundException, UnauthorizedException
 from api.schedule_resource_manager import ScheduleResourceManager
+from api.user_rsrc_manager import StaffUserRsrcManager
 
 
 class ScheduleLogic(BaseLogic):
@@ -12,6 +13,7 @@ class ScheduleLogic(BaseLogic):
         self.resource = resource
         super().__init__(resource)
         self.resource_manager = ScheduleResourceManager(resource)
+        self.staff_rsrc_mngr = StaffUserRsrcManager('staff_users')
 
     def get(self, id: str = None):
         response = self.resource_manager.get_rsrc(id)
@@ -21,7 +23,9 @@ class ScheduleLogic(BaseLogic):
         self._validate_json(data, **kwargs)
         resource = self._init_default_values(data)
         current_user = get_jwt_identity()
-        resource['staff_ids'] = [current_user]
+        staff_ids = self._get_list_of_coworkers(current_user['user_id'])
+        staff_ids.append(current_user['user_id'])
+        resource['staff_ids'] = [staff_ids]
         response = self.resource_manager.create_rsrc(resource)
         return response
      
@@ -45,8 +49,6 @@ class ScheduleLogic(BaseLogic):
                     data[key] = None
         return data
 
-
-
     def _check_ownership(self, schedule_id: str):
         '''check if user is staff of the schedule'''
         current_user = get_jwt_identity()
@@ -54,20 +56,27 @@ class ScheduleLogic(BaseLogic):
         if current_user not in my_current_schedule['staff_ids']:
             raise UnauthorizedException('You are not authorized to edit this schedule')
         
+    def _get_list_of_coworkers(self, current_user_id :str):
+        user = self.staff_rsrc_mngr.get_rsrc(current_user_id)
+        return user['coworkers']
+        
 
 class ModifyScheduleStaffLogic(ScheduleLogic):
 
     def __init__(self, resource):
         super().__init__(resource)
 
-    def add_staff_to_schedule(self, change_set, schedule_id):#need to test
+    def add_staff_to_schedule(self, user_id_json, schedule_id):#need to test
+        change_set = {"staff_ids": []}
         self._check_ownership(schedule_id)
-        self._check_add_staff(change_set)
+        self._check_add_staff(user_id_json)
         my_current_schedule = self.resource_manager.get_rsrc(schedule_id)
-        user_to_add_json = self.resource_manager.get_by_username(change_set["addusername"])
+        user_to_add_json = self.staff_rsrc_mngr.get_rsrc(user_id_json['adduserid'])
         if user_to_add_json is not None:
-            my_current_schedule['staff_ids'].append(user_to_add_json)
-        response = self.resource_manager.update_rsrc(my_current_schedule['staff_ids'], schedule_id)
+            raise
+        my_current_schedule['staff_ids'].append(user_to_add_json['id'])
+        change_set['staff_ids'].append( my_current_schedule['staff_ids'])
+        response = self.resource_manager.update_rsrc(change_set, schedule_id)
         return response
     
     def delete_staff_from_schedule(self, change_set, schedule_id):
@@ -76,9 +85,9 @@ class ModifyScheduleStaffLogic(ScheduleLogic):
     
         
     def _check_add_staff(self, change_set: dict):
-        expected_key = {"addusername"}
+        expected_key = {"adduserid"}
         extra_keys = set(change_set.keys()) - expected_key
         if extra_keys:
             raise ResourceConflictException('There should not be extra keys in the data when adding staff to a Schedule')
         if 'addusername' not in change_set:
-            raise ResourceNotFoundException('No add username parameter was found when adding staff to a schedule')
+            raise ResourceNotFoundException('No add user id parameter was found when adding staff to a schedule')

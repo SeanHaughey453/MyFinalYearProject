@@ -16,8 +16,8 @@
         "password":{
             "type": "string"
         },
-        "clients": {"type" : "list"},
-        "coworkers": {"type" : "list"}
+        "clients": {"type" : "array"},
+        "coworkers": {"type" : "array"}
 
     },
     "type": "object",
