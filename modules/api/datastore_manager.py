@@ -5,7 +5,7 @@ from common.logger import ScheduleLogger
 
 
 class DatastoreManager:
-    __slots__ = ("_logger", "_resource", "_collection_name", "_data_store_schedules", "_data_store_users")
+    __slots__ = ("_logger", "_resource", "_collection_name", "_data_store_schedules", "_data_store_users", "_data_store_booking_credit")
 
     def __init__(self, resource: str):
 
@@ -14,6 +14,7 @@ class DatastoreManager:
         self._logger = ScheduleLogger("Datastore Manager {}".format(self._resource))
         self._data_store_schedules = app.data_store_schedules
         self._data_store_users = app.data_store_users
+        self._data_store_booking_credit = app.data_store_booking_credit
 
         if self._resource == "staff_users":
             self._collection_name = "staff"
@@ -126,3 +127,30 @@ class DatastoreManager:
     def check_if_resource_schedule(self, schedule_id: str, **kwargs):
         resource = self._data_store_schedules.check_existance(schedule_id)
         return resource
+    
+    ##############BOOKING CREDIT METHODS#############################
+
+    def get_from_resource_booking_credit(self, id: str):
+        resource = self._data_store_booking_credit.get_item(id)
+        return resource
+
+    def get_all_from_resource_booking_credit(self, id = None):
+        resource = self._data_store_booking_credit.get_all()
+        return resource
+    
+    def post_resource_booking_credit(self, data: Dict[str, Any], id: str = None, **kwargs):
+        resource = self._data_store_booking_credit.overwrite(data["id"], data)
+        return resource
+
+    def patch_resource_booking_credit(self, data: Any, id: str = None, **kwargs):
+        resource = self._data_store_booking_credit.patch_item(id, data)
+        return resource
+
+    def delete_rsrc_booking_credit(self, id: str, **kwargs):
+        resource = self._data_store_booking_credit.delete_item(id)
+        return resource
+
+    def check_if_resource_booking_credit(self, schedule_id: str, **kwargs):
+        resource = self._data_store_booking_credit.check_existance(schedule_id)
+        return resource
+

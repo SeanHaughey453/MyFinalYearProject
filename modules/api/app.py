@@ -10,6 +10,7 @@ from pyArango.theExceptions import DocumentNotFoundError
 
 from api.controller.auth.auth import Account, Login, Signup, StaffAccount, StaffAmmendClient, StaffAmmendCoWorker, StaffLogin, StaffSignup
 from api.controller.resources.schedule import ModifyScheduleStaff, Schedules, Schedule
+from api.controller.resources.booking_credit import BookingCredit
 
 ARANGO_URL = os.environ.get('ARANGO_URL', 'http://localhost:8529')
 ARANGO_DB_NAME = 'scheduleapp'
@@ -17,6 +18,7 @@ ARANGO_ACCOUNTS_DB_NAME = 'accounts'
 ARANGO_COLLECTION_SCHEDULE = 'schedule'
 ARRANGO_COLLECTION_STAFF = 'staff'
 ARANGO_COLLECTION_USERS = 'users'
+ARANGO_COLLECTION_BOOKING_CREDIT = 'booking_credit'
 
 POSSIBLE_ERRORS = [[ArangoException, 400], [DataModelException, 400], [UnauthorizedException, 401], [GeneralException, 404], [ResourceNotFoundException, 404],
                     [DocumentNotFoundError, 404], [ResourceConflictException, 409], [InvalidCredentials, 409], [InvalidFormatException, 409]]
@@ -48,6 +50,7 @@ def create_app() -> Flask:
     app.data_store_schedules = DataStoreArangoDb(ARANGO_URL, ARANGO_DB_NAME, ARANGO_COLLECTION_SCHEDULE)
     app.data_store_users = DataStoreArangoDb(ARANGO_URL, ARANGO_ACCOUNTS_DB_NAME, ARANGO_COLLECTION_USERS)
     app.data_store_staff = DataStoreArangoDb(ARANGO_URL, ARANGO_ACCOUNTS_DB_NAME, ARRANGO_COLLECTION_STAFF)
+    app.data_store_booking_credit = DataStoreArangoDb(ARANGO_URL, ARANGO_DB_NAME, ARANGO_COLLECTION_BOOKING_CREDIT)
 
     api = Scedule_API(error_list=errors, app=app) 
 
@@ -55,6 +58,10 @@ def create_app() -> Flask:
     baseScheduleUrl = '/v1/schedule'
     specificScheduleUrl = baseScheduleUrl + '/<scheduleId>'
     schedulesUrl = '/v1/schedules'
+
+    baseCreditUrl = '/v1/credit'
+    specificCreditURL = baseCreditUrl + '/<bookingCreditId>'
+    creditsUrl = '/v1/credits'
 
     #API
     #Account
@@ -67,13 +74,15 @@ def create_app() -> Flask:
     api.add_resource(StaffAccount, '/v1/staff/account/<username>', '/v1/staff/account/edit/<username>', '/v1/staff/account/delete/<username>')
     api.add_resource(StaffAmmendCoWorker, '/v1/staff/account/<username>/coworker/edit', '/v1/staff/account/<username>/coworker/delete')
     api.add_resource(StaffAmmendClient, '/v1/staff/account/<username>/client/edit', '/v1/staff/account/<username>/client/delete')
-
-    #Members
-
     #Schedules
     api.add_resource(Schedules, schedulesUrl)
     api.add_resource(Schedule, baseScheduleUrl, specificScheduleUrl)
-    api.add_resource(ModifyScheduleStaff, specificScheduleUrl+'admin/add' )
+    api.add_resource(ModifyScheduleStaff, specificScheduleUrl+'/admin/add' )
+    #booking
+
+    #booking credits
+    api.add_resource(BookingCredit, baseCreditUrl,specificCreditURL)
+
 
 
     return app
