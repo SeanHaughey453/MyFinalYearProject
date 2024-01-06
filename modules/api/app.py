@@ -77,7 +77,7 @@ def create_app() -> Flask:
     #Schedules
     api.add_resource(Schedules, schedulesUrl)
     api.add_resource(Schedule, baseScheduleUrl, specificScheduleUrl)
-    api.add_resource(ModifyScheduleStaff, specificScheduleUrl+'/admin/add' )
+    api.add_resource(ModifyScheduleStaff, specificScheduleUrl+'/staff/add' )
     #booking
 
     #booking credits

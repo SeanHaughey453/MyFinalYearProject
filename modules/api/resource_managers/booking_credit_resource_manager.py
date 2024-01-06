@@ -3,7 +3,7 @@
 from api.rsrc_manager import ResourceManager
 
 
-class BookingCreditResourceManager(ResourceManager):
+class BookingCreditRsrcManager(ResourceManager):
     def __init__(self, resource):
         self.resource = resource
         super().__init__(resource)

@@ -3,7 +3,7 @@ from typing import Any, Dict
 from flask_jwt_extended import jwt_required
 from api.controller.common import role_required
 from api.controller.logic.base_logic import BaseLogic
-from api.resource_managers.booking_credit_resource_manager import BookingCreditResourceManager
+from api.resource_managers.booking_credit_resource_manager import BookingCreditRsrcManager
 
 
 class BookingCreditLogic(BaseLogic):
@@ -11,7 +11,7 @@ class BookingCreditLogic(BaseLogic):
     def __init__(self, resource):
         self.resource = resource
         super().__init__(resource)
-        self.resource_manager = BookingCreditResourceManager(resource)
+        self.resource_manager = BookingCreditRsrcManager(resource)
 
     @jwt_required()
     @role_required('staff')

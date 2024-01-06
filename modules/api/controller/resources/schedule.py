@@ -42,6 +42,8 @@ class ModifyScheduleStaff(Schedule):
     @jwt_required()
     @role_required('staff')
     def patch(self, scheduleId: str):
+        print('scheduleId', scheduleId)
+        print('request.json', request.json)
         response = self.logic.add_staff_to_schedule(request.json, scheduleId)
         return response
     

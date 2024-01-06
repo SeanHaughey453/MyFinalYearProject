@@ -25,7 +25,7 @@ class ScheduleLogic(BaseLogic):
         current_user = get_jwt_identity()
         staff_ids = self._get_list_of_coworkers(current_user['user_id'])
         staff_ids.append(current_user['user_id'])
-        resource['staff_ids'] = [staff_ids]
+        resource['staff_ids'] = staff_ids
         response = self.resource_manager.create_rsrc(resource)
         return response
      
@@ -52,8 +52,11 @@ class ScheduleLogic(BaseLogic):
     def _check_ownership(self, schedule_id: str):
         '''check if user is staff of the schedule'''
         current_user = get_jwt_identity()
+        print('current user', current_user)
+        
         my_current_schedule = self.resource_manager.get_rsrc(schedule_id)
-        if current_user not in my_current_schedule['staff_ids']:
+        print("my_current_schedule['staff_ids']", my_current_schedule['staff_ids'])
+        if current_user['user_id'] not in my_current_schedule['staff_ids']:
             raise UnauthorizedException('You are not authorized to edit this schedule')
         
     def _get_list_of_coworkers(self, current_user_id :str):
@@ -72,8 +75,8 @@ class ModifyScheduleStaffLogic(ScheduleLogic):
         self._check_add_staff(user_id_json)
         my_current_schedule = self.resource_manager.get_rsrc(schedule_id)
         user_to_add_json = self.staff_rsrc_mngr.get_rsrc(user_id_json['adduserid'])
-        if user_to_add_json is not None:
-            raise
+        if user_to_add_json is None:
+            raise ResourceNotFoundException('this user does not exist')
         my_current_schedule['staff_ids'].append(user_to_add_json['id'])
         change_set['staff_ids'].append( my_current_schedule['staff_ids'])
         response = self.resource_manager.update_rsrc(change_set, schedule_id)
@@ -85,9 +88,11 @@ class ModifyScheduleStaffLogic(ScheduleLogic):
     
         
     def _check_add_staff(self, change_set: dict):
+
         expected_key = {"adduserid"}
+        print('change_set',change_set)
         extra_keys = set(change_set.keys()) - expected_key
         if extra_keys:
             raise ResourceConflictException('There should not be extra keys in the data when adding staff to a Schedule')
-        if 'addusername' not in change_set:
+        if 'adduserid' not in change_set:
             raise ResourceNotFoundException('No add user id parameter was found when adding staff to a schedule')

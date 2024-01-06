@@ -93,6 +93,7 @@ class StaffAmmendCoWorker(Resource):
         self.user_logic = StaffUserLogic(self.resource, self.user)
 
     @jwt_required()
+    @role_required('staff')
     def patch(self, username):
         
         current_user = get_jwt_identity()
@@ -102,6 +103,7 @@ class StaffAmmendCoWorker(Resource):
         return {'message': f'Your details have been updated successfully', 'details': updated_user}, 200
 
     @jwt_required()
+    @role_required('staff')
     def delete(self, username):
         current_user = get_jwt_identity()
         data_to_add = request.json
@@ -114,4 +116,21 @@ class StaffAmmendClient(StaffAmmendCoWorker):
 
     def __init__(self):
         super().__init__()
+
+class StaffAmmendClientaCredits(Resource):
+
+    def __init__(self):
+        self.resource = "staff_users"
+        self.user = User('', '') 
+        self.user_logic = StaffUserLogic(self.resource, self.user)
+    
+    @jwt_required()
+    @role_required('staff')
+    def post(self):# need to test
+        current_user = get_jwt_identity()
+        credit_assignment = request.json
+
+        updated_user = self.user_logic.giveCredit(current_user, credit_assignment)
+        return {'message': f'you have given a credit to {updated_user}'}, 200
+
 

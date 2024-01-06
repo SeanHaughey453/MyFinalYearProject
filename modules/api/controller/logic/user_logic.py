@@ -1,8 +1,9 @@
 from typing import Any, Dict
 from api.controller.logic.base_logic import BaseLogic
-from api.error_handling import InvalidCredentials, ResourceConflictException, ResourceNotFoundException, UnauthorizedException
+from api.error_handling import GeneralException, InvalidCredentials, ResourceConflictException, ResourceNotFoundException, UnauthorizedException
 from api.models.users import User
 from api.user_rsrc_manager import StaffUserRsrcManager, UserRsrcManager
+from api.resource_managers.booking_credit_resource_manager import BookingCreditRsrcManager
 
 
 class UserLogic(BaseLogic):
@@ -57,6 +58,7 @@ class StaffUserLogic(UserLogic):
         super().__init__(resource, user)
         self.rsrc_manager = StaffUserRsrcManager(self.resource)
         self.client_rsrc_manager = UserRsrcManager('users')
+        self.booking_rsrc_manager = BookingCreditRsrcManager('booking_credit')
         
     def _init_default_values(self, data: Dict[str, Any]):
         optionalKeys = ['coworkers', 'clients']
@@ -116,6 +118,33 @@ class StaffUserLogic(UserLogic):
     def _check_if_user_canbe_coworker(self, other_user_id, type_of_list):
          if other_user_id != 'staff' and type_of_list == 'coworkers':
             raise UnauthorizedException('This user is not authorised to become a coworker')
+         
+    def giveCredit(self, current_user_jwt, credit_assingment_json):
+        if current_user_jwt == None or credit_assingment_json == None:
+            raise ResourceNotFoundException('current user or the credit assignment was not found')
+        current_user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id'])
+
+        if 'clientId' not in credit_assingment_json:
+            raise ResourceNotFoundException('a client ID was not found in the credit assignment')
+        if 'bookingId' not in credit_assingment_json:
+            raise ResourceNotFoundException('a client ID was not found in the credit assignment')
+        
+        if credit_assingment_json['clientId'] in current_user['clients']:
+            booking_credit = self.booking_rsrc_manager.get_rsrc(credit_assingment_json['bookingId'])#if the credit doesnt exisit it will be handled in get_rsrc()
+            client = self.client_rsrc_manager.get_rsrc(credit_assingment_json['clientId'])
+            client['bookingCredits'].append(booking_credit)
+            return client
+        else:
+            raise GeneralException('This client is not parts of your Client list!')
+
+
+
+
+
+
+
+
+
 
         
 

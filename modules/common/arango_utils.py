@@ -4,20 +4,6 @@ from requests.adapters import Retry
 from pyArango.collection import Collection
 from pyArango.connection import Connection
 from pyArango.database import Database
-from pyArango.connection import AikidoSession
-
-
-''' PyArango doesn't handle timeouts correctly, and isn't reliable
-    We want to force the call to connect to arango to have a timeout of 10 seconds,
-    this way it will timeout and reconnect. This prevents hanging connections. 
-    Probably only needed in a multinode configuration but good to have anyway'''
-
-AikidoSession.Holder._base_call = AikidoSession.Holder.__call__
-def _monkey_patch_call(self, *args, **kwargs):
-  kwargs["timeout"] = 10
-  return self._base_call(*args, **kwargs)
-
-AikidoSession.Holder.__call__ = _monkey_patch_call
 
 
 def open_connection(arango_url: str, logger: Any) -> Connection:
