@@ -117,7 +117,7 @@ class StaffAmmendClient(StaffAmmendCoWorker):
     def __init__(self):
         super().__init__()
 
-class StaffAmmendClientaCredits(Resource):
+class StaffAmmendClientsCredits(Resource):
 
     def __init__(self):
         self.resource = "staff_users"
@@ -126,11 +126,9 @@ class StaffAmmendClientaCredits(Resource):
     
     @jwt_required()
     @role_required('staff')
-    def post(self):# need to test
-        current_user = get_jwt_identity()
-        credit_assignment = request.json
-
-        updated_user = self.user_logic.giveCredit(current_user, credit_assignment)
+    def patch(self, clientId,bookingId):# need to test
+        credit_assignment = {'clientId': clientId, 'bookingId': bookingId}
+        updated_user = self.user_logic.giveCredit(credit_assignment)
         return {'message': f'you have given a credit to {updated_user}'}, 200
 
 

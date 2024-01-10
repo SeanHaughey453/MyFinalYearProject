@@ -22,6 +22,8 @@ class BookingCreditLogic(BaseLogic):
     @jwt_required()
     @role_required('staff')
     def post(self, data: Any, **kwargs):
+        data['active'] = True
+        data['assigned'] = False
         self._validate_json(data, **kwargs)
         resource = data
         response = self.resource_manager.create_rsrc(resource)

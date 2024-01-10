@@ -8,7 +8,7 @@ from api.schedule_api import Scedule_API, Scedule_API_API_Errors
 from common.data_store_arango import DataStoreArangoDb
 from pyArango.theExceptions import DocumentNotFoundError
 
-from api.controller.auth.auth import Account, Login, Signup, StaffAccount, StaffAmmendClient, StaffAmmendCoWorker, StaffLogin, StaffSignup
+from api.controller.auth.auth import Account, Login, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendCoWorker, StaffLogin, StaffSignup
 from api.controller.resources.schedule import ModifyScheduleStaff, Schedules, Schedule
 from api.controller.resources.booking_credit import BookingCredit
 
@@ -64,7 +64,7 @@ def create_app() -> Flask:
     creditsUrl = '/v1/credits'
 
     #API
-    #Account
+    #Client Auth
     api.add_resource(Signup, '/v1/signup')
     api.add_resource(Login, '/v1/login')
     api.add_resource(Account, '/v1/account/<username>', '/v1/account/edit/<username>', '/v1/account/delete/<username>')
@@ -74,6 +74,7 @@ def create_app() -> Flask:
     api.add_resource(StaffAccount, '/v1/staff/account/<username>', '/v1/staff/account/edit/<username>', '/v1/staff/account/delete/<username>')
     api.add_resource(StaffAmmendCoWorker, '/v1/staff/account/<username>/coworker/edit', '/v1/staff/account/<username>/coworker/delete')
     api.add_resource(StaffAmmendClient, '/v1/staff/account/<username>/client/edit', '/v1/staff/account/<username>/client/delete')
+    api.add_resource(StaffAmmendClientsCredits, '/v1/credits/add/<clientId>/token/<bookingId>')
     #Schedules
     api.add_resource(Schedules, schedulesUrl)
     api.add_resource(Schedule, baseScheduleUrl, specificScheduleUrl)
