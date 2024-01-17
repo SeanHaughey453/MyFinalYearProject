@@ -33,7 +33,7 @@ class ResourceManager:
         '''Used to delete an existing resource'''
         response = self._data_manager.delete_rsrc(id)
         return response
-    
+         
     @staticmethod
     def create_uuid(json): 
         '''Generate a unique uuid for resource'''

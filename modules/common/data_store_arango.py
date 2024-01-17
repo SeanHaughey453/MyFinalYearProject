@@ -90,15 +90,6 @@ class DataStoreArangoDb:
     except:
       return False
 
-  def append_item(self, key:str, data: Dict[str, Any]) -> Dict[str, Any]:
-    doc = None
-    #Check if document actually exists
-    try:
-      doc = self._collection.fetchDocument(key)
-    except DocumentNotFoundError:
-      raise DocumentNotFoundError("Document with key of {} was not found during patch".format(key))
-      ##THIS NEEDS EXTENDED TO WORK PROPERLY
-
   def run_query(self, query: str) -> List[Dict[str, Any]]:
     """Executes an AQL query and returns the results as a list of dictionaries."""
     results = []
@@ -109,3 +100,30 @@ class DataStoreArangoDb:
     except Exception as e:
         raise ArangoException(f"Error executing AQL query: {e}")
     return results
+  
+  def put_item(self, key: str, data: Dict[str, Any]) -> Dict[str, Any]:
+    doc = None
+    print('data', data)
+    #Check if document actually exists
+    try:
+      doc = self._collection.fetchDocument(key)
+    except DocumentNotFoundError:
+      raise DocumentNotFoundError("Document with key of {} was not found during patch".format(key))
+    
+    if doc is None:
+      raise ArangoException("Document is None")
+    #Patch document with new data
+    try:
+      #work around as pyArango won't update a dict with a none value, so delete item first then patch
+      for dictKey, value in data.items():
+        if value == None:
+         del doc[dictKey]
+
+      doc.set(data)
+      print('doc',doc)
+      doc.save(waitForSync=True)
+    except Exception as e:
+      print(f"Error updating document: {e}")
+      raise ArangoException("Error writing to Arango")
+    
+    return self.__getitem__(key)

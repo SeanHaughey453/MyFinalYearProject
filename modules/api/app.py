@@ -11,6 +11,7 @@ from pyArango.theExceptions import DocumentNotFoundError
 from api.controller.auth.auth import Account, Login, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendCoWorker, StaffLogin, StaffSignup
 from api.controller.resources.schedule import ModifyScheduleStaff, Schedules, Schedule
 from api.controller.resources.booking_credit import BookingCredit
+from api.controller.subresource.subresources import Booking
 
 ARANGO_URL = os.environ.get('ARANGO_URL', 'http://localhost:8529')
 ARANGO_DB_NAME = 'scheduleapp'
@@ -80,6 +81,7 @@ def create_app() -> Flask:
     api.add_resource(Schedule, baseScheduleUrl, specificScheduleUrl)
     api.add_resource(ModifyScheduleStaff, specificScheduleUrl+'/staff/add' )
     #booking
+    api.add_resource(Booking, specificScheduleUrl+ '/<day>/<hour>')
 
     #booking credits
     api.add_resource(BookingCredit, baseCreditUrl,specificCreditURL)

@@ -29,12 +29,7 @@
             "$ref": "#/$defs/goal"
         }
     },
-    "required": [
-        "bookingRef",
-        "user_id",
-        "name",
-        "goal"
-    ],
+    "required": [ ],
     "additionalProperties": false
 
 

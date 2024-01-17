@@ -36,3 +36,7 @@ class ScheduleResourceManager(ResourceManager):
     
     def delete_rsrc(self, id):
         return super().delete_rsrc(id)
+    
+    def update_full_rsrc(self,json, id= None):
+        response = self._data_manager.put_rsrc_schedule(json, id)
+        return response

@@ -17,8 +17,8 @@
             "type": "string"
         },
         "goals":{"type":"array" },
-        "bookingcredits":{"type":"array"  },
-        "usedbookingcredits":{"type":"array" }
+        "bookingCredits":{"type":"array"  },
+        "usedBookingCredits":{"type":"array" }
     },
     "type": "object",
     "properties": {
@@ -40,11 +40,11 @@
         "goals":{
             "$ref": "#/$defs/goals"
         },
-        "bookingcredits":{
-            "$ref": "#/$defs/bookingcredits"
+        "bookingCredits":{
+            "$ref": "#/$defs/bookingCredits"
         },
-        "usedbookingcredits":{
-            "$ref": "#/$defs/usedbookingcredits"
+        "usedBookingCredits":{
+            "$ref": "#/$defs/usedBookingCredits"
         }
     },
     "required": [

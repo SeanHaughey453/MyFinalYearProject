@@ -26,6 +26,7 @@ class ScheduleLogic(BaseLogic):
         staff_ids = self._get_list_of_coworkers(current_user['user_id'])
         staff_ids.append(current_user['user_id'])
         resource['staff_ids'] = staff_ids
+        resource['createdBy'] = current_user['user_id']
         response = self.resource_manager.create_rsrc(resource)
         return response
      
@@ -96,3 +97,4 @@ class ModifyScheduleStaffLogic(ScheduleLogic):
             raise ResourceConflictException('There should not be extra keys in the data when adding staff to a Schedule')
         if 'adduserid' not in change_set:
             raise ResourceNotFoundException('No add user id parameter was found when adding staff to a schedule')
+        

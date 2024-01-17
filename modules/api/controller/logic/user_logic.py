@@ -136,6 +136,8 @@ class StaffUserLogic(UserLogic):
         if credit_assingment_json['clientId'] in current_user['clients']:
             change_set, booking_credit_change_set = {}, {}
             booking_credit = self.booking_rsrc_manager.get_rsrc(credit_assingment_json['bookingId'])#if the credit doesnt exisit it will be handled in get_rsrc()
+            if booking_credit['assigned'] == True:
+                raise ResourceConflictException('This Booking credit resource has already been assigned to somone')
             client = self.client_rsrc_manager.get_rsrc(credit_assingment_json['clientId'])
             print('client', client)
             print('booking_credit',booking_credit)

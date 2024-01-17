@@ -98,7 +98,7 @@ class DatastoreManager:
         """Fetches all documents in the collection owned by the given user_id."""
         query = f"""
                 FOR s IN {self._collection_name}
-                FILTER s.admin_id == "{user_id}"
+                FILTER s.createdBy == "{user_id}"
                 RETURN s
                 """
         return self._data_store_schedules.run_query(query)
@@ -126,6 +126,10 @@ class DatastoreManager:
 
     def check_if_resource_schedule(self, schedule_id: str, **kwargs):
         resource = self._data_store_schedules.check_existance(schedule_id)
+        return resource
+    
+    def put_rsrc_schedule(self, data: Any, id: str, **kwargs):
+        resource = self._data_store_schedules.put_item(id, data)
         return resource
     
     ##############BOOKING CREDIT METHODS#############################

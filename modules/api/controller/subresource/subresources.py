@@ -4,7 +4,7 @@ from flask_jwt_extended import jwt_required
 from common.logger import ScheduleLogger
 from api.controller.common import role_required
 
-from api.controller.logic.sub_logic.schedule_sub_logic import ScheduleSubresourceLogic 
+from api.controller.logic.sub_logic.schedule_sub_logic import ScheduleSubresourceLogic, SubBookingSubresourceLogic 
 
 class BaseSubResource(Resource):
 
@@ -33,15 +33,17 @@ class BaseSubResource(Resource):
         response = self.logic.delete(schedule_id)
         return response, 204
 
-class Day(BaseSubResource):
-    def __init__(self):
-        super().__init__()
-        self.subresource = "day"
 
 class Booking(BaseSubResource):
     def __init__(self):
         super().__init__()
         self.subresource = "booking"
+        self.logic = SubBookingSubresourceLogic(self.resource, self.subresource)
+
+    @jwt_required()
+    def patch(self, scheduleId: str, day : str, hour : str):
+        response = self.logic.patch(scheduleId, day ,hour, request.json)
+        return response, 200
 
 class Break(BaseSubResource):
     def __init__(self):
