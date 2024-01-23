@@ -16,8 +16,20 @@ class ScheduleLogic(BaseLogic):
         self.staff_rsrc_mngr = StaffUserRsrcManager('staff_users')
 
     def get(self, id: str = None):
-        response = self.resource_manager.get_rsrc(id)
-        return response
+        current_user = get_jwt_identity()
+        resource = self.resource_manager.get_rsrc(id)
+        owner = self.staff_rsrc_mngr.get_rsrc(resource['createdBy'])
+        if current_user['role'] == 'staff':
+            if current_user['user_id'] != resource['createdBy']:
+                if current_user['user_id'] not in owner['coworkers']:
+                    raise UnauthorizedException('This staff memeber is not a coworker with the schedule owner')
+            return resource
+        else:
+            if current_user['user_id'] not in owner['clients']:
+                raise UnauthorizedException('This user is not a client of the schedule owner')
+            return self._hide_other_client_bookings(resource, current_user)
+
+
     
     def post(self, data: Any, **kwargs):
         self._validate_json(data, **kwargs)
@@ -63,6 +75,17 @@ class ScheduleLogic(BaseLogic):
     def _get_list_of_coworkers(self, current_user_id :str):
         user = self.staff_rsrc_mngr.get_rsrc(current_user_id)
         return user['coworkers']
+
+    def _hide_other_client_bookings(self, resource: Dict[str, Any], user:Dict[str, Any]):
+            weekdays= ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+
+            for weekday in resource.keys():
+                if weekday in weekdays:
+                    for hour in resource[weekday].keys():
+                        if 'user_id' in resource[weekday][hour]:
+                            if resource[weekday][hour]['user_id'] != user['user_id']:
+                                resource[weekday][hour] = {'booked': 'booked'}
+            return resource
         
 
 class ModifyScheduleStaffLogic(ScheduleLogic):

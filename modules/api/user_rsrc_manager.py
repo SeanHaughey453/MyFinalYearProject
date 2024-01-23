@@ -47,7 +47,8 @@ class UserRsrcManager(ResourceManager):
             self._logger.info("User role: {}".format(role_claims))
             identity_data = {
                 'user_id': user._id,
-                'username': user.username
+                'username': user.username,
+                'role': user.role
             }
             access_token = create_access_token(identity=identity_data, additional_claims=role_claims)
             return access_token

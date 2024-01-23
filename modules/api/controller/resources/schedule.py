@@ -10,7 +10,8 @@ class Schedule(Resource):
     def __init__(self):
         self.resource = "schedule"
         self.logic = ScheduleLogic(self.resource)
-
+    
+    @jwt_required()
     def get(self, scheduleId: str):
         response = self.logic.get(scheduleId)
         return response, 200

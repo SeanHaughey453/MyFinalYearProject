@@ -116,6 +116,7 @@ class StaffAmmendClient(StaffAmmendCoWorker):
 
     def __init__(self):
         super().__init__()
+        
 
 class StaffAmmendClientsCredits(Resource):
 

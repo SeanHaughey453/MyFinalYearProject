@@ -20,6 +20,7 @@ class UserLogic(BaseLogic):
 
         def create(self, data):
             data['bookingCredits'] = []
+            data['usedBookingCredits'] = []
             self._validate_json(data) 
             if not data.get("role"):
                 data["role"] = self.role
