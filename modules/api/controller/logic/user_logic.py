@@ -65,7 +65,7 @@ class StaffUserLogic(UserLogic):
         self.booking_rsrc_manager = BookingCreditRsrcManager('booking_credit')
         
     def _init_default_values(self, data: Dict[str, Any]):
-        optionalKeys = ['coworkers', 'clients']
+        optionalKeys = ['coworkers', 'clients', 'ownedSchedules']
         if data is not None:
             for key in optionalKeys:
                 if not data.get(key):

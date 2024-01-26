@@ -17,7 +17,11 @@
             "type": "string"
         },
         "clients": {"type" : "list"},
-        "coworkers": {"type" : "list"}
+        "coworkers": {"type" : "list"},
+        "biography":{
+            "type": "string"
+        },
+        "skills": {"type" : "array"}
     },
     "type": "object",
     "properties": {
@@ -41,6 +45,12 @@
         },
         "coworkers": {
             "$ref": "#/$defs/coworkers"
+        },
+        "biography": {
+            "$ref": "#/$defs/biography"
+        },
+        "skills": {
+            "$ref": "#/$defs/skills"
         }
     },    
     "required": [

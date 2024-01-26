@@ -29,8 +29,6 @@ class ScheduleLogic(BaseLogic):
                 raise UnauthorizedException('This user is not a client of the schedule owner')
             return self._hide_other_client_bookings(resource, current_user)
 
-
-    
     def post(self, data: Any, **kwargs):
         self._validate_json(data, **kwargs)
         resource = self._init_default_values(data)
@@ -39,10 +37,11 @@ class ScheduleLogic(BaseLogic):
         staff_ids.append(current_user['user_id'])
         resource['staff_ids'] = staff_ids
         resource['createdBy'] = current_user['user_id']
+        resource['active'] = True
         response = self.resource_manager.create_rsrc(resource)
+        self._update_owner_data(current_user['user_id'], response['id'] )
         return response
      
-    
     def patch(self, schedule_id: str, change_set: Dict[str, Any], **kwargs):
         self._check_ownership(schedule_id)
         self._validate_json(change_set, **kwargs) 
@@ -86,6 +85,24 @@ class ScheduleLogic(BaseLogic):
                             if resource[weekday][hour]['user_id'] != user['user_id']:
                                 resource[weekday][hour] = {'booked': 'booked'}
             return resource
+    
+    def _update_owner_data(self,user_id, schedule_id ):
+#this works aslong as the list(being seen a stack) for the owner/staff resource stays in the same order, if i needed to change the order of the list then it will wreck
+# this could change through targetiong the arango save function so REMEBER this if i do need to target save instead of patch as it could change
+        owner = self.staff_rsrc_mngr.get_rsrc(user_id)
+        changeset_owner = {}
+        changeset_schedule = {}
+        previous_schedules = owner['ownedSchedules'].copy()
+        if previous_schedules != []:
+            previous_schedule_id = previous_schedules.pop()
+            previous_schedule = self.resource_manager.get_rsrc(previous_schedule_id)
+            previous_schedule['active'] = False
+            changeset_schedule['active'] = previous_schedule['active']
+            updated_previous_schedule = self.resource_manager.update_rsrc(previous_schedule, previous_schedule_id)
+        owner['ownedSchedules'].append(schedule_id)
+        changeset_owner['ownedSchedules'] = owner['ownedSchedules']
+        updated_owner = self.staff_rsrc_mngr.update_rsrc(changeset_owner, user_id)
+
         
 
 class ModifyScheduleStaffLogic(ScheduleLogic):

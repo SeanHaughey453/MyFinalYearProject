@@ -17,7 +17,12 @@
             "type": "string"
         },
         "clients": {"type" : "array"},
-        "coworkers": {"type" : "array"}
+        "coworkers": {"type" : "array"},
+        "biography":{
+            "type": "string"
+        },
+        "skills": {"type" : "array"},
+        "ownedSchedules": {"type" : "array"}
 
     },
     "type": "object",
@@ -42,6 +47,15 @@
         },
         "coworkers": {
             "$ref": "#/$defs/coworkers"
+        },
+        "biography": {
+            "$ref": "#/$defs/biography"
+        },
+        "skills": {
+            "$ref": "#/$defs/skills"
+        },
+        "ownedSchedules": {
+            "$ref": "#/$defs/ownedSchedules"
         }
     },
     "required": [
