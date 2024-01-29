@@ -5,7 +5,7 @@ from common.logger import ScheduleLogger
 
 
 class DatastoreManager:
-    __slots__ = ("_logger", "_resource", "_collection_name", "_data_store_schedules", "_data_store_users", "_data_store_booking_credit")
+    __slots__ = ("_logger", "_resource", "_collection_name", "_data_store_schedules", "_data_store_users", "_data_store_booking_credit", "_data_store_plan")
 
     def __init__(self, resource: str):
 
@@ -15,6 +15,7 @@ class DatastoreManager:
         self._data_store_schedules = app.data_store_schedules
         self._data_store_users = app.data_store_users
         self._data_store_booking_credit = app.data_store_booking_credit
+        self._data_store_plan = app.data_store_plan
 
         if self._resource == "staff_users":
             self._collection_name = "staff"
@@ -156,5 +157,31 @@ class DatastoreManager:
 
     def check_if_resource_booking_credit(self, schedule_id: str, **kwargs):
         resource = self._data_store_booking_credit.check_existance(schedule_id)
+        return resource
+    
+        ##############PLAN METHODS#############################
+
+    def get_from_resource_plan(self, id: str):
+        resource = self._data_store_plan.get_item(id)
+        return resource
+
+    def get_all_from_resource_plan(self, id = None):
+        resource = self._data_store_plan.get_all()
+        return resource
+    
+    def post_resource_plan(self, data: Dict[str, Any], id: str = None, **kwargs):
+        resource = self._data_store_plan.overwrite(data["id"], data)
+        return resource
+
+    def patch_resource_plan(self, data: Any, id: str = None, **kwargs):
+        resource = self._data_store_plan.patch_item(id, data)
+        return resource
+
+    def delete_rsrc_plan(self, id: str, **kwargs):
+        resource = self._data_store_plan.delete_item(id)
+        return resource
+
+    def check_if_resource_plan(self, schedule_id: str, **kwargs):
+        resource = self._data_store_plan.check_existance(schedule_id)
         return resource
 

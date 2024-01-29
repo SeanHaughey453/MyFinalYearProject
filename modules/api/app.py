@@ -12,6 +12,7 @@ from api.controller.auth.auth import Account, Login, Signup, StaffAccount, Staff
 from api.controller.resources.schedule import ModifyScheduleStaff, Schedules, Schedule
 from api.controller.resources.booking_credit import BookingCredit
 from api.controller.subresource.subresources import Booking
+from api.controller.resources.plan import Plan
 
 ARANGO_URL = os.environ.get('ARANGO_URL', 'http://localhost:8529')
 ARANGO_DB_NAME = 'scheduleapp'
@@ -20,7 +21,7 @@ ARANGO_COLLECTION_SCHEDULE = 'schedule'
 ARRANGO_COLLECTION_STAFF = 'staff'
 ARANGO_COLLECTION_USERS = 'users'
 ARANGO_COLLECTION_BOOKING_CREDIT = 'booking_credit'
-
+ARANGO_COLLECTION_PLAN = 'plan'
 POSSIBLE_ERRORS = [[ArangoException, 400], [DataModelException, 400], [UnauthorizedException, 401], [GeneralException, 404], [ResourceNotFoundException, 404],
                     [DocumentNotFoundError, 404], [ResourceConflictException, 409], [InvalidCredentials, 409], [InvalidFormatException, 409]]
 def create_app() -> Flask:
@@ -52,6 +53,7 @@ def create_app() -> Flask:
     app.data_store_users = DataStoreArangoDb(ARANGO_URL, ARANGO_ACCOUNTS_DB_NAME, ARANGO_COLLECTION_USERS)
     app.data_store_staff = DataStoreArangoDb(ARANGO_URL, ARANGO_ACCOUNTS_DB_NAME, ARRANGO_COLLECTION_STAFF)
     app.data_store_booking_credit = DataStoreArangoDb(ARANGO_URL, ARANGO_DB_NAME, ARANGO_COLLECTION_BOOKING_CREDIT)
+    app.data_store_plan = DataStoreArangoDb(ARANGO_URL, ARANGO_DB_NAME, ARANGO_COLLECTION_PLAN)
 
     api = Scedule_API(error_list=errors, app=app) 
 
@@ -63,6 +65,9 @@ def create_app() -> Flask:
     baseCreditUrl = '/v1/credit'
     specificCreditURL = baseCreditUrl + '/<bookingCreditId>'
     creditsUrl = '/v1/credits'
+
+    basePlanUrl = '/v1/plan'
+    specificPlanUrl = basePlanUrl+ '/<planId>'
 
     #API
     #Client Auth
@@ -82,10 +87,10 @@ def create_app() -> Flask:
     api.add_resource(ModifyScheduleStaff, specificScheduleUrl+'/staff/add' )
     #booking
     api.add_resource(Booking, specificScheduleUrl+ '/<day>/<hour>')
-
     #booking credits
     api.add_resource(BookingCredit, baseCreditUrl,specificCreditURL)
-
+    #plans
+    api.add_resource(Plan, basePlanUrl, specificPlanUrl)
 
 
     return app

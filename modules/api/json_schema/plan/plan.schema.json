@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$defs": {
+        "name":{
+            "type": "string"
+        },
+        "planType":{
+            "type": "string"
+        },
+        "documentUrl":{
+            "type": "string"
+        },
+        "tailoredTo": {
+            "type": "string"
+        }
+    },
+    "type": "object",
+    "properties": {
+        "name":{
+            "$ref": "#/$defs/name"
+        },
+        "planType":{
+            "$ref": "#/$defs/planType"
+        },
+        "documentUrl":{
+            "$ref": "#/$defs/documentUrl"
+        },
+        "tailoredTo":{
+            "$ref": "#/$defs/tailoredTo"
+        }
+    },
+    "required": [
+        "name",
+        "planType",
+        "documentUrl"
+    ],
+    "additionalProperties": false
+}
