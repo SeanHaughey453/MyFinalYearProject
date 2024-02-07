@@ -1,0 +1,18 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" autocomplete="off">
+    <h2 class="text-center text">Login</h2>
+        <div class="form-group">
+            <label for="text">Username</label>
+            <input id="username" rows="3" name="username" class="form-control" formControlName="username" 
+            [ngClass]="{'error': isInvalid('username')}" placeholder="wee_jimmy123">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password"rows="3" name="password" class="form-control" formControlName="password" 
+            [ngClass]="{'error': isInvalid('password')}" placeholder="password123">
+        </div>
+        <span *ngIf="isIncomplete()">You must complete all fields</span>
+        <br>
+        <div class="form-group text-center">
+        <button class="btn btn-success me-2"  *ngIf="!isIncomplete()" type="submit">Login!</button>   
+        </div>
+</form>

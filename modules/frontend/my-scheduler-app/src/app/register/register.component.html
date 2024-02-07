@@ -1,0 +1,37 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" autocomplete="off">
+    <h2 class="text-center text">Sign up</h2>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" class="form-control" formControlName="name"
+            [ngClass]="{'error': isInvalid('name')}" placeholder="jimmy">
+        </div>
+        <div class="form-group">
+            <label for="text">Username</label>
+            <input id="username" rows="3" name="username" class="form-control" formControlName="username" 
+            [ngClass]="{'error': isInvalid('username')}" placeholder="wee_jimmy123">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password"rows="3" name="password" class="form-control" formControlName="password" 
+            [ngClass]="{'error': isInvalid('password')}" placeholder="password123">
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword" type="password"rows="3" name="confirmPassword" class="form-control" formControlName="confirmPassword" 
+            [ngClass]="{'error': isInvalid('password')}" placeholder="password123">
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" rows="3" type="email" name="email" class="form-control" formControlName="email" 
+            [ngClass]="{'error': isInvalid('email')}" placeholder="wee_jimmy@someemail.com">
+        </div>
+        <div *ngIf="registerForm.errors?.notSame && (registerForm.touched || registerForm.dirty)" class="alert alert-danger">
+            Passwords do not match.
+          </div>
+
+        <span *ngIf="isIncomplete()">You must complete all fields</span>
+        <br>
+        <div class="form-group text-center">
+        <button class="btn btn-success me-2"  *ngIf="!isIncomplete()" type="submit">Register!</button>   
+        </div>
+</form>

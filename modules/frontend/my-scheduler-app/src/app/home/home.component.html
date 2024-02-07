@@ -1,0 +1,63 @@
+<div class="container"  style="margin-top:70px;">
+
+    <div *ngIf="!registerSwitch && !loginSwitch && !staffRegisterSwitch && !staffLoginSwitch" style="text-align: center;">
+    <h1>Directory</h1>
+    <div *ngIf="!(staffAccountService.currentUser$ | async) && !(accountService.currentUser$| async) " >
+    <h2>Please Register or Login</h2>
+    
+    <hr>
+    </div>
+    <button (click)="registerBool()" class="btn btn-success  me-2">Register</button>
+    <button (click)="loginBool()" class="btn btn-success  me-2">Login</button>
+    <button (click)="staffRegisterBool()" class="btn btn-success  me-2">Staff Register</button>
+    <button (click)="staffLoginBool()" class="btn btn-success  me-2">Staff Login</button>
+    </div>
+    
+    <div *ngIf="registerSwitch" class="container">
+      <div class="row justify-content-center">
+          <div class="col-4">
+            <register></register>
+            <hr>
+            <div class="form-group text-center">
+            <button (click)="registerBool()" class="btn btn-success  me-2">Back</button>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div *ngIf="loginSwitch" class="container">
+        <div class="row justify-content-center">
+            <div class="col-4">
+               <login></login>
+                <hr>
+                <div class="form-group text-center">
+                <button (click)="loginBool()" class="btn btn-success  me-2">Back</button>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div *ngIf="staffRegisterSwitch" class="container">
+        <div class="row justify-content-center">
+            <div class="col-4">
+               <staffregister></staffregister>
+                <hr>
+                <div class="form-group text-center">
+                <button (click)="staffRegisterBool()" class="btn btn-success  me-2">Back</button>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div *ngIf="staffLoginSwitch" class="container">
+        <div class="row justify-content-center">
+            <div class="col-4">
+               <stafflogin></stafflogin>
+                <hr>
+                <div class="form-group text-center">
+                <button (click)="staffLoginBool()" class="btn btn-success  me-2">Back</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    <div>
+    
+    
+    </div>
