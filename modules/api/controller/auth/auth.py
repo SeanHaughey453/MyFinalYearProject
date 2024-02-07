@@ -132,4 +132,17 @@ class StaffAmmendClientsCredits(Resource):
         updated_user = self.user_logic.giveCredit(credit_assignment)
         return {'message': f'you have given a credit to {updated_user}'}, 200
 
+class StaffAmmendClientsPlans(Resource):
+
+    def __init__(self):
+        self.resource = "staff_users"
+        self.user = User('', '') 
+        self.user_logic = StaffUserLogic(self.resource, self.user)
+    
+    @jwt_required()
+    @role_required('staff')
+    def patch(self, clientId, planId):# need to test
+        plan_assignment = {'clientId': clientId, 'planId': planId}
+        updated_user = self.user_logic.givePlan(plan_assignment)
+        return {'message': f'you have given a credit to {updated_user}'}, 200
 

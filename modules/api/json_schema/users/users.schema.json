@@ -18,7 +18,8 @@
         },
         "goals":{"type":"array" },
         "bookingCredits":{"type":"array"  },
-        "usedBookingCredits":{"type":"array" }
+        "usedBookingCredits":{"type":"array" },
+        "assignedPlans":{"type":"array" }
     },
     "type": "object",
     "properties": {
@@ -45,6 +46,9 @@
         },
         "usedBookingCredits":{
             "$ref": "#/$defs/usedBookingCredits"
+        },
+        "assignedPlans":{
+            "$ref": "#/$defs/assignedPlans"
         }
     },
     "required": [

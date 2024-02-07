@@ -6,6 +6,7 @@ from api.error_handling import GeneralException, InvalidCredentials, ResourceCon
 from api.models.users import User
 from api.user_rsrc_manager import StaffUserRsrcManager, UserRsrcManager
 from api.resource_managers.booking_credit_resource_manager import BookingCreditRsrcManager
+from api.resource_managers.plan_rsrc_manager import PlanRsrcManager
 
 
 class UserLogic(BaseLogic):
@@ -19,9 +20,8 @@ class UserLogic(BaseLogic):
             self.rsrc_manager = UserRsrcManager(self.resource)
 
         def create(self, data):
-            data['bookingCredits'] = []
-            data['usedBookingCredits'] = []
             self._validate_json(data) 
+            self._init_default_values(data)#need to test
             if not data.get("role"):
                 data["role"] = self.role
             response = self.rsrc_manager.create_rsrc(data)
@@ -57,12 +57,21 @@ class UserLogic(BaseLogic):
                 return True
             return False
         
+        def _init_default_values(self, data: Dict[str, Any]):
+            optionalKeys = ['bookingCredits', 'usedBookingCredits', 'assignedPlans']
+            if data is not None:
+                for key in optionalKeys:
+                    if not data.get(key):
+                        data[key] = []
+            return data
+        
 class StaffUserLogic(UserLogic):
     def __init__(self, resource: str, user: User):
         super().__init__(resource, user)
         self.rsrc_manager = StaffUserRsrcManager(self.resource)
         self.client_rsrc_manager = UserRsrcManager('users')
         self.booking_rsrc_manager = BookingCreditRsrcManager('booking_credit')
+        self.plan_rsrc_manager = PlanRsrcManager('plan')
         
     def _init_default_values(self, data: Dict[str, Any]):
         optionalKeys = ['coworkers', 'clients', 'ownedSchedules']
@@ -125,23 +134,15 @@ class StaffUserLogic(UserLogic):
          
     def giveCredit(self, credit_assingment_json):
         current_user_jwt = get_jwt_identity()
-        if current_user_jwt == None or credit_assingment_json == None:
-            raise ResourceNotFoundException('current user or the credit assignment was not found')
+        self._validate_give_credit(current_user_jwt, credit_assingment_json)
         current_user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id'])
 
-        if 'clientId' not in credit_assingment_json:
-            raise ResourceNotFoundException('a client ID was not found in the credit assignment')
-        if 'bookingId' not in credit_assingment_json:
-            raise ResourceNotFoundException('a client ID was not found in the credit assignment')
-        
         if credit_assingment_json['clientId'] in current_user['clients']:
             change_set, booking_credit_change_set = {}, {}
             booking_credit = self.booking_rsrc_manager.get_rsrc(credit_assingment_json['bookingId'])#if the credit doesnt exisit it will be handled in get_rsrc()
             if booking_credit['assigned'] == True:
                 raise ResourceConflictException('This Booking credit resource has already been assigned to somone')
             client = self.client_rsrc_manager.get_rsrc(credit_assingment_json['clientId'])
-            print('client', client)
-            print('booking_credit',booking_credit)
             client['bookingCredits'].append(booking_credit['id'])
             change_set['bookingCredits'] = client['bookingCredits']
             response = self.client_rsrc_manager.update_rsrc(change_set, credit_assingment_json['clientId'])
@@ -150,6 +151,42 @@ class StaffUserLogic(UserLogic):
             return response
         else:
             raise GeneralException('This client is not parts of your Client list!')
+    
+    def givePlan(self, plan_assignment_json):
+        current_user_jwt = get_jwt_identity()
+        self._validate_give_plan(current_user_jwt, plan_assignment_json)
+        current_user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id'])
+
+        if plan_assignment_json['clientId'] in current_user['clients']:
+            change_set = {}
+            plan = self.plan_rsrc_manager.get_rsrc(plan_assignment_json['planId'])#if the credit doesnt exisit it will be handled in get_rsrc()
+            client = self.client_rsrc_manager.get_rsrc(plan_assignment_json['clientId'])
+            client['assignedPlans'].append(plan['id'])
+            change_set['assignedPlans'] = client['assignedPlans']
+            response = self.client_rsrc_manager.update_rsrc(change_set, plan_assignment_json['clientId'])
+            return response
+        else:
+            raise GeneralException('This client is not parts of your Client list!')
+        
+
+    def _validate_give_credit(self, current_user_jwt, credit_assingment_json):
+        if current_user_jwt == None or credit_assingment_json == None:
+            raise ResourceNotFoundException('current user or the credit assignment was not found')
+        if 'clientId' not in credit_assingment_json:
+            raise ResourceNotFoundException('a client ID was not found in the credit assignment')
+        if 'bookingId' not in credit_assingment_json:
+            raise ResourceNotFoundException('a booking ID was not found in the credit assignment')
+        
+    def _validate_give_plan(self, current_user_jwt, plan_assignment_json):
+        if current_user_jwt == None or plan_assignment_json == None:
+            raise ResourceNotFoundException('current user or the credit assignment was not found')
+        if 'clientId' not in plan_assignment_json:
+            raise ResourceNotFoundException('a client ID was not found in the plan assignment')
+        if 'planId' not in plan_assignment_json:
+            raise ResourceNotFoundException('a plan ID was not found in the plan assignment')
+
+        
+
 
 
 
