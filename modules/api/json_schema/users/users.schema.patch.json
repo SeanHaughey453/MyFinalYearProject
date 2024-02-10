@@ -21,6 +21,11 @@
         },
         "bookingcredits":{
             "type":"list"
+        },
+        "usedBookingCredits":{"type":"array" },
+        "assignedPlans":{"type":"array" },
+        "trainer" : {
+            "type": "string"
         }
     },
     "type": "object",
@@ -45,6 +50,15 @@
         },
         "bookingcredits":{
             "$ref": "#/$defs/bookingcredits"
+        },
+        "usedBookingCredits":{
+            "$ref": "#/$defs/usedBookingCredits"
+        },
+        "assignedPlans":{
+            "$ref": "#/$defs/assignedPlans"
+        },
+        "trainer":{
+            "$ref": "#/$defs/trainer"
         }
     },
     "required": [
