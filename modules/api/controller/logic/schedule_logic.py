@@ -5,7 +5,7 @@ from flask_jwt_extended import get_jwt_identity
 from api.controller.logic.base_logic import BaseLogic
 from api.error_handling import ResourceConflictException, ResourceNotFoundException, UnauthorizedException
 from api.schedule_resource_manager import ScheduleResourceManager
-from api.user_rsrc_manager import StaffUserRsrcManager
+from api.user_rsrc_manager import StaffUserRsrcManager, UserRsrcManager
 
 
 class ScheduleLogic(BaseLogic):
@@ -14,6 +14,7 @@ class ScheduleLogic(BaseLogic):
         super().__init__(resource)
         self.resource_manager = ScheduleResourceManager(resource)
         self.staff_rsrc_mngr = StaffUserRsrcManager('staff_users')
+        self.user_rsrc_mngr = UserRsrcManager('users')
 
     def get(self, id: str = None):
         current_user = get_jwt_identity()
@@ -28,6 +29,19 @@ class ScheduleLogic(BaseLogic):
             if current_user['user_id'] not in owner['clients']:
                 raise UnauthorizedException('This user is not a client of the schedule owner')
             return self._hide_other_client_bookings(resource, current_user)
+    
+    def get_dashboard_data(self):
+        current_user_jwt = get_jwt_identity()
+        current_user = self.staff_rsrc_mngr.get_rsrc(current_user_jwt['user_id']) if current_user_jwt['role']== 'staff' else self.user_rsrc_mngr.get_rsrc(current_user_jwt['user_id'])
+
+        if current_user_jwt['role'] == 'staff':
+            resources = self.resource_manager.get_by_user(current_user['id'])
+        else:
+            if current_user['trainer'] != '':
+                resources = self.resource_manager.get_active_schedule(current_user['trainer'])
+        return resources
+
+
 
     def post(self, data: Any, **kwargs):
         self._validate_json(data, **kwargs)
@@ -102,6 +116,7 @@ class ScheduleLogic(BaseLogic):
         owner['ownedSchedules'].append(schedule_id)
         changeset_owner['ownedSchedules'] = owner['ownedSchedules']
         updated_owner = self.staff_rsrc_mngr.update_rsrc(changeset_owner, user_id)
+
 
         
 

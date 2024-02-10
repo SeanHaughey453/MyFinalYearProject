@@ -91,9 +91,15 @@ class DatastoreManager:
         resource = self._data_store_schedules.get_item(id)
         return resource
 
-    def get_all_from_resource_schedule(self, id = None):
-        resource = self._data_store_schedules.get_all()
-        return resource
+    def get_active_schedules_by_user(self, id: str):
+        #resource = self._data_store_schedules.get_all()
+        #returns the list of all active schedules
+        query = f"""
+                FOR s IN {self._collection_name}
+                FILTER s.active == true && s.createdBy == "{id}"
+                RETURN s
+                """
+        return self._data_store_schedules.run_query(query) #resource
 
     def get_by_user(self, user_id: str) -> List[Dict[str, Any]]:
         """Fetches all documents in the collection owned by the given user_id."""

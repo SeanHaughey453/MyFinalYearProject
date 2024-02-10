@@ -58,7 +58,8 @@ class Schedules(Resource):
     def __init__(self):
         self.resource = "schedule"
         self.logic = ScheduleLogic(self.resource)
-
+    @jwt_required()
     def get(self):
-        response = self.logic.get()
+        response = self.logic.get_dashboard_data()
         return response, 200
+    

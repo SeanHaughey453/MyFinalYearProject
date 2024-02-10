@@ -26,9 +26,15 @@ class ScheduleResourceManager(ResourceManager):
         return response
     
     def get_by_username(self, username):
-        res = self._data_manager.get_by_username(username)
-        self._logger.info("Resource: {}".format(res))
-        return res
+        response = self._data_manager.get_by_username(username)
+        self._logger.info("Resource: {}".format(response))
+        return response
+    
+    def get_active_schedule(self, user_id: str):
+        response = self._data_manager.get_active_schedules_by_user(user_id)
+        self._logger.info("Resource: {}".format(response))
+        return response
+    
 
     
     def update_rsrc(self, json, id=None):

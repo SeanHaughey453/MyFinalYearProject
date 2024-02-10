@@ -24,6 +24,7 @@ class UserLogic(BaseLogic):
             self._init_default_values(data)#need to test
             if not data.get("role"):
                 data["role"] = self.role
+            data['trainer'] = ''
             response = self.rsrc_manager.create_rsrc(data)
             return response
 
@@ -107,16 +108,30 @@ class StaffUserLogic(UserLogic):
         
         a_or_r_from_current_user_str = f"current_user['{type_of_list}'].{action}(other_user['id'])"
         change_set = {type_of_list: None}
+        client_change_set = {
+            'trainer': ''
+        }
         self._is_current_user(username, current_user_jwt['user_id'])
         current_user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id'])#if these users dont exist the validation will be handled in get_rsrc()
         other_user = self.client_rsrc_manager.get_rsrc(other_user_id) if type_of_list == 'clients' \
             else self.rsrc_manager.get_rsrc(other_user_id)
+        
+        if action == 'append' and type_of_list == 'clients':
+            if other_user['trainer'] != '':
+                raise GeneralException('This client already has a trainer. You must remove them first')
+            client_change_set['trainer'] = current_user['id']   
+
+        if action == 'remove' and type_of_list == 'clients':
+            client_change_set['trainer'] = ''
+
         #if these users dont exist the validation will be handled in get_rsrc()
         self._check_if_user_in_list(action, other_user['id'], current_user[type_of_list])
         self._check_if_user_canbe_coworker(other_user['role'], type_of_list)
         
         eval(a_or_r_from_current_user_str)
         change_set[type_of_list] = current_user[type_of_list]
+
+        client_response = self.client_rsrc_manager.update_rsrc(client_change_set,other_user['id'] )
         response = self.rsrc_manager.update_rsrc(change_set, current_user['id'])
         return response
     
