@@ -3,6 +3,7 @@ from api.error_handling import InvalidCredentials, ResourceConflictException, Re
 from api.models.users import User
 from api.rsrc_manager import ResourceManager
 from flask import current_app as app
+from typing import List
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -19,8 +20,18 @@ class UserRsrcManager(ResourceManager):
         json['password'] = hashed_pswrd
         return super().create_rsrc(json)
 
-    def get_rsrc(self, id: str):
-        response = self._data_manager.get_from_resource(id)
+    def get_rsrc(self, id: str = None):
+        #if an id was specified get item, otherwise it's a get all request
+        if id is not None:
+            response = self._data_manager.get_from_resource(id)
+        else:
+            response = self._data_manager.get_all_from_resource()
+            
+        self._logger.info("Resource: {}".format(response))
+        return response
+    
+    def get_clients_list(self, client_ids: List[str]):
+        response = self._data_manager.get_user_list(client_ids)
         return response
     
     def update_rsrc(self, json, id):
@@ -58,3 +69,5 @@ class StaffUserRsrcManager(UserRsrcManager):
     def __init__(self, resource:str):
         super().__init__(resource)
         self.data_store = app.data_store_staff
+    
+

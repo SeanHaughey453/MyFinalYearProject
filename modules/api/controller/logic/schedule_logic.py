@@ -31,6 +31,7 @@ class ScheduleLogic(BaseLogic):
             return self._hide_other_client_bookings(resource, current_user)
     
     def get_dashboard_data(self):
+        resources = []
         current_user_jwt = get_jwt_identity()
         current_user = self.staff_rsrc_mngr.get_rsrc(current_user_jwt['user_id']) if current_user_jwt['role']== 'staff' else self.user_rsrc_mngr.get_rsrc(current_user_jwt['user_id'])
 
@@ -38,7 +39,9 @@ class ScheduleLogic(BaseLogic):
             resources = self.resource_manager.get_by_user(current_user['id'])
         else:
             if current_user['trainer'] != '':
-                resources = self.resource_manager.get_active_schedule(current_user['trainer'])
+                unhidden_resources = self.resource_manager.get_active_schedule(current_user['trainer'])
+                resource = self._hide_other_client_bookings(unhidden_resources[0], current_user)
+                resources.append(resource)
         return resources
 
 

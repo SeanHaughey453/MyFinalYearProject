@@ -1,6 +1,6 @@
 export interface User {
     username: string;
-    token: string;
+    access_token: string;
     photoUrl: string;
     roles: string[];
 }

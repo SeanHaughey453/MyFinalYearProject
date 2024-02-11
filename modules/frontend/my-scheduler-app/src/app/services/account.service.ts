@@ -8,21 +8,18 @@ import { User } from '.././user/user';
   providedIn: 'root'
 })
 export class AccountService {
-  baseUrl = 'http://localhost:5000/api/v1.0/';
+  baseUrl = 'http://localhost:5000/v1/';
   private currentUserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
   constructor(private http: HttpClient) { }
 
-  login(model: any) {
-    const base64creds = btoa(`${model.username}:${model.password}`);//back ticks to make sure it gets evaluated correctly as normal ' will see it as a
+  login(loginUser: any) {
+    const loginJson = JSON.stringify(loginUser);//convert to json
+    console.log(loginJson)
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${base64creds}`
-      });
-
-    return this.http.get<User>(this.baseUrl + 'login', {headers}).pipe(
+    return this.http.post<User>(this.baseUrl + 'login', loginJson,{headers}).pipe(
       map((response: User) => {
         const user = response;
         if (user) {
@@ -33,13 +30,21 @@ export class AccountService {
   }
 
   register(newUser: any) {
+    const newUserJson = JSON.stringify(newUser);//convert to json
+    console.log(newUserJson)
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
     let postData = new FormData();
-        postData.append("name", newUser.name);
+        postData.append("firstName", newUser.firstName);
+        postData.append("surtname", newUser.surname);
         postData.append("username", newUser.username);
         postData.append("password", newUser.password);
         postData.append("email", newUser.email);
+        newUser.goals.forEach((goal: string | Blob, index: any) => {
+          postData.append(`goals[${index}]`, goal);
+        });
 
-        return this.http.post(this.baseUrl +'signup', postData);
+        return this.http.post(this.baseUrl +'signup', newUserJson, {headers});
 
   }
 
@@ -50,7 +55,7 @@ export class AccountService {
 
   logout() {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-    const token = user.token;
+    const token = user.access_token;
   
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

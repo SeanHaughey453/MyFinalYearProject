@@ -1,0 +1,24 @@
+<div class="container" style="margin-top:70px;">
+    <h1>Schedule Dashboard</h1>
+    <p>Here is the dashboard where you will find your Personal trainer's Schedule</p>
+    <div class="row">
+        <div class="col-sm-12 mx-auto">
+            <table class="table table-bordered" *ngIf="schedule_list.length >  0">
+                <thead>
+                    <tr>
+                        <th *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']">{{ day }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let schedule of schedule_list">
+                        <tr *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']">
+                            <td *ngFor="let time of getKeys(schedule[day])">
+                              {{ schedule[day][time] }}
+                            </td>
+                          </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>  
+    </div>
+</div>

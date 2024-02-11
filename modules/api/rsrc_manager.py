@@ -24,6 +24,7 @@ class ResourceManager:
         ''' Implemented differently per resource, see child '''
         pass
 
+
     def update_rsrc(self, json, id = None):
         '''Used when patching a resource that already has an id'''
         response = self._data_manager.patch_resource(json, id)

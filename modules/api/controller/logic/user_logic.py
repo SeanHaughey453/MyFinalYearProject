@@ -30,7 +30,13 @@ class UserLogic(BaseLogic):
 
         def get(self):
             response = self.rsrc_manager.verify_login(self.username, self.password)
-            return response        
+            return response  
+
+        def get_all_users(self):
+            all_users = self.rsrc_manager.get_rsrc()
+            for user in all_users:
+                user.pop('password', None)
+            return all_users      
         
         def jwt_get_user_details(self, user_id: str, username: str):
             #When already jwt verfiied
@@ -199,8 +205,17 @@ class StaffUserLogic(UserLogic):
             raise ResourceNotFoundException('a client ID was not found in the plan assignment')
         if 'planId' not in plan_assignment_json:
             raise ResourceNotFoundException('a plan ID was not found in the plan assignment')
+    
+    def get_all_clients(self):
+        current_user_jwt = get_jwt_identity()
+        print('current_user_jwt', current_user_jwt)
+        current_user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id'])
+        print('current_user', current_user)
+        client_list = self.client_rsrc_manager.get_clients_list(current_user['clients'])
+ 
+        return client_list
 
-        
+
 
 
 

@@ -8,22 +8,18 @@ import { User } from '.././user/user';
   providedIn: 'root'
 })
 export class StaffAccountService {
-  baseUrl = 'http://localhost:5000/api/v1.0/';
+  baseUrl = 'http://localhost:5000/v1/staff/';
   private currentUserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
   constructor(private http: HttpClient) { }
 
-  login(model: any) {
-    //console.log(model)
-    const base64creds = btoa(`${model.username}:${model.password}`);//back ticks(`) to make sure it gets evaluated correctly
+  login(loginUser: any) {
+    const loginJson = JSON.stringify(loginUser);//convert to json
+    console.log(loginJson)
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-    const headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${base64creds}`
-      });
-
-    return this.http.get<User>(this.baseUrl + 'staff/login', {headers}).pipe(
+    return this.http.post<User>(this.baseUrl + 'login', loginJson,{headers}).pipe(
       map((response: User) => {
         const user = response;
         if (user) {
@@ -33,15 +29,23 @@ export class StaffAccountService {
     )
   }
 
-  register(model: any) {
-    return this.http.post<User>(this.baseUrl + 'staff/account', model).pipe(
-      map(response => {
-        const user = response;
-        if (user) {
-          this.setCurrentUser(user);
-        }
-      })
-    )
+  register(newUser: any) {
+    const newUserJson = JSON.stringify(newUser);//convert to json
+    console.log(newUserJson)
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+
+    let postData = new FormData();
+        postData.append("firstName", newUser.firstName);
+        postData.append("surtname", newUser.surname);
+        postData.append("username", newUser.username);
+        postData.append("password", newUser.password);
+        postData.append("email", newUser.email);
+        newUser.skills.forEach((skill: string | Blob, index: any) => {
+          postData.append(`skills[${index}]`, skill);
+        });
+
+        return this.http.post(this.baseUrl +'signup', newUserJson, {headers});
+
   }
 
   setCurrentUser(user: User) {
@@ -51,7 +55,7 @@ export class StaffAccountService {
 
   logout() {
     const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-    const token = user.token;
+    const token = user.access_token;
   
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -61,16 +65,19 @@ export class StaffAccountService {
     sessionStorage.removeItem('user');
     this.currentUserSource.next(null);
 
-    this.http.get(this.baseUrl + 'logout', { headers }).subscribe(
-      () => {
+    this.http.get(this.baseUrl + 'logout', { headers }).subscribe({
+      next: () => {
         sessionStorage.removeItem('user');
         this.currentUserSource.next(null);
       },
-      (error) => {
+      error: (error) => {
         console.error('Logout error:', error);
-      }
+      }}
     );
   }
+
+  //need to make an account return
+
 
   getDecodedToken(token: string) {
     return JSON.parse(atob(token.split('.')[1]));

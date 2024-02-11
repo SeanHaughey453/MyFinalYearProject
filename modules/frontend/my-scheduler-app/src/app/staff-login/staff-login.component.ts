@@ -1,6 +1,9 @@
 import { Component,OnInit  } from "@angular/core";
-import { AccountService } from "../services/account.service";
 import { FormBuilder, FormGroup ,Validators } from "@angular/forms";
+import { Router } from '@angular/router';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { MatDialog } from "@angular/material/dialog";
+import { StaffAccountService } from "../services/staffAccount.service";
 
 @Component({
   selector: 'stafflogin',
@@ -8,14 +11,18 @@ import { FormBuilder, FormGroup ,Validators } from "@angular/forms";
   styleUrls: ['./staff-login.component.css']
 })
 export class StaffLoginComponent {
-  registerForm:any;
+  loginForm:any;
 
 
-  constructor(public accountService: AccountService,  private formBuilder: FormBuilder) { }
+  constructor(public accountService: StaffAccountService,  
+              private formBuilder: FormBuilder,
+              private router: Router,
+              public dialog: MatDialog
+              ) { }
 
   ngOnInit() {
     
-    this.registerForm = this.formBuilder.group({
+    this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
       });
@@ -23,12 +30,12 @@ export class StaffLoginComponent {
   }
 
   isInvalid(control: any) {
-    return this.registerForm.controls[control].invalid && 
-    this.registerForm.controls[control].touched;
+    return this.loginForm.controls[control].invalid && 
+    this.loginForm.controls[control].touched;
     }
   isUntouched() {
-    return this.registerForm.controls.username.pristine ||
-    this.registerForm.controls.password.pristine;
+    return this.loginForm.controls.username.pristine ||
+    this.loginForm.controls.password.pristine;
     }
   isIncomplete() {
     return this.isInvalid('username') ||
@@ -37,9 +44,24 @@ export class StaffLoginComponent {
     }
 
   onSubmit() {
-    this.accountService.login(this.registerForm.value)
-    .subscribe((response : any) => {
-        this.registerForm.reset();    
+    this.accountService.login(this.loginForm.value)
+    .subscribe({
+      next: _ => {
+        this.loginForm.reset(); 
+        this.router.navigateByUrl('/schedule-page');  
+      },
+      error: err => {
+        // Handle login error
+        console.error('Registration error:', err);
+        // Set a flag or property to indicate a login error (for displaying the error message)
+        this.openErrorModal('Invalid credintials . Please try again.');
+      }
+});
+  }
+
+  openErrorModal(errorMessage: string): void {
+    this.dialog.open(ErrorModalComponent, {
+      data: errorMessage,
     });
   }
 

@@ -4,70 +4,32 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-    <a class="navbar-brand" href="#">Hidden brand</a>
+    <a class="navbar-brand" href="#">Peak Fittness App</a>
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link" href="#">Schedule page</a>
       </li>
     </ul>
+    <div class="dropdown" id="navbarNavDropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
+      <a class="dropdown-toggle text-light text-decoration-none ms-2" dropdownToggle>Welcome {{user.username}}</a>
+      <div class="dropdown-menu" *dropdownMenu>
+        <a class="dropdown-item" (click)="logout()">Logout</a>
+        <a class="dropdown-item" routerLink='./my-reviews'>My Reviews</a>
+      </div>
+    </div>
+    <div class="dropdown" *ngIf="(staffAccountService.currentUser$ | async) as user" dropdown>
+      <a class="dropdown-toggle text-light text-decoration-none ms-2" dropdownToggle>Welcome Staff: {{user.username}}</a>
+      <div class="dropdown-menu" *dropdownMenu>
+        <a class="dropdown-item" (click)="staffLogout()">Logout</a>
+        <a class="dropdown-item" routerLink='./my-reviews'>My Reviews</a>
+      </div>
+      <div class="dropdown-menu" *dropdownMenu>
+        <a class="dropdown-item" (click)="logout()">Logout</a>
+      </div>
+    </div>
   </div>
+
 </nav>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Navbar</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-
-    </ul>
-  </div>
-</nav> -->

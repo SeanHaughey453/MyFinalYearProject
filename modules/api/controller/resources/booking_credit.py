@@ -35,7 +35,7 @@ class BookingCredit(Resource):
         return response, 204
     
     
-class Schedules(Resource):
+class BookingCredits(Resource):
     def __init__(self):
         self.resource = "booking_credit"
         self.logic = BookingCreditLogic(self.resource)

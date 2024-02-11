@@ -1,6 +1,10 @@
 import { Component,OnInit  } from "@angular/core";
 import { AccountService } from "../services/account.service";
-import { FormBuilder, FormGroup ,Validators } from "@angular/forms";
+import { FormArray, FormBuilder, FormGroup ,Validators } from "@angular/forms";
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
   selector: 'register',
@@ -11,16 +15,27 @@ export class RegisterComponent {
   registerForm:any;
 
 
-  constructor(public accountService: AccountService,  private formBuilder: FormBuilder) { }
+  constructor(public accountService: AccountService,  
+              private formBuilder: FormBuilder,
+              private location: Location,
+              public dialog: MatDialog) { }
 
   ngOnInit() {
     
+    const goals = new FormArray([
+      this.formBuilder.control(''),
+      this.formBuilder.control(''),
+      this.formBuilder.control('')
+    ]);
+
     this.registerForm = this.formBuilder.group({
-      name: ['', Validators.required],
+      firstName: ['', Validators.required],
+      surname: ['', Validators.required],
       username: ['', Validators.required],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required],
       email: ['', Validators.required], 
+      goals: goals
       }, { validator: this.checkPasswords });
 
   }
@@ -36,13 +51,15 @@ export class RegisterComponent {
     this.registerForm.controls[control].touched;
     }
   isUntouched() {
-    return this.registerForm.controls.name.pristine ||
+    return this.registerForm.controls.firstName.pristine ||
+    this.registerForm.controls.surname.pristine ||
     this.registerForm.controls.username.pristine ||
     this.registerForm.controls.password.pristine ||
     this.registerForm.controls.email.pristine;
     }
   isIncomplete() {
-    return this.isInvalid('name') || 
+    return this.isInvalid('firstName') ||
+    this.isInvalid('surname') || 
     this.isInvalid('username') ||
     this.isInvalid('password') ||
     this.isInvalid('email') ||
@@ -50,10 +67,29 @@ export class RegisterComponent {
     }
 
   onSubmit() {
+    const userData = {
+      ...this.registerForm.value,
+      confirmPassword: undefined
+    };
     //console.log('Form submitted!');
-    this.accountService.register(this.registerForm.value)
-    .subscribe((response : any) => {
-        this.registerForm.reset();    
+    this.accountService.register(userData)
+    .subscribe({
+              next: _ => {
+                this.registerForm.reset(); 
+                location.reload(); 
+              },
+              error: err => {
+                // Handle login error
+                console.error('Registration error:', err);
+                // Set a flag or property to indicate a login error (for displaying the error message)
+                this.openErrorModal('Account already exists. Please try again.');
+              }
+    });
+  }
+
+  openErrorModal(errorMessage: string): void {
+    this.dialog.open(ErrorModalComponent, {
+      data: errorMessage,
     });
   }
 

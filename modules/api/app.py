@@ -3,16 +3,16 @@ import os
 from flask import Flask
 from flask_jwt_extended import JWTManager
 from api.error_handling import ArangoException, DataModelException, GeneralException, InvalidCredentials, InvalidFormatException, ResourceConflictException, ResourceNotFoundException, UnauthorizedException
-
+from flask_cors import CORS
 from api.schedule_api import Scedule_API, Scedule_API_API_Errors
 from common.data_store_arango import DataStoreArangoDb
 from pyArango.theExceptions import DocumentNotFoundError
 
-from api.controller.auth.auth import Account, Login, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendClientsPlans, StaffAmmendCoWorker, StaffLogin, StaffSignup
+from api.controller.auth.auth import Account, Login, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendClientsPlans, StaffAmmendCoWorker, StaffLogin, StaffRetreiveAllClients, StaffSignup, Users
 from api.controller.resources.schedule import ModifyScheduleStaff, Schedules, Schedule
-from api.controller.resources.booking_credit import BookingCredit
+from api.controller.resources.booking_credit import BookingCredit, BookingCredits
 from api.controller.subresource.subresources import Booking
-from api.controller.resources.plan import Plan
+from api.controller.resources.plan import Plan, Plans
 
 ARANGO_URL = os.environ.get('ARANGO_URL', 'http://localhost:8529')
 ARANGO_DB_NAME = 'scheduleapp'
@@ -28,6 +28,7 @@ def create_app() -> Flask:
 
     errors = Scedule_API_API_Errors()
 
+    #currently broken onerliner 
     #[errors.add_error(error[0], error[1]) for error in POSSIBLE_ERRORS]
 
     errors.add_error(GeneralException, 400)
@@ -41,6 +42,7 @@ def create_app() -> Flask:
     errors.add_error(UnauthorizedException, 401)
 
     app = Flask('PythonApi')
+    CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200", "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"], "supports_credentials": True}})
     app.config['SECRET_KEY'] = 'super-secret-key'
     app.config['JWT_SECRET_KEY'] = 'jwt-secret-key'
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
@@ -57,6 +59,14 @@ def create_app() -> Flask:
 
     api = Scedule_API(error_list=errors, app=app) 
 
+    @app.after_request
+    def add_header(response):
+        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:4200'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, DELETE'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        return response
+
 
     baseScheduleUrl = '/v1/schedule'
     specificScheduleUrl = baseScheduleUrl + '/<scheduleId>'
@@ -68,6 +78,7 @@ def create_app() -> Flask:
 
     basePlanUrl = '/v1/plan'
     specificPlanUrl = basePlanUrl+ '/<planId>'
+    plansUrl = '/v1/plans'
 
     #API
     #Client Auth
@@ -82,6 +93,9 @@ def create_app() -> Flask:
     api.add_resource(StaffAmmendClient, '/v1/staff/account/<username>/client/edit', '/v1/staff/account/<username>/client/delete')
     api.add_resource(StaffAmmendClientsCredits, '/v1/credits/add/<clientId>/token/<bookingId>')
     api.add_resource(StaffAmmendClientsPlans, '/v1/plans/add/<clientId>/planid/<planId>')
+    api.add_resource(StaffRetreiveAllClients, '/v1/get/clients')
+    api.add_resource(Users, '/v1/get/users')
+
     #Schedules
     api.add_resource(Schedules, schedulesUrl)
     api.add_resource(Schedule, baseScheduleUrl, specificScheduleUrl)
@@ -90,8 +104,10 @@ def create_app() -> Flask:
     api.add_resource(Booking, specificScheduleUrl+ '/<day>/<hour>')
     #booking credits
     api.add_resource(BookingCredit, baseCreditUrl,specificCreditURL)
+    api.add_resource(BookingCredits, creditsUrl)
     #plans
     api.add_resource(Plan, basePlanUrl, specificPlanUrl)
+    api.add_resource(Plans, plansUrl)
 
 
     return app

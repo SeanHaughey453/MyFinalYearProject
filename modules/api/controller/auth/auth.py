@@ -145,4 +145,29 @@ class StaffAmmendClientsPlans(Resource):
         plan_assignment = {'clientId': clientId, 'planId': planId}
         updated_user = self.user_logic.givePlan(plan_assignment)
         return {'message': f'you have given a credit to {updated_user}'}, 200
+    
+class StaffRetreiveAllClients(Resource):
+    
+    def __init__(self):
+        self.resource = "staff_users"
+        self.user = User('', '') 
+        self.user_logic = StaffUserLogic(self.resource, self.user)
 
+    @jwt_required()
+    @role_required('staff')
+    def get(self):
+        response = self.user_logic.get_all_clients()
+        return response
+
+class Users(Resource):
+
+    def __init__(self):
+        self.resource = "users"
+        self.user = User('', '') 
+        self.user_logic = UserLogic(self.resource, self.user)
+
+    @jwt_required()
+    @role_required('staff')
+    def get(self):
+        response = self.user_logic.get_all_users()
+        return response
