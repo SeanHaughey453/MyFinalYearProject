@@ -48,7 +48,7 @@ export class StaffLoginComponent {
     .subscribe({
       next: _ => {
         this.loginForm.reset(); 
-        this.router.navigateByUrl('/schedule-page');  
+        this.router.navigateByUrl('/schedulepage');  
       },
       error: err => {
         // Handle login error

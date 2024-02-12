@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AccountService } from '../services/account.service';
 import { StaffAccountService } from '../services/staffAccount.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
@@ -8,22 +7,20 @@ import { ErrorModalComponent } from '../error-modal/error-modal.component';
 
 
 @Component({
- selector: 'home',
- templateUrl: './home.component.html',
- styleUrls: ['./home.component.css']
+ selector: 'myplanning',
+ templateUrl: './my-planning.component.html',
+ styleUrls: ['./my-planning.component.css']
 })
 
-export class HomeComponent {
+export class MyPlanningComponent {
     model: any = {}
     loginError: boolean = false;
-    registerSwitch: boolean = false;
-    loginSwitch: boolean = false;
-    staffRegisterSwitch: boolean = false;
-    staffLoginSwitch: boolean = false;
+    planSwitch: boolean = false;
+    creditSwitch: boolean = false;
+    scheduleSwitch: boolean = false;
     constructor(
                 public router: Router, 
                 public staffAccountService: StaffAccountService,
-                public accountService: AccountService, 
                 public dialog: MatDialog
                 ) {}
 
@@ -48,38 +45,29 @@ export class HomeComponent {
         });
       }
 
-      registerBool(){
-        this.registerSwitch = !this.registerSwitch
+      planBool(){
+        this.planSwitch = !this.planSwitch
       }
 
-      cancelRegisterMode(event: boolean) {
-        this.registerSwitch = event;
+      cancelPlanMode(event: boolean) {
+        this.planSwitch = event;
       }
 
-      loginBool(){
-        this.loginSwitch = !this.loginSwitch
+      creditBool(){
+        this.creditSwitch = !this.creditSwitch
       }
 
-      cancelLoginMode(event: boolean) {
-        this.loginSwitch = event;
+      cancelCreditMode(event: boolean) {
+        this.creditSwitch = event;
       }
 
-      staffRegisterBool(){
-        this.staffRegisterSwitch = !this.staffRegisterSwitch
+      scheduleBool(){
+        this.scheduleSwitch = !this.scheduleSwitch
       }
 
-      cancelStaffRegisterMode(event: boolean) {
-        this.staffRegisterSwitch = event;
+      cancelScheduleMode(event: boolean) {
+        this.scheduleSwitch = event;
       }
-
-      staffLoginBool(){
-        this.staffLoginSwitch = !this.staffLoginSwitch
-      }
-
-      cancelStaffLoginMode(event: boolean) {
-        this.staffLoginSwitch = event;
-      }
-
 
     
  }

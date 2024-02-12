@@ -14,6 +14,7 @@ export class ScheduleComponent {
     schedule_list: any = [];   
     term:any;
     toggleNext = true;
+    processedSchedule: any[] = [];
 
     private schedulesSubscription: Subscription | undefined;
     
@@ -21,7 +22,6 @@ export class ScheduleComponent {
 
     ngOnInit() {           
         this.getMySchedules();
-
     }
     ngOnDestroy() {
         // This func prevents memeory leaks in the code
@@ -40,12 +40,28 @@ export class ScheduleComponent {
           .subscribe({
             next: (data: any) => {
               this.schedule_list = data;
+              console.log(this.schedule_list)
+              this.processScheduleData();
+
             },
             error: (error: any) => {
               console.error('Error:', error);
               this.toggleNext = false
             }});
       }
+
+      processScheduleData() {
+        // Assuming schedule_list is an array with one object that contains the schedule
+        const schedule = this.schedule_list[0];
+        const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+        this.processedSchedule = daysOfWeek.map(day => {
+            return {
+                day: day,
+                timeslots: schedule[day]
+            };
+        });
+    }
 
       getKeys(object: any): string[] {
         return Object.keys(object);

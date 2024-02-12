@@ -22,6 +22,12 @@ import { ScheduleService } from './services/schedule.service';
 import { AccountService } from './services/account.service';
 import { StaffAccountService } from './services/staffAccount.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MyPlanningComponent } from './my-planning/my-planning.component';
+import { PlansService } from './services/plan.service';
+import { MyPlansComponent } from './my-plans/my-plans.component';
+import { CreditsService } from './services/credit.service';
+import { MyCreditsComponent } from './my-credits/my-credits.component';
+import { MyAlterScheduleComponent } from './my-alter-schedule/my-alter-schedule.component';
 
 
 // var routes: any = [
@@ -42,7 +48,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     LoginComponent,
     StaffRegisterComponent,
     StaffLoginComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    MyPlanningComponent,
+    MyPlansComponent,
+    MyCreditsComponent,
+    MyAlterScheduleComponent
   ],
   imports: [
     BrowserModule,
@@ -56,7 +66,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule
     
   ],
-  providers: [ScheduleService, AccountService, StaffAccountService],
+  providers: [ScheduleService, AccountService, StaffAccountService, PlansService, CreditsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

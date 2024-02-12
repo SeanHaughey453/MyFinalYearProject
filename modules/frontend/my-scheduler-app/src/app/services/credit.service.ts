@@ -1,17 +1,15 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AccountService } from './account.service';
-import { switchMap, take, throwError } from 'rxjs';
 import { StaffAccountService } from './staffAccount.service';
 
 @Injectable()
-export class ScheduleService {
+export class CreditsService {
 
     schedule_list: any;
-    constructor(private http: HttpClient ,public accountService: AccountService,   public staffAccountService: StaffAccountService) {}
+    constructor(private http: HttpClient ,   public staffAccountService: StaffAccountService) {}
 
 
-    getSchedules() {
+    getCredits() {
         const user = JSON.parse(sessionStorage.getItem('user') || '{}');
         const token = user.access_token;
 
@@ -19,11 +17,8 @@ export class ScheduleService {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
           });
-        return this.http.get('http://127.0.0.1:5000/v1/schedules', {headers});
+        return this.http.get('http://127.0.0.1:5000/v1/credits', {headers});
     }
 
-    getSchedule(id : any) {
-        return this.http.get('http://localhost:5000/v1/schedule/' + id);     
-    }
 }
 

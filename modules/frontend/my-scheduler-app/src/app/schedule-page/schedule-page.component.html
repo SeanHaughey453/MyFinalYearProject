@@ -3,22 +3,23 @@
     <p>Here is the dashboard where you will find your Personal trainer's Schedule</p>
     <div class="row">
         <div class="col-sm-12 mx-auto">
-            <table class="table table-bordered" *ngIf="schedule_list.length >  0">
-                <thead>
-                    <tr>
-                        <th *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']">{{ day }}</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngFor="let schedule of schedule_list">
-                        <tr *ngFor="let day of ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']">
-                            <td *ngFor="let time of getKeys(schedule[day])">
-                              {{ schedule[day][time] }}
-                            </td>
-                          </tr>
-                    </ng-container>
-                </tbody>
-            </table>
-        </div>  
+            <div *ngFor="let schedule of processedSchedule">
+                <h2>{{ schedule.day }}</h2>
+                <div *ngFor="let timeSlot of schedule.timeslots | keyvalue">
+                    <h3>{{ timeSlot.key }}</h3>
+                    <p>{{ timeSlot.value | json }}</p>
+                </div>
+            </div>
+        </div>   
     </div>
-</div>
+    <!-- <div class="schedule-grid">
+        <div class="schedule-header">
+            <div *ngFor="let day of processedSchedule">{{ day.day }}</div>
+        </div>
+        <div class="schedule-row" *ngFor="let timeSlot of processedSchedule[0].timeslots">
+            <div class="schedule-cell" *ngFor="let schedule of processedSchedule">
+                {{ schedule.timeslots.find(slot => slot.time === timeSlot.time)?.data | json }}
+            </div>
+        </div>
+    </div>
+</div> -->

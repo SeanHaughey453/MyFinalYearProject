@@ -59,7 +59,7 @@ export class StaffAccountService {
   
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'x-access-token': token,
+      'Authorization': `Bearer ${token}`,
     });
 
     sessionStorage.removeItem('user');
