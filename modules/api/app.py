@@ -10,7 +10,7 @@ from pyArango.theExceptions import DocumentNotFoundError
 
 from api.controller.auth.auth import Account, Login, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendClientsPlans, StaffAmmendCoWorker, StaffLogin, StaffRetreiveAllClients, StaffSignup, Users
 from api.controller.resources.schedule import ModifyScheduleStaff, Schedules, Schedule
-from api.controller.resources.booking_credit import BookingCredit, BookingCredits
+from api.controller.resources.booking_credit import ActiveBookingCredits, BookingCredit, BookingCredits
 from api.controller.subresource.subresources import Booking
 from api.controller.resources.plan import Plan, Plans
 
@@ -59,14 +59,6 @@ def create_app() -> Flask:
 
     api = Scedule_API(error_list=errors, app=app) 
 
-    @app.after_request
-    def add_header(response):
-        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:4200'
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, DELETE'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        return response
-
 
     baseScheduleUrl = '/v1/schedule'
     specificScheduleUrl = baseScheduleUrl + '/<scheduleId>'
@@ -105,6 +97,7 @@ def create_app() -> Flask:
     #booking credits
     api.add_resource(BookingCredit, baseCreditUrl,specificCreditURL)
     api.add_resource(BookingCredits, creditsUrl)
+    api.add_resource(ActiveBookingCredits, creditsUrl+'/active')
     #plans
     api.add_resource(Plan, basePlanUrl, specificPlanUrl)
     api.add_resource(Plans, plansUrl)

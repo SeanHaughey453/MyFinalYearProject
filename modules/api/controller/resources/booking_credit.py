@@ -44,3 +44,11 @@ class BookingCredits(Resource):
     def get(self):
         response = self.logic.get()
         return response, 200
+    
+class ActiveBookingCredits(BookingCredits):
+
+    @jwt_required()
+    @role_required('staff')
+    def get(self):
+        response = self.logic.get_all_active()
+        return response, 200

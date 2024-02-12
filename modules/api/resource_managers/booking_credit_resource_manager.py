@@ -22,6 +22,12 @@ class BookingCreditRsrcManager(ResourceManager):
         self._logger.info("Resource: {}".format(response))
         return response
 
+    def get_active_rsrcs(self):
+        response = self._data_manager.get_all_active_booking_credit()
+        self._logger.info("Resource: {}".format(response))
+        return response
+
+
     def get_by_user(self, user_id: str):
         response = self._data_manager.get_by_user(user_id)
         self._logger.info("Resource: {}".format(response))

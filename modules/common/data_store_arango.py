@@ -90,11 +90,12 @@ class DataStoreArangoDb:
     except:
       return False
 
-  def run_query(self, query: str) -> List[Dict[str, Any]]:
+  def run_query(self, query: str, bindVars = None) -> List[Dict[str, Any]]:
     """Executes an AQL query and returns the results as a list of dictionaries."""
     results = []
     try:
-        aql_query = self._db.AQLQuery(query, rawResults=True)
+        print(bindVars)
+        aql_query = self._db.AQLQuery(query,rawResults=True, bindVars = bindVars)
         for doc in aql_query:
             results.append(remove_arango_tags(doc))
     except Exception as e:

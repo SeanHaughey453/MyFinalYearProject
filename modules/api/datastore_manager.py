@@ -105,12 +105,15 @@ class DatastoreManager:
     def get_user_list(self, ids: List[str] ):
         print('ids',ids)
         print('collection name', self._collection_name)
-        ids_str = ', '.join(f"'{id}'" for id in ids)
-        query = '''FOR u IN {self._collection_name}
-                   FILTER u.id IN [{ids_str}]
+        if not ids:
+            raise ValueError("The 'ids' parameter is empty.")
+        
+        #ids_str = ', '.join(f"'{id}'" for id in ids)
+        query = f'''FOR u IN users
+                   FILTER u.id IN @ids
                    RETURN {{"username": u.username, "email": u.email, "id": u.id, goals: u.goals}}
                 '''
-        return self._data_store_schedules.run_query(query)
+        return self._data_store_users.run_query(query, bindVars={"ids": ids})
 
 ###### SCHEDULE METHODS #####
     def get_from_resource_schedule(self, id: str):
@@ -175,6 +178,13 @@ class DatastoreManager:
         resource = self._data_store_booking_credit.get_all()
         return resource
     
+    def get_all_active_booking_credit(self):
+        query = f"""FOR b in {self._collection_name}
+                    FILTER b.active == true && b.assigned == false
+                    return b
+                """
+        return self._data_store_booking_credit.run_query(query)
+    
     def post_resource_booking_credit(self, data: Dict[str, Any], id: str = None, **kwargs):
         resource = self._data_store_booking_credit.overwrite(data["id"], data)
         return resource
@@ -197,7 +207,7 @@ class DatastoreManager:
         resource = self._data_store_plan.get_item(id)
         return resource
 
-    def get_all_from_resource_plan(self, id = None):
+    def get_all_from_resource_plan(self):
         resource = self._data_store_plan.get_all()
         return resource
     

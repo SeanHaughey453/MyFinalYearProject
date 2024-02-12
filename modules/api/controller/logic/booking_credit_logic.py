@@ -21,6 +21,12 @@ class BookingCreditLogic(BaseLogic):
     
     @jwt_required()
     @role_required('staff')
+    def get_all_active(self):
+        response = self.resource_manager.get_active_rsrcs()
+        return response
+    
+    @jwt_required()
+    @role_required('staff')
     def post(self, data: Any, **kwargs):
         data['active'] = True
         data['assigned'] = False
