@@ -8,6 +8,7 @@
                 <div *ngFor="let timeSlot of schedule.timeslots | keyvalue">
                     <h3>{{ timeSlot.key }}</h3>
                     <p>{{ timeSlot.value | json }}</p>
+                    
                 </div>
             </div>
         </div>   

@@ -13,11 +13,30 @@
     <button (click)="scheduleBool()" class="btn btn-success  me-2">Schedule</button>
 
     </div>
+    <div class="row">
+      <h2>Client List</h2>
+      <table>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Goals</th>
+            <th>Id</th>
+          </tr>
+            <tr *ngFor = "let client of client_list | async ">
+              <td>{{client.username}} </td>
+              <td>{{client.email}} </td>
+              <td>{{client.goals}}</td>
+              <td><button class="btn btn-success me-2" (click)="copyToClipboard(client.id)">Copy ID</button></td>
+            </tr>
+
+        </table>
+        <hr>
+  </div>
     
     <div *ngIf="planSwitch" class="container">
       <div class="row justify-content-center">
           <div class="col-4">
-            Plans
+            <h2>Plans</h2>
             <myplans></myplans>
             <hr>
             <div class="form-group text-center">
@@ -49,8 +68,5 @@
                 </div>
             </div>
         </div>
-      </div>
-    <div>
-    
-    
-    </div>
+        </div>
+  </div>

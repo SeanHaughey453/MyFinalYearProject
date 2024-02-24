@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { StaffAccountService } from '../services/staffAccount.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { AccountService } from '../services/account.service';
 
 
 
@@ -18,26 +19,22 @@ export class MyPlanningComponent {
     planSwitch: boolean = false;
     creditSwitch: boolean = false;
     scheduleSwitch: boolean = false;
+    client_list: any = []
     constructor(
                 public router: Router, 
                 public staffAccountService: StaffAccountService,
+                public accountService: AccountService,
                 public dialog: MatDialog
                 ) {}
 
     ngOnInit(): void {
-        if (this.staffAccountService.currentUser$) {
-            // Subscribe to the currentUser$ observable to get user information
-            this.staffAccountService.currentUser$.subscribe(user => {
-              // Log the user information
-              //console.log('Logged in user:', user);
-            });
-          }
+        if (this.staffAccountService.currentUser$) 
+        {
+            this.staffAccountService.currentUser$.subscribe(user => {});
+            
+        }
+        this.client_list = this.accountService.getClients();
     }
-    
-      logout() {
-        this.staffAccountService.logout();
-        this.router.navigateByUrl('/');
-      }
 
       openErrorModal(errorMessage: string): void {
         this.dialog.open(ErrorModalComponent, {
@@ -67,6 +64,15 @@ export class MyPlanningComponent {
 
       cancelScheduleMode(event: boolean) {
         this.scheduleSwitch = event;
+      }
+
+
+      copyToClipboard(text: string) {
+        navigator.clipboard.writeText(text).then(() => {
+          console.log('ID copied to clipboard');
+        }).catch(err => {
+          console.error('Could not copy text: ', err);
+        });
       }
 
     

@@ -40,7 +40,7 @@ class ScheduleLogic(BaseLogic):
         else:
             if current_user['trainer'] != '':
                 unhidden_resources = self.resource_manager.get_active_schedule(current_user['trainer'])
-                resource = self._hide_other_client_bookings(unhidden_resources[0], current_user)
+                resource = self._hide_other_client_bookings(unhidden_resources[0], current_user_jwt)
                 resources.append(resource)
         return resources
 
@@ -94,6 +94,7 @@ class ScheduleLogic(BaseLogic):
 
     def _hide_other_client_bookings(self, resource: Dict[str, Any], user:Dict[str, Any]):
             weekdays= ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+            print('user', user)
 
             for weekday in resource.keys():
                 if weekday in weekdays:

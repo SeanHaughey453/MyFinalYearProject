@@ -77,7 +77,16 @@ export class AccountService {
   }
 
   //need to make an account return
-
+  getClients(){
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+    const token = user.access_token;
+    const headers = new HttpHeaders(
+      {
+         'Content-Type': 'application/json',
+         'Authorization': `Bearer ${token}`,
+      });
+    return this.http.get('http://127.0.0.1:5000/v1/get/clients', {headers});
+  }
 
   getDecodedToken(token: string) {
     return JSON.parse(atob(token.split('.')[1]));

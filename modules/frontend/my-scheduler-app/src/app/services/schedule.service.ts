@@ -25,5 +25,17 @@ export class ScheduleService {
     getSchedule(id : any) {
         return this.http.get('http://localhost:5000/v1/schedule/' + id);     
     }
+
+    postSchedule(){
+        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+        const token = user.access_token;
+
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          });
+        
+          return this.http.post('http://127.0.0.1:5000/v1/schedule', {},{headers});
+    }
 }
 

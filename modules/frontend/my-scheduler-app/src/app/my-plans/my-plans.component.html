@@ -1,1 +1,59 @@
-<p>works</p>
+<div class="row">
+    <table>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>ID</th>
+        </tr>
+          <tr *ngFor = "let plan of plan_list | async ">
+            <td>{{plan.name}} </td>
+            <td>{{plan.planType}} </td>
+            <td ><button class="btn btn-success me-2" (click)="copyToClipboard(plan.id)">Copy Plan ID</button></td>
+          </tr>
+      </table>
+      <hr>
+      </div>
+      <div class="row">
+        <h2>Give plan to client</h2>
+        <form  [formGroup]="planToClient"  (ngSubmit)="onSubmitPlansToClients()">
+            <div class="form-group">
+                <label for="clientID">Client ID</label>
+                <input type="text" id="clientID" name="clientID" class="form-control" formControlName="clientID"
+                [ngClass]="{'error': isInvalid1('clientID')}">
+            </div>
+            <div class="form-group">
+                <label for="planID">Plan ID</label>
+                <input id="planID" rows="3" name="planID" class="form-control" formControlName="planID" 
+                [ngClass]="{'error': isInvalid1('planID')}">
+            </div>
+            <span *ngIf="isIncomplete1()">You must complete all fields</span>
+            <button class="btn btn-success me-2"  *ngIf="!isIncomplete1()" type="submit">Add to Client</button>
+        </form>
+      </div>
+      <div class="row">
+        <h2>Create a Plan</h2>
+        <form  [formGroup]="planForm"  (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="name">Plan name</label>
+                <input type="text" id="name" name="name" class="form-control" formControlName="name"
+                [ngClass]="{'error': isInvalid('name')}">
+            </div>
+            <div class="form-group">
+                <label for="planType">Plan type</label>
+                <input id="planType" rows="3" name="planType" class="form-control" formControlName="planType" 
+                [ngClass]="{'error': isInvalid('planType')}">
+            </div>
+            <div class="form-group">
+                <label for="documentUrl">Document URL </label>
+                <input type="documentUrl" id="documentUrl" name="documentUrl" class="form-control" formControlName="documentUrl"
+                [ngClass]="{'error': isInvalid('documentUrl')}">
+            </div>
+            <div class="form-group">
+              <label for="tailoredTo">Tailored To </label>
+              <input type="tailoredTo" id="tailoredTo" name="tailoredTo" class="form-control" formControlName="tailoredTo"
+              [ngClass]="{'error': isInvalid('tailoredTo')}">
+          </div>
+            <span *ngIf="isIncomplete()">You must complete all fields</span>
+            <button class="btn btn-success me-2"  *ngIf="!isIncomplete()" type="submit">Add Plan</button>
+        </form>
+      </div>

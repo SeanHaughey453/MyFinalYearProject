@@ -4,7 +4,6 @@ from api.controller.common import role_required
 
 from api.controller.logic.schedule_logic import ModifyScheduleStaffLogic, ScheduleLogic
 
-
 class Schedule(Resource):
 
     def __init__(self):
@@ -19,7 +18,8 @@ class Schedule(Resource):
     @jwt_required()
     @role_required('staff')
     def post(self):
-        response = self.logic.post(request.json)
+        new_temp = templates.schedule_template
+        response = self.logic.post(new_temp)
         return response, 201
 
     @jwt_required()
@@ -62,4 +62,260 @@ class Schedules(Resource):
     def get(self):
         response = self.logic.get_dashboard_data()
         return response, 200
-    
+
+class templates():
+
+    schedule_template={
+    "monday": {
+        
+            "0800":{
+                "placeholder": "placeholder"
+            },
+            "0900":{
+                "placeholder": "placeholder"
+            },
+            "1000":{
+                "placeholder": "placeholder"
+                },
+            "1100":{
+                "placeholder": "placeholder"
+                }, 
+            "1200":{
+                "placeholder": "placeholder"
+                }, 
+            "1300":{
+                "placeholder": "placeholder"
+                }, 
+            "1400":{
+                "placeholder": "placeholder"
+                }, 
+            "1500":{
+                "placeholder": "placeholder"
+            }, 
+            "1600":{
+                "placeholder": "placeholder"
+                }, 
+            "1700":{
+                "placeholder": "placeholder"
+                }, 
+            "1800":{
+                "placeholder": "placeholder"
+                }
+                },
+    "tuesday": {
+        
+            "0800":{
+                "placeholder": "placeholder"
+            },
+            "0900":{
+                "placeholder": "placeholder"
+            },
+            "1000":{
+                "placeholder": "placeholder"
+                },
+            "1100":{
+                "placeholder": "placeholder"
+                }, 
+            "1200":{
+                "placeholder": "placeholder"
+                }, 
+            "1300":{
+                "placeholder": "placeholder"
+                }, 
+            "1400":{
+                "placeholder": "placeholder"
+                }, 
+            "1500":{
+                "placeholder": "placeholder"
+            }, 
+            "1600":{
+                "placeholder": "placeholder"
+                }, 
+            "1700":{
+                "placeholder": "placeholder"
+                }, 
+            "1800":{
+                "placeholder": "placeholder"
+                }
+                },
+    "wednesday": {
+        
+            "0800":{
+                "placeholder": "placeholder"
+            },
+            "0900":{
+                "placeholder": "placeholder"
+            },
+            "1000":{
+                "placeholder": "placeholder"
+                },
+            "1100":{
+                "placeholder": "placeholder"
+                }, 
+            "1200":{
+                "placeholder": "placeholder"
+                }, 
+            "1300":{
+                "placeholder": "placeholder"
+                }, 
+            "1400":{
+                "placeholder": "placeholder"
+                }, 
+            "1500":{
+                "placeholder": "placeholder"
+            }, 
+            "1600":{
+                "placeholder": "placeholder"
+                }, 
+            "1700":{
+                "placeholder": "placeholder"
+                }, 
+            "1800":{
+                "placeholder": "placeholder"
+                }
+                },
+    "thursday": {
+        
+            "0800":{
+                "placeholder": "placeholder"
+            },
+            "0900":{
+                "placeholder": "placeholder"
+            },
+            "1000":{
+                "placeholder": "placeholder"
+                },
+            "1100":{
+                "placeholder": "placeholder"
+                }, 
+            "1200":{
+                "placeholder": "placeholder"
+                }, 
+            "1300":{
+                "placeholder": "placeholder"
+                }, 
+            "1400":{
+                "placeholder": "placeholder"
+                }, 
+            "1500":{
+                "placeholder": "placeholder"
+            }, 
+            "1600":{
+                "placeholder": "placeholder"
+                }, 
+            "1700":{
+                "placeholder": "placeholder"
+                }, 
+            "1800":{
+                "placeholder": "placeholder"
+                }
+                },
+    "friday": {
+        
+            "0800":{
+                "placeholder": "placeholder"
+            },
+            "0900":{
+                "placeholder": "placeholder"
+            },
+            "1000":{
+                "placeholder": "placeholder"
+                },
+            "1100":{
+                "placeholder": "placeholder"
+                }, 
+            "1200":{
+                "placeholder": "placeholder"
+                }, 
+            "1300":{
+                "placeholder": "placeholder"
+                }, 
+            "1400":{
+                "placeholder": "placeholder"
+                }, 
+            "1500":{
+                "placeholder": "placeholder"
+            }, 
+            "1600":{
+                "placeholder": "placeholder"
+                }, 
+            "1700":{
+                "placeholder": "placeholder"
+                }, 
+            "1800":{
+                "placeholder": "placeholder"
+                }
+                },
+    "saturday": {
+        
+            "0800":{
+                "placeholder": "placeholder"
+            },
+            "0900":{
+                "placeholder": "placeholder"
+            },
+            "1000":{
+                "placeholder": "placeholder"
+                },
+            "1100":{
+                "placeholder": "placeholder"
+                }, 
+            "1200":{
+                "placeholder": "placeholder"
+                }, 
+            "1300":{
+                "placeholder": "placeholder"
+                }, 
+            "1400":{
+                "placeholder": "placeholder"
+                }, 
+            "1500":{
+                "placeholder": "placeholder"
+            }, 
+            "1600":{
+                "placeholder": "placeholder"
+                }, 
+            "1700":{
+                "placeholder": "placeholder"
+                }, 
+            "1800":{
+                "placeholder": "placeholder"
+                }
+                },
+    "sunday": {
+        
+            "0800":{
+                "placeholder": "placeholder"
+            },
+            "0900":{
+                "placeholder": "placeholder"
+            },
+            "1000":{
+                "placeholder": "placeholder"
+                },
+            "1100":{
+                "placeholder": "placeholder"
+                }, 
+            "1200":{
+                "placeholder": "placeholder"
+                }, 
+            "1300":{
+                "placeholder": "placeholder"
+                }, 
+            "1400":{
+                "placeholder": "placeholder"
+                }, 
+            "1500":{
+                "placeholder": "placeholder"
+            }, 
+            "1600":{
+                "placeholder": "placeholder"
+                }, 
+            "1700":{
+                "placeholder": "placeholder"
+                }, 
+            "1800":{
+                "placeholder": "placeholder"
+                }
+                }
+}

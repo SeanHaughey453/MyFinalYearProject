@@ -1,1 +1,29 @@
-<p>works</p>
+<div class="row">
+    <table>
+        <tr>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Goals</th>
+          <th>ID</th>
+        </tr>
+          <tr *ngFor = "let user of nonClientList | async ">
+            <td>{{user.username}} </td>
+            <td>{{user.email}} </td>
+            <td>{{user.goals}}</td>
+            <td ><button class="btn btn-success me-2" (click)="copyToClipboard(user.id)">Copy User ID</button></td>
+          </tr>
+      </table>
+      <hr>
+</div>
+<div class="row">
+  <h2>Add a client</h2>
+  <form  [formGroup]="addClientForm"  (ngSubmit)="onSubmit()">
+      <div class="form-group">
+          <label for="client">Client ID</label>
+          <input id="client" rows="3" name="client" class="form-control" formControlName="client" 
+          [ngClass]="{'error': isInvalid('client')}">
+      </div>
+      <span *ngIf="isIncomplete()">You must complete all fields</span>
+      <button class="btn btn-success me-2"  *ngIf="!isIncomplete()" type="submit">Add Client</button>
+  </form>
+</div>

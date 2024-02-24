@@ -8,7 +8,7 @@ from api.schedule_api import Scedule_API, Scedule_API_API_Errors
 from common.data_store_arango import DataStoreArangoDb
 from pyArango.theExceptions import DocumentNotFoundError
 
-from api.controller.auth.auth import Account, Login, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendClientsPlans, StaffAmmendCoWorker, StaffLogin, StaffRetreiveAllClients, StaffSignup, Users
+from api.controller.auth.auth import Account, Login, NonClientUsers, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendClientsPlans, StaffAmmendCoWorker, StaffLogin, StaffRetreiveAllClients, StaffSignup, Users
 from api.controller.resources.schedule import ModifyScheduleStaff, Schedules, Schedule
 from api.controller.resources.booking_credit import ActiveBookingCredits, BookingCredit, BookingCredits
 from api.controller.subresource.subresources import Booking
@@ -42,7 +42,7 @@ def create_app() -> Flask:
     errors.add_error(UnauthorizedException, 401)
 
     app = Flask('PythonApi')
-    CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200", "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"], "supports_credentials": True}})
+    CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200", "methods": ["GET", "POST", "PUT", "PATCH","DELETE", "OPTIONS"], "supports_credentials": True}})
     app.config['SECRET_KEY'] = 'super-secret-key'
     app.config['JWT_SECRET_KEY'] = 'jwt-secret-key'
     app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
@@ -59,6 +59,13 @@ def create_app() -> Flask:
 
     api = Scedule_API(error_list=errors, app=app) 
 
+    @app.after_request
+    def add_header(response):
+        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:4200'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, PATCH ,DELETE'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        return response
 
     baseScheduleUrl = '/v1/schedule'
     specificScheduleUrl = baseScheduleUrl + '/<scheduleId>'
@@ -81,12 +88,13 @@ def create_app() -> Flask:
     api.add_resource(StaffSignup, '/v1/staff/signup')
     api.add_resource(StaffLogin, '/v1/staff/login')
     api.add_resource(StaffAccount, '/v1/staff/account/<username>', '/v1/staff/account/edit/<username>', '/v1/staff/account/delete/<username>')
-    api.add_resource(StaffAmmendCoWorker, '/v1/staff/account/<username>/coworker/edit', '/v1/staff/account/<username>/coworker/delete')
-    api.add_resource(StaffAmmendClient, '/v1/staff/account/<username>/client/edit', '/v1/staff/account/<username>/client/delete')
+    api.add_resource(StaffAmmendCoWorker, '/v1/staff/account/coworker/edit', '/v1/staff/account/coworker/delete')
+    api.add_resource(StaffAmmendClient, '/v1/staff/account/client/edit', '/v1/staff/account/client/delete')
     api.add_resource(StaffAmmendClientsCredits, '/v1/credits/add/<clientId>/token/<bookingId>')
     api.add_resource(StaffAmmendClientsPlans, '/v1/plans/add/<clientId>/planid/<planId>')
     api.add_resource(StaffRetreiveAllClients, '/v1/get/clients')
     api.add_resource(Users, '/v1/get/users')
+    api.add_resource(NonClientUsers, '/v1/get/users/nonclients')
 
     #Schedules
     api.add_resource(Schedules, schedulesUrl)

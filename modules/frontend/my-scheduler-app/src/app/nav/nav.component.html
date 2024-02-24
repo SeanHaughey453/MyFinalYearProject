@@ -17,14 +17,14 @@
       <a class="dropdown-toggle text-light text-decoration-none ms-2" dropdownToggle>Welcome {{user.username}}</a>
       <div class="dropdown-menu" *dropdownMenu>
         <a class="dropdown-item" (click)="logout()">Logout</a>
-        <a class="dropdown-item" routerLink='./my-reviews'>My Reviews</a>
+        <a class="dropdown-item" routerLink='./myplanning'>My Reviews</a>
       </div>
     </div>
     <div class="dropdown" *ngIf="(staffAccountService.currentUser$ | async) as user" dropdown>
       <a class="dropdown-toggle text-light text-decoration-none ms-2" dropdownToggle>Welcome Staff: {{user.username}}</a>
       <div class="dropdown-menu" *dropdownMenu>
         <a class="dropdown-item" (click)="staffLogout()">Logout</a>
-        <a class="dropdown-item" routerLink='./my-reviews'>My Reviews</a>
+        <a class="dropdown-item" routerLink='./myplanning'>My Reviews</a>
       </div>
       <div class="dropdown-menu" *dropdownMenu>
         <a class="dropdown-item" (click)="logout()">Logout</a>

@@ -74,8 +74,7 @@
         "thursday",
         "friday",
         "saturday",
-        "sunday",
-        "weekCommencing"
+        "sunday"
     ],
     "additionalProperties": false
 

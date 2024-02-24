@@ -6,6 +6,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -63,7 +64,8 @@ import { MyAlterScheduleComponent } from './my-alter-schedule/my-alter-schedule.
     HttpClientModule,
     ReactiveFormsModule,
     MatSelectModule,
-    NgbModule
+    NgbModule,
+    BsDropdownModule.forRoot() 
     
   ],
   providers: [ScheduleService, AccountService, StaffAccountService, PlansService, CreditsService],

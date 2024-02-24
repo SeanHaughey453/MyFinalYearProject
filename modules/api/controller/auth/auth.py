@@ -94,21 +94,21 @@ class StaffAmmendCoWorker(Resource):
 
     @jwt_required()
     @role_required('staff')
-    def patch(self, username):
+    def patch(self):
         
         current_user = get_jwt_identity()
         data_to_add = request.json
        
-        updated_user = self.user_logic.action_user_list(current_user, username, data_to_add[self.TYPE_OF_LIST][0], self.MY_ACTIONS[0], self.TYPE_OF_LIST)
+        updated_user = self.user_logic.action_user_list(current_user, data_to_add[self.TYPE_OF_LIST][0], self.MY_ACTIONS[0], self.TYPE_OF_LIST)
         return {'message': f'Your details have been updated successfully', 'details': updated_user}, 200
 
     @jwt_required()
     @role_required('staff')
-    def delete(self, username):
+    def delete(self):
         current_user = get_jwt_identity()
         data_to_add = request.json
        
-        updated_user = self.user_logic.action_user_list(current_user, username, data_to_add[self.TYPE_OF_LIST][0], self.MY_ACTIONS[1], self.TYPE_OF_LIST)
+        updated_user = self.user_logic.action_user_list(current_user, data_to_add[self.TYPE_OF_LIST][0], self.MY_ACTIONS[1], self.TYPE_OF_LIST)
         return {'message': f'Your details have been updated successfully', 'details': updated_user}, 200
 
 class StaffAmmendClient(StaffAmmendCoWorker):
@@ -170,4 +170,17 @@ class Users(Resource):
     @role_required('staff')
     def get(self):
         response = self.user_logic.get_all_users()
+        return response
+    
+class NonClientUsers(Resource):
+
+    def __init__(self):
+        self.resource = "staff_users"
+        self.user = User('', '') 
+        self.logic = StaffUserLogic(self.resource, self.user)
+
+    @jwt_required()
+    @role_required('staff')
+    def get(self):
+        response = self.logic.get_all_non_clients()
         return response

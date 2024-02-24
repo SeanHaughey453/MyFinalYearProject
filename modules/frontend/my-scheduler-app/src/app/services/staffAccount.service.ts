@@ -8,25 +8,25 @@ import { User } from '.././user/user';
   providedIn: 'root'
 })
 export class StaffAccountService {
-  baseUrl = 'http://localhost:5000/v1/staff/';
+  baseUrl = 'http://127.0.0.1:5000/v1/staff/';
   private currentUserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
   constructor(private http: HttpClient) { }
 
   login(loginUser: any) {
-    const loginJson = JSON.stringify(loginUser);//convert to json
-    console.log(loginJson)
+    const loginJson = JSON.stringify(loginUser); // convert to json
+    console.log(loginJson);
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-
-    return this.http.post<User>(this.baseUrl + 'login', loginJson,{headers}).pipe(
+  
+    return this.http.post<User>(this.baseUrl + 'login', loginJson, { headers }).pipe(
       map((response: User) => {
         const user = response;
         if (user) {
           this.setCurrentUser(user);
         }
       })
-    )
+    );
   }
 
   register(newUser: any) {
@@ -76,8 +76,29 @@ export class StaffAccountService {
     );
   }
 
-  //need to make an account return
+  getNonClients(){
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+    const token = user.access_token;
+    const headers = new HttpHeaders(
+      {
+         'Content-Type': 'application/json',
+         'Authorization': `Bearer ${token}`,
+      });
+    return this.http.get('http://127.0.0.1:5000/v1/get/users/nonclients', {headers});
+  }
 
+  addClient(addclientForm: any){//need to fixxxxxxxx
+    const addclientJson = {'clients': [addclientForm.client]}
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+    const token = user.access_token;
+  
+    const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+    });
+    return this.http.patch('http://127.0.0.1:5000/v1/staff/account/client/edit', addclientJson,{headers});
+
+  }
 
   getDecodedToken(token: string) {
     return JSON.parse(atob(token.split('.')[1]));

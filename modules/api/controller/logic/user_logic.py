@@ -96,7 +96,7 @@ class StaffUserLogic(UserLogic):
         response = self.rsrc_manager.create_rsrc(data)
         return response
     
-    def action_user_list(self, current_user_jwt, username, other_user_id, action, type_of_list ):
+    def action_user_list(self, current_user_jwt, other_user_id, action, type_of_list ):
         ''' this is a fairly complicated function it handles 4 different endpoints and deals with them all 
             dynamically and reuses code
             
@@ -117,7 +117,7 @@ class StaffUserLogic(UserLogic):
         client_change_set = {
             'trainer': ''
         }
-        self._is_current_user(username, current_user_jwt['user_id'])
+        #self._is_current_user(username, current_user_jwt['user_id'])
         current_user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id'])#if these users dont exist the validation will be handled in get_rsrc()
         other_user = self.client_rsrc_manager.get_rsrc(other_user_id) if type_of_list == 'clients' \
             else self.rsrc_manager.get_rsrc(other_user_id)
@@ -214,6 +214,27 @@ class StaffUserLogic(UserLogic):
         client_list = self.client_rsrc_manager.get_clients_list(current_user['clients'])
  
         return client_list
+    
+    def get_all_non_clients(self):
+        filtered_user_list = []
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',self.resource)
+        current_user_jwt = get_jwt_identity()
+        current_user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id'])
+        user_list = self.get_all_nonstaff_users()
+
+        for user in user_list:
+            if user['id'] not in current_user['clients']:
+                filtered_user_list.append(user)
+        
+        return filtered_user_list
+    
+    def get_all_nonstaff_users(self):
+        all_users = self.client_rsrc_manager.get_rsrc()
+        for user in all_users:
+            user.pop('password', None)
+        return all_users     
+
+
 
 
 

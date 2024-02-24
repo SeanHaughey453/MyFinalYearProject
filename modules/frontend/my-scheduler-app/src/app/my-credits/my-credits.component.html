@@ -1,1 +1,42 @@
-<p>works</p>
+<div class="row">
+    <table>
+        <tr>
+          <th>Plan Type</th>
+          <th>ID</th>
+        </tr>
+          <tr *ngFor = "let credit of credit_list | async ">
+            <td>{{credit.planType}} </td>
+            <td ><button class="btn btn-success me-2" (click)="copyToClipboard(credit.id)">Copy credit ID</button></td>
+          </tr>
+      </table>
+      <hr>
+</div>
+<div class="row">
+  <h2>Give credit to client</h2>
+  <form  [formGroup]="creditToClient"  (ngSubmit)="onSubmitCreditToClients()">
+      <div class="form-group">
+          <label for="clientID">Client ID</label>
+          <input type="text" id="clientID" name="clientID" class="form-control" formControlName="clientID"
+          [ngClass]="{'error': isInvalid1('clientID')}">
+      </div>
+      <div class="form-group">
+          <label for="creditID">Credit ID</label>
+          <input id="creditID" rows="3" name="creditID" class="form-control" formControlName="creditID" 
+          [ngClass]="{'error': isInvalid1('creditID')}">
+      </div>
+      <span *ngIf="isIncomplete1()">You must complete all fields</span>
+      <button class="btn btn-success me-2"  *ngIf="!isIncomplete1()" type="submit">Add to Client</button>
+  </form>
+</div>
+<div class="row">
+  <h2>Create a Credit</h2>
+  <form  [formGroup]="creditForm"  (ngSubmit)="onSubmit()">
+      <div class="form-group">
+          <label for="planType">Plan type</label>
+          <input id="planType" rows="3" name="planType" class="form-control" formControlName="planType" 
+          [ngClass]="{'error': isInvalid('planType')}">
+      </div>
+      <span *ngIf="isIncomplete()">You must complete all fields</span>
+      <button class="btn btn-success me-2"  *ngIf="!isIncomplete()" type="submit">Add Plan</button>
+  </form>
+</div>
