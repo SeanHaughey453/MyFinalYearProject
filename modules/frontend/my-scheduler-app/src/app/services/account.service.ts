@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { User } from '.././user/user';
+
 
 
 @Injectable({
@@ -86,6 +87,17 @@ export class AccountService {
          'Authorization': `Bearer ${token}`,
       });
     return this.http.get('http://127.0.0.1:5000/v1/get/clients', {headers});
+  }
+
+  getClientsPlans() {
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+    const token = user.access_token;
+
+    const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      });
+    return this.http.get('http://127.0.0.1:5000/v1/plan/clients', {headers});
   }
 
   getDecodedToken(token: string) {

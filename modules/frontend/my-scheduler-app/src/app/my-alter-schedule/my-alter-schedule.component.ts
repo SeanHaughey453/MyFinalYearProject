@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { MatDialog } from "@angular/material/dialog";
 import { StaffAccountService } from "../services/staffAccount.service";
+import { ScheduleService } from "../services/schedule.service";
 
 @Component({
   selector: 'myalterschedule',
@@ -19,6 +20,7 @@ export class MyAlterScheduleComponent {
   constructor(public dialog: MatDialog,
               public staffAccountService: StaffAccountService,
               private formBuilder: FormBuilder,
+              public scheduleService: ScheduleService
               ) { }
 
   ngOnInit() {
@@ -59,6 +61,13 @@ export class MyAlterScheduleComponent {
   openErrorModal(errorMessage: string): void {
     this.dialog.open(ErrorModalComponent, {
       data: errorMessage,
+    });
+  }
+
+  createNewSchedule() {
+    this.scheduleService.postSchedule().subscribe({
+      next: () => {location.reload(); },
+      error: (error) => {console.error('Error removing client:', error);}
     });
   }
 

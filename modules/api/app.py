@@ -8,11 +8,11 @@ from api.schedule_api import Scedule_API, Scedule_API_API_Errors
 from common.data_store_arango import DataStoreArangoDb
 from pyArango.theExceptions import DocumentNotFoundError
 
-from api.controller.auth.auth import Account, Login, NonClientUsers, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendClientsPlans, StaffAmmendCoWorker, StaffLogin, StaffRetreiveAllClients, StaffSignup, Users
+from api.controller.auth.auth import Account, Login, NonClientUsers, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendClientsPlans, StaffAmmendCoWorker, StaffLogin, StaffRetreiveAllClients, StaffSignup, Users, ClientPlans
 from api.controller.resources.schedule import ModifyScheduleStaff, Schedules, Schedule
 from api.controller.resources.booking_credit import ActiveBookingCredits, BookingCredit, BookingCredits
 from api.controller.subresource.subresources import Booking
-from api.controller.resources.plan import Plan, Plans
+from api.controller.resources.plan import  Plan, Plans
 
 ARANGO_URL = os.environ.get('ARANGO_URL', 'http://localhost:8529')
 ARANGO_DB_NAME = 'scheduleapp'
@@ -109,6 +109,7 @@ def create_app() -> Flask:
     #plans
     api.add_resource(Plan, basePlanUrl, specificPlanUrl)
     api.add_resource(Plans, plansUrl)
+    api.add_resource(ClientPlans, basePlanUrl+'/clients')
 
 
     return app

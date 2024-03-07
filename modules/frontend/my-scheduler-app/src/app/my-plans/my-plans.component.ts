@@ -105,6 +105,16 @@ export class MyPlansComponent {
         }
      });
     }
+    removePlan(planId: string) {
+      this.plansService.deletePlan(planId).subscribe({
+        next: () => {
+          location.reload(); 
+        },
+        error: (error) => {
+          console.error('Error removing client:', error);
+        }
+      });
+    }
 
   copyToClipboard(text: string) {
       navigator.clipboard.writeText(text).then(() => {

@@ -1,0 +1,33 @@
+<div class="container"  style="margin-top:70px;">
+
+
+    <h1>Tracker Directory</h1>
+
+    <h2>here you can get your plans and see how much booking credits you have </h2>
+    <hr>
+    <div class="row">
+      <table>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <td>URL</td>
+            <td>Go</td>
+
+          </tr>
+            <tr *ngFor = "let plan of plan_list | async ">
+              <td>{{plan.name}} </td>
+              <td>{{plan.planType}} </td>
+              <td>{{plan.documentUrl}}</td>
+              <td> <a [href]="plan.documentUrl" target="_blank">
+                <button class="btn btn-success me-2" >View Document</button>
+             </a></td>
+
+              
+            </tr>
+        </table>
+        <hr>
+        </div>
+
+
+
+    </div>

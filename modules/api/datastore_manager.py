@@ -103,8 +103,7 @@ class DatastoreManager:
         return User(username=user['username'], password=user['password'], role=user['role'], _id=user['id'],firstname=user['firstName'],surname=user['surname'],email=user['email'], )
     
     def get_user_list(self, ids: List[str] ):
-        print('ids',ids)
-        print('collection name', self._collection_name)
+
         if not ids:
             raise ValueError("The 'ids' parameter is empty.")
         
@@ -211,6 +210,16 @@ class DatastoreManager:
         resource = self._data_store_plan.get_all()
         return resource
     
+    def get_list_from_resource_plan(self, ids: List[str] ):
+        if not ids:
+            raise ValueError("The 'ids' parameter is empty.")
+        
+        query = f'''FOR p IN plan
+                   FILTER p.id IN @ids
+                   RETURN p
+                '''
+        return self._data_store_plan.run_query(query, bindVars={"ids": ids})
+    
     def post_resource_plan(self, data: Dict[str, Any], id: str = None, **kwargs):
         resource = self._data_store_plan.overwrite(data["id"], data)
         return resource
@@ -226,4 +235,5 @@ class DatastoreManager:
     def check_if_resource_plan(self, schedule_id: str, **kwargs):
         resource = self._data_store_plan.check_existance(schedule_id)
         return resource
+    
 

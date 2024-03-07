@@ -45,6 +45,17 @@ export class CreditsService {
           });
         return this.http.patch('http://127.0.0.1:5000/v1/credits/add/'+ creditForm.clientID+'/token/'+ creditForm.creditID, {},{headers});
       }
+    
+      deleteCredit(removeCreditId: string){
+        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+        const token = user.access_token;
+      
+        const headers = new HttpHeaders({
+              'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+        });
+        return this.http.delete('http://127.0.0.1:5000/v1/credit/'+ removeCreditId, {headers});
+      }
 
 }
 

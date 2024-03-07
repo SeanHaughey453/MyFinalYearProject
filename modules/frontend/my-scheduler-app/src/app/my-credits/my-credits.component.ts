@@ -95,6 +95,13 @@ export class MyCreditsComponent {
      });
     }
 
+    removeCredit(creditId: string) {
+      this.creditsService.deleteCredit(creditId).subscribe({
+        next: () => {location.reload(); },
+        error: (error) => {console.error('Error removing client:', error);}
+      });
+    }
+
 //   onClick() {
 //     this.creditsService.getCredits()
 //     .subscribe({

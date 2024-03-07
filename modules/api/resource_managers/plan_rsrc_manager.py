@@ -28,6 +28,11 @@ class PlanRsrcManager(ResourceManager):
         res = self._data_manager.get_by_username(username)
         self._logger.info("Resource: {}".format(res))
         return res
+    
+    def get_list_of_plans(self, id_list):
+        res = self._data_manager.get_list_from_resource_plan(id_list)
+        self._logger.info("Resource: {}".format(res))
+        return res
 
     
     def update_rsrc(self, json, id=None):

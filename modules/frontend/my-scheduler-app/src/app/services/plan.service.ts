@@ -35,8 +35,15 @@ export class PlansService {
         return this.http.post('http://127.0.0.1:5000/v1/plan', planFormJson,{headers});
     }
     
-    deletePlan(){
-
+    deletePlan(removePlanId: string){
+      const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+      const token = user.access_token;
+    
+      const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+      });
+      return this.http.delete('http://127.0.0.1:5000/v1/plan/'+ removePlanId, {headers});
     }
 
     giveClientPlan(planForm: any){

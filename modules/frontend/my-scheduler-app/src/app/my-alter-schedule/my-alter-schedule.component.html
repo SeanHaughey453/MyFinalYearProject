@@ -16,6 +16,11 @@
       <hr>
 </div>
 <div class="row">
+  <h2>Create new plan</h2>
+  <button class="btn btn-success me-2" (click)="createNewSchedule()">Create new plan</button>
+<hr>
+</div>
+<div class="row">
   <h2>Add a client</h2>
   <form  [formGroup]="addClientForm"  (ngSubmit)="onSubmit()">
       <div class="form-group">

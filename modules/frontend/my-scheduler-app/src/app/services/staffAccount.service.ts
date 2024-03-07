@@ -100,6 +100,20 @@ export class StaffAccountService {
 
   }
 
+  removeClients(removeClientId: string){
+    const addclientJson = {'clients': [removeClientId]}
+    const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+    const token = user.access_token;
+  
+    const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+    });
+    return this.http.request('delete','http://127.0.0.1:5000/v1/staff/account/client/delete', {
+      body: addclientJson,
+      headers: headers});
+  }
+
   getDecodedToken(token: string) {
     return JSON.parse(atob(token.split('.')[1]));
   }

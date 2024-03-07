@@ -43,13 +43,3 @@ class Plans(Resource):
         response = self.logic.get()
         return response, 200
     
-# class Plans(Resource):
-#     def __init__(self):
-#         self.resource = "booking_credit"
-#         self.logic = Plan(self.resource)
-        
-#     @jwt_required()
-#     @role_required('staff')
-#     def get(self):
-#         response = self.logic.get()
-#         return response, 200

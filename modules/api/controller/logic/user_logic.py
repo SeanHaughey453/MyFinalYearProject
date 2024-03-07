@@ -72,6 +72,24 @@ class UserLogic(BaseLogic):
                         data[key] = []
             return data
         
+
+
+class ClientsPlansLogic(UserLogic):
+        
+        def __init__(self, resource: str, user: User): 
+            super().__init__(resource, user)
+            self.plan_rsrc_manager = PlanRsrcManager('plan')
+
+        def get(self):
+            current_user_jwt = get_jwt_identity()
+            user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id']) 
+            if user['assignedPlans'] != []:
+                current_plans_list = self.plan_rsrc_manager.get_list_of_plans(user['assignedPlans'])
+            else:
+                raise GeneralException('There was no plans in the list')
+            return current_plans_list
+
+
 class StaffUserLogic(UserLogic):
     def __init__(self, resource: str, user: User):
         super().__init__(resource, user)
@@ -233,7 +251,6 @@ class StaffUserLogic(UserLogic):
         for user in all_users:
             user.pop('password', None)
         return all_users     
-
 
 
 

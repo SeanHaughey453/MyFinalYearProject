@@ -66,6 +66,17 @@ export class MyPlanningComponent {
         this.scheduleSwitch = event;
       }
 
+      removeClient(clientId: string) {
+        this.staffAccountService.removeClients(clientId).subscribe({
+          next: () => {
+            location.reload(); 
+          },
+          error: (error) => {
+            console.error('Error removing client:', error);
+          }
+        });
+      }
+
 
       copyToClipboard(text: string) {
         navigator.clipboard.writeText(text).then(() => {

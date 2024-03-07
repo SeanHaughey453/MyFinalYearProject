@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { ScheduleComponent } from './schedule-page/schedule-page.component';
 import { MyPlanningComponent } from './my-planning/my-planning.component';
+import { MyTrackerComponent } from './my-tracker/my-tracker.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'myplanning',
     component: MyPlanningComponent
+  },
+  {
+    path: 'mytracker',
+    component: MyTrackerComponent
   }
 ];
 

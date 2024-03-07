@@ -39,4 +39,5 @@ class PlanLogic(BaseLogic):
     def delete(self, plan_id: str):
         response = self.resource_manager.delete_rsrc(plan_id)
         return response 
+    
         

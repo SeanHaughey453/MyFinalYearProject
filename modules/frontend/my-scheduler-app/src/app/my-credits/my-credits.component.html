@@ -7,6 +7,7 @@
           <tr *ngFor = "let credit of credit_list | async ">
             <td>{{credit.planType}} </td>
             <td ><button class="btn btn-success me-2" (click)="copyToClipboard(credit.id)">Copy credit ID</button></td>
+            <td><button class="btn btn-danger" (click)="removeCredit(credit.id)">Remove</button></td>
           </tr>
       </table>
       <hr>
