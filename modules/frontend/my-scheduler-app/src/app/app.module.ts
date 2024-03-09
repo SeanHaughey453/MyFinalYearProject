@@ -30,6 +30,7 @@ import { CreditsService } from './services/credit.service';
 import { MyCreditsComponent } from './my-credits/my-credits.component';
 import { MyAlterScheduleComponent } from './my-alter-schedule/my-alter-schedule.component';
 import { MyTrackerComponent } from './my-tracker/my-tracker.component';
+import { PersonalTrainersComponent } from './personal-trainers/personal-trainers.component';
 
 
 // var routes: any = [
@@ -55,7 +56,8 @@ import { MyTrackerComponent } from './my-tracker/my-tracker.component';
     MyPlansComponent,
     MyCreditsComponent,
     MyAlterScheduleComponent,
-    MyTrackerComponent
+    MyTrackerComponent,
+    PersonalTrainersComponent
   ],
   imports: [
     BrowserModule,

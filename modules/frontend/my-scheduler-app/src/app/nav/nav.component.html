@@ -10,21 +10,24 @@
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Schedule page</a>
+        <a class="nav-link" href="/schedulepage">Schedule page</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/personaltrainers">Trainers</a>
       </li>
     </ul>
     <div class="dropdown" id="navbarNavDropdown" *ngIf="(accountService.currentUser$ | async) as user" dropdown>
       <a class="dropdown-toggle text-light text-decoration-none ms-2" dropdownToggle>Welcome {{user.username}}</a>
       <div class="dropdown-menu" *dropdownMenu>
         <a class="dropdown-item" (click)="logout()">Logout</a>
-        <a class="dropdown-item" routerLink='./mytracker'>My Reviews</a>
+        <a class="dropdown-item" routerLink='./mytracker'>My Tracker</a>
       </div>
     </div>
     <div class="dropdown" *ngIf="(staffAccountService.currentUser$ | async) as user" dropdown>
       <a class="dropdown-toggle text-light text-decoration-none ms-2" dropdownToggle>Welcome Staff: {{user.username}}</a>
       <div class="dropdown-menu" *dropdownMenu>
         <a class="dropdown-item" (click)="staffLogout()">Logout</a>
-        <a class="dropdown-item" routerLink='./myplanning'>My Reviews</a>
+        <a class="dropdown-item" routerLink='./myplanning'>My Planner</a>
       </div>
       <div class="dropdown-menu" *dropdownMenu>
         <a class="dropdown-item" (click)="logout()">Logout</a>

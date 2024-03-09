@@ -4,6 +4,7 @@
     <h1>Tracker Directory</h1>
 
     <h2>here you can get your plans and see how much booking credits you have </h2>
+    <h3>You have a total number of '{{numCredits}}' booking credits left</h3>
     <hr>
     <div class="row">
       <table>
@@ -11,7 +12,7 @@
             <th>Name</th>
             <th>Type</th>
             <td>URL</td>
-            <td>Go</td>
+            <td>Download</td>
 
           </tr>
             <tr *ngFor = "let plan of plan_list | async ">

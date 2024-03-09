@@ -73,21 +73,35 @@ class UserLogic(BaseLogic):
             return data
         
 
-
 class ClientsPlansLogic(UserLogic):
         
         def __init__(self, resource: str, user: User): 
             super().__init__(resource, user)
-            self.plan_rsrc_manager = PlanRsrcManager('plan')
+            self.other_rsrc_manager = PlanRsrcManager('plan')
 
         def get(self):
             current_user_jwt = get_jwt_identity()
             user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id']) 
             if user['assignedPlans'] != []:
-                current_plans_list = self.plan_rsrc_manager.get_list_of_plans(user['assignedPlans'])
+                current_plans_list = self.other_rsrc_manager.get_list_of_plans(user['assignedPlans'])
             else:
                 raise GeneralException('There was no plans in the list')
             return current_plans_list
+
+class ClientsAvailableBookingsLogic(UserLogic):
+        def __init__(self, resource: str, user: User): 
+            super().__init__(resource, user)
+            
+        def get(self):
+            json_to_return = {'numCredits': ''}
+            current_user_jwt = get_jwt_identity()
+            user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id']) 
+            if user['bookingCredits'] != []:
+                num_bookings_available = str(len(user['bookingCredits']))
+                json_to_return['numCredits'] = num_bookings_available
+            else:
+                 json_to_return['numCredits'] = '0'
+            return json_to_return
 
 
 class StaffUserLogic(UserLogic):
@@ -235,7 +249,6 @@ class StaffUserLogic(UserLogic):
     
     def get_all_non_clients(self):
         filtered_user_list = []
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',self.resource)
         current_user_jwt = get_jwt_identity()
         current_user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id'])
         user_list = self.get_all_nonstaff_users()
@@ -250,7 +263,18 @@ class StaffUserLogic(UserLogic):
         all_users = self.client_rsrc_manager.get_rsrc()
         for user in all_users:
             user.pop('password', None)
-        return all_users     
+        return all_users    
+
+    def get_all_staff_protected(self):
+        all_staff = self.rsrc_manager.get_rsrc()
+        for user in all_staff:
+            user.pop('password', None)
+            user.pop('role', None)
+            user.pop('ownedSchedules', None)
+            user.pop('clients', None)
+            user.pop('coworkers', None)
+
+        return all_staff    
 
 
 

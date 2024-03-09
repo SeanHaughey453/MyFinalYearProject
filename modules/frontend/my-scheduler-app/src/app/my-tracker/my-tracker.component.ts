@@ -18,6 +18,7 @@ export class MyTrackerComponent {
     model: any = {}
     loginError: boolean = false;
     plan_list: any = []
+    numCredits: any;
     constructor(
                 public router: Router, 
                 public accountService: AccountService,
@@ -31,6 +32,10 @@ export class MyTrackerComponent {
             
         }
         this.plan_list = this.accountService.getClientsPlans();
+
+        this.accountService.getClientsNumCredits().subscribe((data: any) => {
+          this.numCredits = data.numCredits;
+      });
     }
 
       openErrorModal(errorMessage: string): void {

@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { ScheduleComponent } from './schedule-page/schedule-page.component';
 import { MyPlanningComponent } from './my-planning/my-planning.component';
 import { MyTrackerComponent } from './my-tracker/my-tracker.component';
+import { PersonalTrainersComponent } from './personal-trainers/personal-trainers.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'mytracker',
     component: MyTrackerComponent
+  },
+  {
+    path: 'personaltrainers',
+    component: PersonalTrainersComponent
   }
 ];
 

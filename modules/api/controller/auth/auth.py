@@ -1,6 +1,6 @@
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource, request
-from api.controller.logic.user_logic import ClientsPlansLogic, StaffUserLogic, UserLogic
+from api.controller.logic.user_logic import ClientsAvailableBookingsLogic, ClientsPlansLogic, StaffUserLogic, UserLogic
 from api.models.users import User
 from api.controller.common import role_required
 
@@ -185,11 +185,35 @@ class NonClientUsers(Resource):
         response = self.logic.get_all_non_clients()
         return response
     
+class AllStaffMembersProtected(Resource):
+    
+    def __init__(self):
+        self.resource = "staff_users"
+        self.user = User('', '') 
+        self.logic = StaffUserLogic(self.resource, self.user)
+
+    def get(self):
+        response = self.logic.get_all_staff_protected()
+        return response
+
+    
 class ClientPlans(Resource):
     def __init__(self):
         self.resource = "users"
         self.user = User('', '') 
         self.user_logic = ClientsPlansLogic(self.resource, self.user)
+
+    @jwt_required()
+    @role_required('user')
+    def get(self):
+        response = self.user_logic.get()
+        return response, 200
+    
+class ClientsAvailableBookings(Resource):
+    def __init__(self):
+        self.resource = "users"
+        self.user = User('', '') 
+        self.user_logic = ClientsAvailableBookingsLogic(self.resource, self.user)
 
     @jwt_required()
     @role_required('user')

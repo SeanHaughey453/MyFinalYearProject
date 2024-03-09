@@ -8,7 +8,7 @@ from api.schedule_api import Scedule_API, Scedule_API_API_Errors
 from common.data_store_arango import DataStoreArangoDb
 from pyArango.theExceptions import DocumentNotFoundError
 
-from api.controller.auth.auth import Account, Login, NonClientUsers, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendClientsPlans, StaffAmmendCoWorker, StaffLogin, StaffRetreiveAllClients, StaffSignup, Users, ClientPlans
+from api.controller.auth.auth import Account, AllStaffMembersProtected, ClientsAvailableBookings, Login, NonClientUsers, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendClientsPlans, StaffAmmendCoWorker, StaffLogin, StaffRetreiveAllClients, StaffSignup, Users, ClientPlans
 from api.controller.resources.schedule import ModifyScheduleStaff, Schedules, Schedule
 from api.controller.resources.booking_credit import ActiveBookingCredits, BookingCredit, BookingCredits
 from api.controller.subresource.subresources import Booking
@@ -95,7 +95,10 @@ def create_app() -> Flask:
     api.add_resource(StaffRetreiveAllClients, '/v1/get/clients')
     api.add_resource(Users, '/v1/get/users')
     api.add_resource(NonClientUsers, '/v1/get/users/nonclients')
+    api.add_resource(AllStaffMembersProtected, '/v1/get/staff/all')
 
+    #admin
+    
     #Schedules
     api.add_resource(Schedules, schedulesUrl)
     api.add_resource(Schedule, baseScheduleUrl, specificScheduleUrl)
@@ -106,6 +109,7 @@ def create_app() -> Flask:
     api.add_resource(BookingCredit, baseCreditUrl,specificCreditURL)
     api.add_resource(BookingCredits, creditsUrl)
     api.add_resource(ActiveBookingCredits, creditsUrl+'/active')
+    api.add_resource(ClientsAvailableBookings, creditsUrl+'/clients')
     #plans
     api.add_resource(Plan, basePlanUrl, specificPlanUrl)
     api.add_resource(Plans, plansUrl)

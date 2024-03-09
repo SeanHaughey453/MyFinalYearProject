@@ -1,0 +1,24 @@
+<div class="row">
+    <div *ngFor="let trainer of trainer_list | async; let i = index" class="col-4">
+        <div class="card mb-3">
+            <div class="card-header text-center">
+                <h5>
+                    Trainer: {{trainer.firstName}} {{trainer.surname}} <br>
+                    Email:{{trainer.email}} <br>
+                    Number:
+                </h5>
+            </div>
+            <div class="card-body text-center">    
+                <p>Picture</p>
+                <!--<img src="{{trainer.trainerImgUrl}}" alt="" class="img-fluid">-->
+            </div>
+            
+            <div class="card-footer text-center">
+                <u>Skills</u>
+                <ul class="list-group my-3">
+                    <li class="list-group-item" *ngFor="let skill of trainer.skills">{{skill}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
