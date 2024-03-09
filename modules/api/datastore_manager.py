@@ -21,6 +21,11 @@ class DatastoreManager:
             self._collection_name = "staff"
             self._data_store_users = app.data_store_staff
             self._resource = "users"
+            
+        if self._resource == "admin":
+            self._collection_name = "admin"
+            self._data_store_users = app.data_store_admin
+            self._resource = "users"
 
 
         ###### GENERIC METHODS #######
@@ -77,11 +82,10 @@ class DatastoreManager:
         resource = self._data_store_users.get_all()
         return resource
     
-
     def post_resource_users(self, data: Dict[str, Any], id: str = None, **kwargs):
         resource = self._data_store_users.overwrite(data["id"], data)
         return resource
-
+    
     def patch_resource_users(self, data: Dict[str, Any], user_id: str, **kwargs):
         resource = self._data_store_users.patch_item(user_id, data)
         return resource
@@ -117,6 +121,10 @@ class DatastoreManager:
 ###### SCHEDULE METHODS #####
     def get_from_resource_schedule(self, id: str):
         resource = self._data_store_schedules.get_item(id)
+        return resource
+
+    def get_all_from_resource_schedule(self):
+        resource = self._data_store_schedules.get_all()
         return resource
 
     def get_active_schedules_by_user(self, id: str):

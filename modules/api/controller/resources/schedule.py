@@ -29,7 +29,7 @@ class Schedule(Resource):
         return response, 200
 
     @jwt_required()
-    @role_required('staff')
+    @role_required('admin')
     def delete(self, scheduleId: str):
         response = self.logic.delete(scheduleId)
         return response, 204
@@ -49,7 +49,7 @@ class ModifyScheduleStaff(Schedule):
         return response
     
     @jwt_required()
-    @role_required('staff')
+    @role_required('staff','admin')
     def delete(self, scheduleId: str):
         response = self.logic.delete_staff_from_schedule(scheduleId)
         return response, 204
@@ -61,6 +61,14 @@ class Schedules(Resource):
     @jwt_required()
     def get(self):
         response = self.logic.get_dashboard_data()
+        return response, 200
+
+class AdminSchedules(Schedules):
+
+    @jwt_required()
+    @role_required('admin')
+    def get(self):
+        response = self.logic.get_all()
         return response, 200
 
 class templates():

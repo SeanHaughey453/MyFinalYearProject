@@ -11,6 +11,7 @@
     <button (click)="loginBool()" class="btn btn-success  me-2">Login</button>
     <button (click)="staffRegisterBool()" class="btn btn-success  me-2">Staff Register</button>
     <button (click)="staffLoginBool()" class="btn btn-success  me-2">Staff Login</button>
+    <button (click)="adminLoginBool()" class="btn btn-success  me-2">Admin Login</button>
     </div>
     
     <div *ngIf="registerSwitch" class="container">
@@ -53,6 +54,17 @@
                 <hr>
                 <div class="form-group text-center">
                 <button (click)="staffLoginBool()" class="btn btn-success  me-2">Back</button>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div *ngIf="adminLoginSwitch" class="container">
+        <div class="row justify-content-center">
+            <div class="col-4">
+               <adminlogin></adminlogin>
+                <hr>
+                <div class="form-group text-center">
+                <button (click)="adminLoginBool()" class="btn btn-success  me-2">Back</button>
                 </div>
             </div>
         </div>

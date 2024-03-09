@@ -1,0 +1,49 @@
+<div class="container"  style="margin-top:70px;">
+
+    <div *ngIf="!planSwitch && !creditSwitch && !scheduleSwitch" style="text-align: center;">
+    <h1>Admin Directory</h1>
+
+    <hr>
+    <button (click)="planBool()" class="btn btn-success  me-2">Plans</button>
+    <button (click)="creditBool()" class="btn btn-success  me-2">Booking Credits</button>
+    <button (click)="scheduleBool()" class="btn btn-success  me-2">Schedule</button>
+
+    </div>
+    
+    <div *ngIf="planSwitch" class="container">
+      <div class="row justify-content-center">
+          <div class="col-4">
+            <h2>Plans</h2>
+            <adminplans></adminplans>
+            <hr>
+            <div class="form-group text-center">
+            <button (click)="planBool()" class="btn btn-success  me-2">Back</button>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div *ngIf="creditSwitch" class="container">
+        <div class="row justify-content-center">
+            <div class="col-4">
+              Credits
+              <admincredits></admincredits>
+                <hr>
+                <div class="form-group text-center">
+                <button (click)="creditBool()" class="btn btn-success  me-2">Back</button>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div *ngIf="scheduleSwitch" class="container">
+        <div class="row justify-content-center">
+            <div class="col-4">
+               Schedule
+               <adminschedule></adminschedule> 
+                <hr>
+                <div class="form-group text-center">
+                <button (click)="scheduleBool()" class="btn btn-success  me-2">Back</button>
+                </div>
+            </div>
+        </div>
+        </div>
+  </div>

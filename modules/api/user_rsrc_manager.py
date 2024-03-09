@@ -69,5 +69,9 @@ class StaffUserRsrcManager(UserRsrcManager):
     def __init__(self, resource:str):
         super().__init__(resource)
         self.data_store = app.data_store_staff
-    
+
+class AdminUserRsrcManager(UserRsrcManager):
+    def __init__(self, resource:str):
+        super().__init__(resource)
+        self.data_store = app.data_store_admin
 

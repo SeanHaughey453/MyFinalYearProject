@@ -20,6 +20,7 @@ export class HomeComponent {
     loginSwitch: boolean = false;
     staffRegisterSwitch: boolean = false;
     staffLoginSwitch: boolean = false;
+    adminLoginSwitch: boolean = false;
     constructor(
                 public router: Router, 
                 public staffAccountService: StaffAccountService,
@@ -78,6 +79,14 @@ export class HomeComponent {
 
       cancelStaffLoginMode(event: boolean) {
         this.staffLoginSwitch = event;
+      }
+
+      adminLoginBool(){
+        this.adminLoginSwitch = !this.adminLoginSwitch
+      }
+
+      cancelAdminLoginMode(event: boolean) {
+        this.adminLoginSwitch = event;
       }
 
 

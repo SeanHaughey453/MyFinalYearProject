@@ -1,6 +1,6 @@
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_restful import Resource, request
-from api.controller.logic.user_logic import ClientsAvailableBookingsLogic, ClientsPlansLogic, StaffUserLogic, UserLogic
+from api.controller.logic.user_logic import AdminUserLogic, ClientsAvailableBookingsLogic, ClientsPlansLogic, StaffUserLogic, UserLogic
 from api.models.users import User
 from api.controller.common import role_required
 
@@ -9,7 +9,8 @@ class Signup(Resource):
     DEFAULT_ROLE = 'user'
     ROLE_MAPPING = {
         'user': 'User',
-        'staff' : 'Staff'
+        'staff' : 'Staff',
+        'admin': 'Admin' 
     }
 
     def __init__(self):
@@ -59,6 +60,7 @@ class Account(Resource):
         return {'message': f'Your details have been updated successfully', 'details': updated_user}, 200
 
     @jwt_required()
+    @role_required('admin')
     def delete(self, username: str):
         current_user = get_jwt_identity()
         self.user_logic.jwt_delete_user(current_user['user_id'], username)
@@ -81,6 +83,25 @@ class StaffAccount(Account):
     def __init__(self):
         super().__init__()
         self.resource = "staff_users"
+        self.user_logic = StaffUserLogic(self.resource, self.user)
+
+class AdminSignup(Signup):
+    DEFAULT_ROLE = 'admin'
+    def __init__(self):
+        super().__init__()
+        self.resource = "admin"
+        self.user_logic = AdminUserLogic(self.resource, self.user)
+
+class AdminLogin(Login):
+    def __init__(self):
+        super().__init__()
+        self.resource = "admin"
+        self.user_logic = StaffUserLogic(self.resource, self.user)
+
+class AdminAccount(Account):
+    def __init__(self):
+        super().__init__()
+        self.resource = "admin"
         self.user_logic = StaffUserLogic(self.resource, self.user)
 
 class StaffAmmendCoWorker(Resource):

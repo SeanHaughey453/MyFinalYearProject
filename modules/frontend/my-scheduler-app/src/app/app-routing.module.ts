@@ -5,6 +5,7 @@ import { ScheduleComponent } from './schedule-page/schedule-page.component';
 import { MyPlanningComponent } from './my-planning/my-planning.component';
 import { MyTrackerComponent } from './my-tracker/my-tracker.component';
 import { PersonalTrainersComponent } from './personal-trainers/personal-trainers.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path: 'personaltrainers',
     component: PersonalTrainersComponent
+  },
+  {
+    path: 'adminpage',
+    component: AdminPageComponent
   }
 ];
 

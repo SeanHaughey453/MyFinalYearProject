@@ -1,0 +1,17 @@
+<div class="row">
+    <table>
+        <tr>
+          <th>Plan Type</th>
+          <th>Active</th>
+          <th>Assigned</th>
+          <th>Button</th>
+        </tr>
+          <tr *ngFor = "let credit of credit_list | async ">
+            <td>{{credit.planType}} </td>
+            <td>{{credit.active}}</td>
+            <td>{{credit.assigned}}</td>
+            <td><button class="btn btn-danger" (click)="removeCredit(credit.id)">Remove</button></td>
+          </tr>
+      </table>
+      <hr>
+</div>

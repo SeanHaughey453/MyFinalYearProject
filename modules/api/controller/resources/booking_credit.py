@@ -40,7 +40,7 @@ class BookingCredits(Resource):
         self.resource = "booking_credit"
         self.logic = BookingCreditLogic(self.resource)
     @jwt_required()
-    @role_required('staff')
+    @role_required('staff', 'admin')
     def get(self):
         response = self.logic.get()
         return response, 200

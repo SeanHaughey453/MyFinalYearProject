@@ -1,0 +1,15 @@
+<div class="row">
+    <table>
+        <tr>
+          <th>Active Schedule</th>
+          <th>Owner ID</th>
+          <th>Delete</th>
+        </tr>
+          <tr *ngFor = "let schedule of schedule_list | async ">
+            <td>{{schedule.active}} </td>
+            <td>{{schedule.createdBy}} </td>
+            <td><button class="btn btn-danger" (click)="removeSchedule(schedule.id)">Remove</button></td>
+            
+          </tr>
+      </table>
+      </div>

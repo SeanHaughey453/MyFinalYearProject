@@ -26,7 +26,7 @@ class Plan(Resource):
         return response, 200
 
     @jwt_required()
-    @role_required('staff')
+    @role_required('staff','admin')
     def delete(self, planId: str):
         response = self.logic.delete(planId)
         return response, 204
@@ -38,7 +38,7 @@ class Plans(Resource):
         self.logic = PlanLogic(self.resource)
 
     @jwt_required()
-    @role_required('staff')
+    @role_required('staff', 'admin')
     def get(self):
         response = self.logic.get()
         return response, 200

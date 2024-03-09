@@ -14,7 +14,7 @@ class BookingCreditLogic(BaseLogic):
         self.resource_manager = BookingCreditRsrcManager(resource)
 
     @jwt_required()
-    @role_required('staff')
+    @role_required('staff', 'admin')
     def get(self, id: str = None):
         response = self.resource_manager.get_rsrc(id)
         return response
@@ -43,7 +43,7 @@ class BookingCreditLogic(BaseLogic):
         return response
     
     @jwt_required()
-    @role_required('staff')
+    @role_required('staff', 'admin')
     def delete(self, schedule_id: str):
         response = self.resource_manager.delete_rsrc(schedule_id)
         return response 

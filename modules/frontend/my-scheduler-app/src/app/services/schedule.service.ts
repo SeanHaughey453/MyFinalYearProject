@@ -22,6 +22,17 @@ export class ScheduleService {
         return this.http.get('http://127.0.0.1:5000/v1/schedules', {headers});
     }
 
+    getAllSchedules() {
+        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+        const token = user.access_token;
+
+        const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          });
+        return this.http.get('http://127.0.0.1:5000/v1/schedules/all', {headers});
+    }
+
     getSchedule(id : any) {
         return this.http.get('http://localhost:5000/v1/schedule/' + id);     
     }
@@ -37,5 +48,17 @@ export class ScheduleService {
         
           return this.http.post('http://127.0.0.1:5000/v1/schedule', {},{headers});
     }
+
+
+    deleteSchedule(removeScheduleId: string){
+        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+        const token = user.access_token;
+      
+        const headers = new HttpHeaders({
+              'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+        });
+        return this.http.delete('http://127.0.0.1:5000/v1/schedule/'+ removeScheduleId, {headers});
+      }
 }
 

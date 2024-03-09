@@ -8,8 +8,8 @@ from api.schedule_api import Scedule_API, Scedule_API_API_Errors
 from common.data_store_arango import DataStoreArangoDb
 from pyArango.theExceptions import DocumentNotFoundError
 
-from api.controller.auth.auth import Account, AllStaffMembersProtected, ClientsAvailableBookings, Login, NonClientUsers, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendClientsPlans, StaffAmmendCoWorker, StaffLogin, StaffRetreiveAllClients, StaffSignup, Users, ClientPlans
-from api.controller.resources.schedule import ModifyScheduleStaff, Schedules, Schedule
+from api.controller.auth.auth import Account, AdminAccount, AdminLogin, AdminSignup, AllStaffMembersProtected, ClientsAvailableBookings, Login, NonClientUsers, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendClientsPlans, StaffAmmendCoWorker, StaffLogin, StaffRetreiveAllClients, StaffSignup, Users, ClientPlans
+from api.controller.resources.schedule import AdminSchedules, ModifyScheduleStaff, Schedules, Schedule
 from api.controller.resources.booking_credit import ActiveBookingCredits, BookingCredit, BookingCredits
 from api.controller.subresource.subresources import Booking
 from api.controller.resources.plan import  Plan, Plans
@@ -20,6 +20,7 @@ ARANGO_ACCOUNTS_DB_NAME = 'accounts'
 ARANGO_COLLECTION_SCHEDULE = 'schedule'
 ARRANGO_COLLECTION_STAFF = 'staff'
 ARANGO_COLLECTION_USERS = 'users'
+ARRANGO_COLLECTION_ADMIN = 'admin'
 ARANGO_COLLECTION_BOOKING_CREDIT = 'booking_credit'
 ARANGO_COLLECTION_PLAN = 'plan'
 POSSIBLE_ERRORS = [[ArangoException, 400], [DataModelException, 400], [UnauthorizedException, 401], [GeneralException, 404], [ResourceNotFoundException, 404],
@@ -54,6 +55,7 @@ def create_app() -> Flask:
     app.data_store_schedules = DataStoreArangoDb(ARANGO_URL, ARANGO_DB_NAME, ARANGO_COLLECTION_SCHEDULE)
     app.data_store_users = DataStoreArangoDb(ARANGO_URL, ARANGO_ACCOUNTS_DB_NAME, ARANGO_COLLECTION_USERS)
     app.data_store_staff = DataStoreArangoDb(ARANGO_URL, ARANGO_ACCOUNTS_DB_NAME, ARRANGO_COLLECTION_STAFF)
+    app.data_store_admin = DataStoreArangoDb(ARANGO_URL, ARANGO_ACCOUNTS_DB_NAME, ARRANGO_COLLECTION_ADMIN)
     app.data_store_booking_credit = DataStoreArangoDb(ARANGO_URL, ARANGO_DB_NAME, ARANGO_COLLECTION_BOOKING_CREDIT)
     app.data_store_plan = DataStoreArangoDb(ARANGO_URL, ARANGO_DB_NAME, ARANGO_COLLECTION_PLAN)
 
@@ -97,10 +99,14 @@ def create_app() -> Flask:
     api.add_resource(NonClientUsers, '/v1/get/users/nonclients')
     api.add_resource(AllStaffMembersProtected, '/v1/get/staff/all')
 
-    #admin
+    #Admin Auth
+    api.add_resource(AdminSignup, '/v1/admin/signup')
+    api.add_resource(AdminLogin, '/v1/admin/login')
+    api.add_resource(AdminAccount, '/v1/admin/account/<username>', '/v1/admin/account/edit/<username>', '/v1/admin/account/delete/<username>')
     
     #Schedules
     api.add_resource(Schedules, schedulesUrl)
+    api.add_resource(AdminSchedules, schedulesUrl+'/all')
     api.add_resource(Schedule, baseScheduleUrl, specificScheduleUrl)
     api.add_resource(ModifyScheduleStaff, specificScheduleUrl+'/staff/add' )
     #booking

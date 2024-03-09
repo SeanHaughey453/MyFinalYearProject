@@ -1,0 +1,16 @@
+<div class="row">
+    <table>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Delete</th>
+        </tr>
+          <tr *ngFor = "let plan of plan_list | async ">
+            <td>{{plan.name}} </td>
+            <td>{{plan.planType}} </td>
+            <td><button class="btn btn-danger" (click)="removePlan(plan.id)">Remove</button></td>
+            
+          </tr>
+      </table>
+      <hr>
+      </div>

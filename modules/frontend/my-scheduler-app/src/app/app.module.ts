@@ -31,6 +31,11 @@ import { MyCreditsComponent } from './my-credits/my-credits.component';
 import { MyAlterScheduleComponent } from './my-alter-schedule/my-alter-schedule.component';
 import { MyTrackerComponent } from './my-tracker/my-tracker.component';
 import { PersonalTrainersComponent } from './personal-trainers/personal-trainers.component';
+import { AdminPageComponent } from './admin-page/admin-page.component';
+import { AdminLoginComponent } from './admin-login/admin-login.component';
+import { AdminPlansComponent } from './admin-plan/admin-plans.component';
+import { AdminCreditsComponent } from './admin-credit/admin-credits.component';
+import { AdminScheduleComponent } from './admin-schedule/admin-schedule.component';
 
 
 // var routes: any = [
@@ -57,7 +62,13 @@ import { PersonalTrainersComponent } from './personal-trainers/personal-trainers
     MyCreditsComponent,
     MyAlterScheduleComponent,
     MyTrackerComponent,
-    PersonalTrainersComponent
+    PersonalTrainersComponent,
+    AdminPageComponent,
+    AdminLoginComponent,
+    AdminPlansComponent,
+    AdminCreditsComponent,
+    AdminScheduleComponent
+
   ],
   imports: [
     BrowserModule,

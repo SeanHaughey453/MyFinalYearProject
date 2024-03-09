@@ -4,7 +4,7 @@ from flask_jwt_extended import get_jwt_identity
 from api.controller.logic.base_logic import BaseLogic
 from api.error_handling import GeneralException, InvalidCredentials, ResourceConflictException, ResourceNotFoundException, UnauthorizedException
 from api.models.users import User
-from api.user_rsrc_manager import StaffUserRsrcManager, UserRsrcManager
+from api.user_rsrc_manager import AdminUserRsrcManager, StaffUserRsrcManager, UserRsrcManager
 from api.resource_managers.booking_credit_resource_manager import BookingCreditRsrcManager
 from api.resource_managers.plan_rsrc_manager import PlanRsrcManager
 
@@ -274,7 +274,13 @@ class StaffUserLogic(UserLogic):
             user.pop('clients', None)
             user.pop('coworkers', None)
 
-        return all_staff    
+        return all_staff   
+
+
+class AdminUserLogic(StaffUserLogic): 
+    def __init__(self, resource: str, user: User):
+        super().__init__(resource, user)
+        self.rsrc_manager = AdminUserRsrcManager(self.resource)
 
 
 
@@ -287,8 +293,5 @@ class StaffUserLogic(UserLogic):
 
 
 
-
-
-        
 
 

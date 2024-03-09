@@ -29,6 +29,10 @@ class ScheduleLogic(BaseLogic):
             if current_user['user_id'] not in owner['clients']:
                 raise UnauthorizedException('This user is not a client of the schedule owner')
             return self._hide_other_client_bookings(resource, current_user)
+        
+    def get_all(self):
+        resource = self.resource_manager.get_rsrc()
+        return resource
     
     def get_dashboard_data(self):
         resources = []
