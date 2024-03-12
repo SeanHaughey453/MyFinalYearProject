@@ -40,7 +40,7 @@ class ScheduleLogic(BaseLogic):
         current_user = self.staff_rsrc_mngr.get_rsrc(current_user_jwt['user_id']) if current_user_jwt['role']== 'staff' else self.user_rsrc_mngr.get_rsrc(current_user_jwt['user_id'])
 
         if current_user_jwt['role'] == 'staff':
-            resources = self.resource_manager.get_by_user(current_user['id'])
+            resources = self.resource_manager.get_active_schedule(current_user['id'])
         else:
             if current_user['trainer'] != '':
                 unhidden_resources = self.resource_manager.get_active_schedule(current_user['trainer'])

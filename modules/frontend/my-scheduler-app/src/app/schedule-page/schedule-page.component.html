@@ -1,26 +1,37 @@
-<div class="container" style="margin-top:70px;">
+<div class="container" style="margin-top: 70px;">
     <h1>Schedule Dashboard</h1>
     <p>Here is the dashboard where you will find your Personal trainer's Schedule</p>
-    <div class="row">
-        <div class="col-sm-12 mx-auto">
-            <div *ngFor="let schedule of processedSchedule">
-                <h2>{{ schedule.day }}</h2>
-                <div *ngFor="let timeSlot of schedule.timeslots | keyvalue">
-                    <h3>{{ timeSlot.key }}</h3>
-                    <p>{{ timeSlot.value | json }}</p>
-                    
-                </div>
-            </div>
-        </div>   
-    </div>
-    <!-- <div class="schedule-grid">
-        <div class="schedule-header">
-            <div *ngFor="let day of processedSchedule">{{ day.day }}</div>
-        </div>
-        <div class="schedule-row" *ngFor="let timeSlot of processedSchedule[0].timeslots">
-            <div class="schedule-cell" *ngFor="let schedule of processedSchedule">
-                {{ schedule.timeslots.find(slot => slot.time === timeSlot.time)?.data | json }}
-            </div>
-        </div>
-    </div>
-</div> -->
+    <table class="schedule-table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th *ngFor="let day of weekdays">{{ day }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let timeSlot of scheduleDataKeys()">
+          <td>{{ timeSlot }}</td>
+          <td *ngFor="let day of weekdays">
+            <ng-container *ngIf="scheduleData[timeSlot][day.toLowerCase()]">
+                <ng-container *ngIf="scheduleData[timeSlot][day.toLowerCase()]?.status === 'placeholder' && (accountService.currentUser$ | async) as user">
+                <button (click)="bookSlot(timeSlot, day)"class="btn btn-success  me-2">Book</button>
+              </ng-container>
+              <ng-container *ngIf="scheduleData[timeSlot][day.toLowerCase()].status === 'booked'">
+                {{ scheduleData[timeSlot][day.toLowerCase()].booked }}
+                <p>Unavailable</p>
+              </ng-container>
+              <ng-container *ngIf="scheduleData[timeSlot][day.toLowerCase()].status === 'name' && (accountService.currentUser$ | async) as user">
+                {{ scheduleData[timeSlot][day.toLowerCase()].name }}
+                <p>Your Booking!</p>
+              </ng-container>
+              <ng-container *ngIf="scheduleData[timeSlot][day.toLowerCase()].status === 'name' && (staffAccountService.currentUser$ | async) as user">
+                {{ scheduleData[timeSlot][day.toLowerCase()]?.status }}
+                Client
+              </ng-container>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</div>
+  

@@ -13,7 +13,13 @@ export class AccountService {
   private currentUserSource = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSource.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    const userJson = sessionStorage.getItem('user');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      this.currentUserSource.next(user);
+    }
+   }
 
   login(loginUser: any) {
     const loginJson = JSON.stringify(loginUser);//convert to json
