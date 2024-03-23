@@ -1,6 +1,6 @@
 <div class="container"  style="margin-top:70px;">
 
-    <div *ngIf="!registerSwitch && !loginSwitch && !staffRegisterSwitch && !staffLoginSwitch" style="text-align: center;">
+    <div *ngIf="!registerSwitch && !loginSwitch && !staffRegisterSwitch && !staffLoginSwitch && !adminLoginSwitch" style="text-align: center;">
     <h1>Directory</h1>
     <div *ngIf="!(staffAccountService.currentUser$ | async) && !(accountService.currentUser$| async) " >
     <h2>Please Register or Login</h2>

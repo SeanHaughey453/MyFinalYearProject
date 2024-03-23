@@ -83,7 +83,6 @@ class SubBookingSubresourceLogic(ScheduleSubresourceLogic):
         schedule_resource,current_user_jwt = self._get_resource(id), get_jwt_identity()
         current_user, schedule_owner = self.user_rsrc_manager.get_rsrc(current_user_jwt['user_id']), self.staff_rsrc_manager.get_rsrc(schedule_resource['createdBy'])
         self.add_booking_validation(current_user, schedule_owner['clients'], schedule_resource ,schedule_slot )
-        
         return self.process_booking_from_client(schedule_resource, current_user, schedule_slot)
     
     def process_booking_from_client(self, schedule_resource, current_user, schedule_slot):
@@ -118,3 +117,24 @@ class SubBookingSubresourceLogic(ScheduleSubresourceLogic):
         schedule_resource[day][hour] = {}
         schedule_resource[day][hour] = data
         return schedule_resource
+    
+    def delete_slot(self, id: str, day: str, hour: str):
+        change_set: Dict[str, Any] = {"placeholder":"placeholder"}
+        schedule_resource,current_user_jwt = self._get_resource(id), get_jwt_identity()
+        if current_user_jwt['user_id'] != schedule_resource[day][hour]['user_id']:
+            raise UnauthorizedException('This is not your booking!')
+        
+        update = self._wrap_subresouce_in_resource(day, hour, change_set,schedule_resource)
+        response =self.resource_manager.update_full_rsrc(update, id)
+        return response
+    
+    def break_slot(self, id: str, day: str, hour: str):
+        change_set: Dict[str, Any] = {"break":"break"}
+        schedule_resource,current_user_jwt = self._get_resource(id), get_jwt_identity()
+        if current_user_jwt['user_id'] !=  schedule_resource['createdBy']:
+            raise UnauthorizedException('This is not your schedule!')
+        update = self._wrap_subresouce_in_resource(day, hour, change_set,schedule_resource)
+        response =self.resource_manager.update_full_rsrc(update, id)
+        return response
+
+

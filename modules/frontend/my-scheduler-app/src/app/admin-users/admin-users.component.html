@@ -1,0 +1,20 @@
+<div class="row">
+  <table>
+      <tr>
+        <th>First name</th>
+        <th>Surname</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Delete</th>
+      </tr>
+        <tr *ngFor = "let user of user_list | async ">
+          <td>{{user.firstName}} </td>
+          <td>{{user.surname}} </td>
+          <td>{{user.username}} </td>
+          <td>{{user.email}} </td>
+          <td><button class="btn btn-danger" (click)="removeUser(user.id)">Remove</button></td>
+          
+        </tr>
+    </table>
+    <hr>
+    </div>

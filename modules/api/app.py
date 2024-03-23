@@ -4,14 +4,14 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from api.error_handling import ArangoException, DataModelException, GeneralException, InvalidCredentials, InvalidFormatException, ResourceConflictException, ResourceNotFoundException, UnauthorizedException
 from flask_cors import CORS
-from api.schedule_api import Scedule_API, Scedule_API_API_Errors
+from api.schedule_api import Scedule_API, Scedule_API_Errors
 from common.data_store_arango import DataStoreArangoDb
 from pyArango.theExceptions import DocumentNotFoundError
 
 from api.controller.auth.auth import Account, AdminAccount, AdminLogin, AdminSignup, AllStaffMembersProtected, ClientsAvailableBookings, Login, NonClientUsers, Signup, StaffAccount, StaffAmmendClient, StaffAmmendClientsCredits, StaffAmmendClientsPlans, StaffAmmendCoWorker, StaffLogin, StaffRetreiveAllClients, StaffSignup, Users, ClientPlans
 from api.controller.resources.schedule import AdminSchedules, ModifyScheduleStaff, Schedules, Schedule
 from api.controller.resources.booking_credit import ActiveBookingCredits, BookingCredit, BookingCredits
-from api.controller.subresource.subresources import Booking
+from api.controller.subresource.subresources import Booking, Break
 from api.controller.resources.plan import  Plan, Plans
 
 ARANGO_URL = os.environ.get('ARANGO_URL', 'http://localhost:8529')
@@ -27,9 +27,9 @@ POSSIBLE_ERRORS = [[ArangoException, 400], [DataModelException, 400], [Unauthori
                     [DocumentNotFoundError, 404], [ResourceConflictException, 409], [InvalidCredentials, 409], [InvalidFormatException, 409]]
 def create_app() -> Flask:
 
-    errors = Scedule_API_API_Errors()
+    errors = Scedule_API_Errors()
 
-    #currently broken onerliner 
+    #currently broken oneliner 
     #[errors.add_error(error[0], error[1]) for error in POSSIBLE_ERRORS]
 
     errors.add_error(GeneralException, 400)
@@ -104,6 +104,7 @@ def create_app() -> Flask:
     api.add_resource(AdminLogin, '/v1/admin/login')
     api.add_resource(AdminAccount, '/v1/admin/account/<username>', '/v1/admin/account/edit/<username>', '/v1/admin/account/delete/<username>')
     
+    
     #Schedules
     api.add_resource(Schedules, schedulesUrl)
     api.add_resource(AdminSchedules, schedulesUrl+'/all')
@@ -111,6 +112,7 @@ def create_app() -> Flask:
     api.add_resource(ModifyScheduleStaff, specificScheduleUrl+'/staff/add' )
     #booking
     api.add_resource(Booking, specificScheduleUrl+ '/<day>/<hour>')
+    api.add_resource(Break, specificScheduleUrl+ '/<day>/<hour>/break')
     #booking credits
     api.add_resource(BookingCredit, baseCreditUrl,specificCreditURL)
     api.add_resource(BookingCredits, creditsUrl)

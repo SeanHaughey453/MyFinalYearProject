@@ -36,6 +36,8 @@ import { AdminLoginComponent } from './admin-login/admin-login.component';
 import { AdminPlansComponent } from './admin-plan/admin-plans.component';
 import { AdminCreditsComponent } from './admin-credit/admin-credits.component';
 import { AdminScheduleComponent } from './admin-schedule/admin-schedule.component';
+import { AdminStaffComponent } from './admin-staff/admin-staff.component';
+import { AdminUsersComponent } from './admin-users/admin-users.component';
 
 
 // var routes: any = [
@@ -67,7 +69,10 @@ import { AdminScheduleComponent } from './admin-schedule/admin-schedule.componen
     AdminLoginComponent,
     AdminPlansComponent,
     AdminCreditsComponent,
-    AdminScheduleComponent
+    AdminScheduleComponent,
+    AdminStaffComponent,
+    AdminUsersComponent
+
 
   ],
   imports: [

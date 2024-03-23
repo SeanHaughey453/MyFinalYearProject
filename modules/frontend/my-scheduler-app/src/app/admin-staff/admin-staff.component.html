@@ -1,0 +1,20 @@
+<div class="row">
+  <table>
+      <tr>
+        <th>First name</th>
+        <th>Surname</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Delete</th>
+      </tr>
+        <tr *ngFor = "let staff of staff_list | async ">
+          <td>{{staff.firstName}} </td>
+          <td>{{staff.surname}} </td>
+          <td>{{staff.username}} </td>
+          <td>{{staff.email}} </td>
+          <td><button class="btn btn-danger" (click)="removeStaff(staff.id)">Remove</button></td>
+          
+        </tr>
+    </table>
+    <hr>
+</div>

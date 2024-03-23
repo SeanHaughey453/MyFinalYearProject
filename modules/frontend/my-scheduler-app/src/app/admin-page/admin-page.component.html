@@ -1,13 +1,14 @@
 <div class="container"  style="margin-top:70px;">
 
-    <div *ngIf="!planSwitch && !creditSwitch && !scheduleSwitch" style="text-align: center;">
+    <div *ngIf="!planSwitch && !creditSwitch && !scheduleSwitch && !userSwitch && !staffSwitch" style="text-align: center;">
     <h1>Admin Directory</h1>
 
     <hr>
     <button (click)="planBool()" class="btn btn-success  me-2">Plans</button>
     <button (click)="creditBool()" class="btn btn-success  me-2">Booking Credits</button>
     <button (click)="scheduleBool()" class="btn btn-success  me-2">Schedule</button>
-
+    <button (click)="staffBool()" class="btn btn-success  me-2">Staff</button>
+    <button (click)="userBool()" class="btn btn-success  me-2">User</button>
     </div>
     
     <div *ngIf="planSwitch" class="container">
@@ -46,4 +47,28 @@
             </div>
         </div>
         </div>
+        <div *ngIf="staffSwitch" class="container">
+          <div class="row justify-content-center">
+              <div class="col-4">
+                 Users
+                 <adminstaff></adminstaff> 
+                  <hr>
+                  <div class="form-group text-center">
+                  <button (click)="staffBool()" class="btn btn-success  me-2">Back</button>
+                  </div>
+              </div>
+          </div>
+          </div>
+          <div *ngIf="userSwitch" class="container">
+            <div class="row justify-content-center">
+                <div class="col-4">
+                   Staff
+                   <adminusers></adminusers> 
+                    <hr>
+                    <div class="form-group text-center">
+                    <button (click)="userBool()" class="btn btn-success  me-2">Back</button>
+                    </div>
+                </div>
+            </div>
+            </div>
   </div>

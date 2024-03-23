@@ -32,6 +32,7 @@ export class StaffRegisterComponent {
       firstName: ['', Validators.required],
       surname: ['', Validators.required],
       username: ['', Validators.required],
+      number: ['', Validators.required],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required],
       email: ['', Validators.required], 
@@ -54,6 +55,7 @@ export class StaffRegisterComponent {
     return this.registerForm.controls.firstName.pristine ||
     this.registerForm.controls.surname.pristine ||
     this.registerForm.controls.username.pristine ||
+    this.registerForm.controls.number.pristine ||
     this.registerForm.controls.password.pristine ||
     this.registerForm.controls.email.pristine;
     }
@@ -61,6 +63,7 @@ export class StaffRegisterComponent {
     return this.isInvalid('firstName') ||
     this.isInvalid('surname') || 
     this.isInvalid('username') ||
+    this.isInvalid('number') ||
     this.isInvalid('password') ||
     this.isInvalid('email') ||
     this.isUntouched();

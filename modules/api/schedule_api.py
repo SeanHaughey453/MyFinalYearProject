@@ -4,20 +4,20 @@ from flask import current_app
 from flask_restful import Api
 from werkzeug.exceptions import HTTPException
 
-class Scedule_API_API_Errors(list):
+class Scedule_API_Errors(list):
     def __init__(self, default_error=500):
         super().__init__()
         self.default_error = default_error
     
     def add_error(self, exception: Type[Exception], status_code: int):
         error = {"exception": exception, "status_code": status_code}
-        super(Scedule_API_API_Errors, self).append(error)
+        super(Scedule_API_Errors, self).append(error)
     
     def get_default_error(self):
         return self.default_error
 
 class Scedule_API(Api):
-    def __init__(self, error_list: Optional["Scedule_API_API_Errors"] = None, *args, **kwargs) -> None:
+    def __init__(self, error_list: Optional["Scedule_API_Errors"] = None, *args, **kwargs) -> None:
         self.error_list = error_list
         super().__init__(*args, **kwargs)
     

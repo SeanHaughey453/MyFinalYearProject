@@ -15,7 +15,7 @@ class ResourceManager:
         self._data_manager = DatastoreManager(self._resource)
 
     def create_rsrc(self, json, id: str = None):
-        '''Used when creating a fresh resource with no id'''
+        '''creates a new resource with no id'''
         resource = ResourceManager.create_uuid(json)
         response = self._data_manager.post_resource(resource, id)
         return response

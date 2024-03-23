@@ -16,17 +16,26 @@
                 <ng-container *ngIf="scheduleData[timeSlot][day.toLowerCase()]?.status === 'placeholder' && (accountService.currentUser$ | async) as user">
                 <button (click)="bookSlot(timeSlot, day)"class="btn btn-success  me-2">Book</button>
               </ng-container>
+              <ng-container *ngIf="scheduleData[timeSlot][day.toLowerCase()]?.status === 'placeholder' && (staffAccountService.currentUser$ | async) as user">
+                <button (click)="bookBreak(timeSlot, day)"class="btn btn-success  me-2">Break</button>
+              </ng-container>
               <ng-container *ngIf="scheduleData[timeSlot][day.toLowerCase()].status === 'booked'">
                 {{ scheduleData[timeSlot][day.toLowerCase()].booked }}
                 <p>Unavailable</p>
               </ng-container>
+              <ng-container *ngIf="scheduleData[timeSlot][day.toLowerCase()].status === 'break' && (staffAccountService.currentUser$ | async) as user">
+                <p>Break Used</p>
+              </ng-container>
+              <ng-container *ngIf="scheduleData[timeSlot][day.toLowerCase()].status === 'break' && (accountService.currentUser$ | async) as user">
+                <p>Unavailable</p>
+              </ng-container>
               <ng-container *ngIf="scheduleData[timeSlot][day.toLowerCase()].status === 'name' && (accountService.currentUser$ | async) as user">
                 {{ scheduleData[timeSlot][day.toLowerCase()].name }}
-                <p>Your Booking!</p>
+                <button (click)="unbookSlot(timeSlot, day)" class="btn btn-danger" >Unbook</button>
               </ng-container>
               <ng-container *ngIf="scheduleData[timeSlot][day.toLowerCase()].status === 'name' && (staffAccountService.currentUser$ | async) as user">
                 {{ scheduleData[timeSlot][day.toLowerCase()]?.status }}
-                Client
+                {{ scheduleData[timeSlot][day.toLowerCase()]?.name }}
               </ng-container>
             </ng-container>
           </td>

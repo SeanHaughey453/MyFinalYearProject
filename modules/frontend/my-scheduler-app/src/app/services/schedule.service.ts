@@ -49,6 +49,42 @@ export class ScheduleService {
           return this.http.post('http://127.0.0.1:5000/v1/schedule', {},{headers});
     }
 
+    addBooking(scheduleId : string, day: string, hour: string){
+      const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+      const token = user.access_token;
+
+      const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        });
+
+      return this.http.patch('http://127.0.0.1:5000/v1/schedule/'+ scheduleId+ '/'+ day+ '/' + hour, {}, {headers})
+    }
+
+    removeBooking(scheduleId : string, day: string, hour: string){
+      const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+      const token = user.access_token;
+
+      const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        });
+
+      return this.http.delete('http://127.0.0.1:5000/v1/schedule/'+ scheduleId+ '/'+ day+ '/' + hour, {headers})
+    }
+
+    addBreak(scheduleId : string, day: string, hour: string){
+      const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+      const token = user.access_token;
+
+      const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        });
+
+      return this.http.patch('http://127.0.0.1:5000/v1/schedule/'+ scheduleId+ '/'+ day+ '/' + hour+ '/break', {}, {headers})
+    }
+
 
     deleteSchedule(removeScheduleId: string){
         const user = JSON.parse(sessionStorage.getItem('user') || '{}');

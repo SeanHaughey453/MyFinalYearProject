@@ -79,6 +79,53 @@ export class AdminAccountService {
   getDecodedToken(token: string) {
     return JSON.parse(atob(token.split('.')[1]));
   }
+
+
+    getUsers(){
+      const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+      const token = user.access_token;
+      const headers = new HttpHeaders(
+        {
+           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`,
+        });
+      return this.http.get('http://127.0.0.1:5000/v1/get/users', {headers});
+    }
+
+    getStaff(){
+      const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+      const token = user.access_token;
+      const headers = new HttpHeaders(
+        {
+           'Content-Type': 'application/json',
+           'Authorization': `Bearer ${token}`,
+        });
+      return this.http.get('http://127.0.0.1:5000/v1/get/staff/all', {headers});
+    }
+
+    deleteUser(removeUserId: string){
+      const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+      const token = user.access_token;
+    
+      const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+      });
+      return this.http.delete('http://127.0.0.1:5000/v1/users/'+ removeUserId, {headers});
+    }
+
+    deleteStaff(removeStaffId: string){
+      const user = JSON.parse(sessionStorage.getItem('user') || '{}');
+      const token = user.access_token;
+    
+      const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+      });
+      return this.http.delete('http://127.0.0.1:5000/v1/users/'+ removeStaffId, {headers});
+    }
+
+
 }
 
 

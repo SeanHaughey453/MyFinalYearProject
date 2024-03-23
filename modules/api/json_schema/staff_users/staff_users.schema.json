@@ -13,6 +13,9 @@
         "username":{
             "type": "string"
         },
+        "number":{
+            "type": "string"
+        },
         "password":{
             "type": "string"
         },
@@ -38,6 +41,9 @@
         },
         "username":{
             "$ref": "#/$defs/username"
+        },
+        "number":{
+            "$ref": "#/$defs/number"
         },
         "password":{
             "$ref": "#/$defs/password"

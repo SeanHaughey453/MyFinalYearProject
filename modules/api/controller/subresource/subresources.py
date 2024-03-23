@@ -44,11 +44,23 @@ class Booking(BaseSubResource):
     def patch(self, scheduleId: str, day : str, hour : str):
         response = self.logic.patch(scheduleId, day ,hour, request.json)
         return response, 200
+    
+    @jwt_required()
+    def delete(self, scheduleId: str, day : str, hour : str):
+        response = self.logic.delete_slot(scheduleId, day ,hour)
+        return response, 201
 
-class Break(BaseSubResource):
+
+class Break(Booking):
     def __init__(self):
         super().__init__()
         self.subresource = "break"
+
+    @jwt_required()
+    @role_required('staff')
+    def patch(self, scheduleId: str, day : str, hour : str):
+        response = self.logic.break_slot(scheduleId, day ,hour)
+        return response, 200
 
 class Placeholder(BaseSubResource):
     def __init__(self):

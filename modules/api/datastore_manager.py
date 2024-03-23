@@ -37,7 +37,6 @@ class DatastoreManager:
         return method()
     
     def get_from_resource(self, id: str, key=None):
-        print('self.resource', self._resource)
         method_name = "get_from_resource_{}".format(self._resource)
         method = getattr(self, method_name)
         return method(id)
@@ -70,7 +69,7 @@ class DatastoreManager:
     def get_from_resource_staff_users(self, id: str):
         print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
         resource = self._data_store_users.get_item(id)
-        return resource
+        return resource 
     
     def get_all_from_resource_users(self):
         print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')

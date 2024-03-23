@@ -16,6 +16,11 @@
             [ngClass]="{'error': isInvalid('username')}" placeholder="wee_jimmy123">
         </div>
         <div class="form-group">
+            <label for="text">Number</label>
+            <input id="number" rows="3" name="number" class="form-control" formControlName="number" 
+            [ngClass]="{'error': isInvalid('number')}" placeholder="07712345677">
+        </div>
+        <div class="form-group">
             <label for="password">Password</label>
             <input id="password" type="password"rows="3" name="password" class="form-control" formControlName="password" 
             [ngClass]="{'error': isInvalid('password')}" placeholder="password123">

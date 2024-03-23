@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AccountService } from '../services/account.service';
 import { StaffAccountService } from '../services/staffAccount.service';
 import { Router } from '@angular/router';
+import { AdminAccountService } from '../services/adminAccount.service';
 
 
 
@@ -16,6 +17,7 @@ export class NavComponent {
 
     constructor(public accountService: AccountService,
                 public staffAccountService: StaffAccountService,
+                public adminAccountService: AdminAccountService,
                 public router: Router) {}
 
     ngOnInit(): void {

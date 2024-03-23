@@ -3,6 +3,8 @@ import { ScheduleService } from '../services/schedule.service';
 import { Subscription } from 'rxjs';
 import { AccountService } from '../services/account.service';
 import { StaffAccountService } from '../services/staffAccount.service';
+import { ErrorModalComponent } from '../error-modal/error-modal.component';
+import { MatDialog } from '@angular/material/dialog';
 
 // Define a type for the schedule data
 interface ScheduleData {
@@ -17,14 +19,16 @@ interface ScheduleData {
 export class ScheduleComponent implements OnInit, OnDestroy {
   schedule_list: any[] = [];
   processedSchedule: any[] = [];
-  scheduleData: ScheduleData = {}; // Use the defined type for scheduleData
-  weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  scheduleData: ScheduleData = {}; 
+  weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+  scheduleId: any
 
   private schedulesSubscription: Subscription | undefined;
 
   constructor(public scheduleService: ScheduleService,
               public accountService: AccountService,
-              public staffAccountService: StaffAccountService,) {}
+              public staffAccountService: StaffAccountService,
+              public dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getMySchedules();
@@ -55,7 +59,7 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     if (this.schedule_list.length > 0) {
       const schedule = this.schedule_list[0];
       const daysOfWeek = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
-  
+      this.scheduleId = schedule['id'];
       this.scheduleData = {};
   
       daysOfWeek.forEach(day => {
@@ -66,10 +70,14 @@ export class ScheduleComponent implements OnInit, OnDestroy {
           }
           // Check for different statuses such as "name", "placeholder", and "booked"
           let status;
+          let name;
           if (dayData[time].hasOwnProperty('name')) {
             status = 'name';
+            name = dayData[time].name;
           } else if (dayData[time].hasOwnProperty('booked')) {
             status = 'booked';
+          }else if (dayData[time].hasOwnProperty('break')) {
+            status = 'break';
           } else {
             status = 'placeholder';
           }
@@ -80,13 +88,63 @@ export class ScheduleComponent implements OnInit, OnDestroy {
   }
   
   bookSlot(timeSlot: string, day: string): void {
-    // Add your logic here to book the slot
-    console.log(`Booking slot for ${day} at ${timeSlot}`);
+    console.log(`ID: ${this.scheduleId} Booking slot for ${day} at ${timeSlot}`);
+    this.scheduleService.addBooking(this.scheduleId, day, timeSlot)
+    .subscribe(() => {
+      location.reload();
+    },
+    (error) => {
+      if (error.status === 401) {
+        this.openErrorModal('You have no credits to book.'); // Display error message in a dialog
+      } else {
+        console.error('Booking error:', error);
+        // Handle other types of errors as needed
+      }
+    });
+  }
+
+  unbookSlot(timeSlot: string, day: string): void {
+    console.log(`ID: ${this.scheduleId} Booking slot for ${day} at ${timeSlot}`);
+    this.scheduleService.removeBooking(this.scheduleId, day, timeSlot)
+    .subscribe(() => {
+      location.reload();
+    },
+    (error) => {
+      if (error.status === 401) {
+        this.openErrorModal('An issue happened with removing your booking'); // Display error message in a dialog
+      } else {
+        console.error('Booking error:', error);
+        // Handle other types of errors as needed
+      }
+    });
+  }
+
+  bookBreak(timeSlot:  string, day: string): void{
+    console.log(`ID: ${this.scheduleId} Booking slot for ${day} at ${timeSlot}`);
+    this.scheduleService.addBreak(this.scheduleId, day, timeSlot)
+    .subscribe(() => {
+      location.reload();
+    },
+    (error) => {
+      if (error.status === 401) {
+        this.openErrorModal('An issue happened with removing your booking'); // Display error message in a dialog
+      } else {
+        console.error('Booking error:', error);
+        // Handle other types of errors as needed
+      }
+    });
   }
 
   scheduleDataKeys(): string[] {
     return Object.keys(this.scheduleData);
   }
+
+  openErrorModal(errorMessage: string): void {
+    this.dialog.open(ErrorModalComponent, {
+      data: errorMessage,
+    });
+  }
+
 
 }
 

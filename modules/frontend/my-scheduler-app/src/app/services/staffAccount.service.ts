@@ -38,6 +38,7 @@ export class StaffAccountService {
         postData.append("firstName", newUser.firstName);
         postData.append("surtname", newUser.surname);
         postData.append("username", newUser.username);
+        postData.append("number", newUser.number);
         postData.append("password", newUser.password);
         postData.append("email", newUser.email);
         newUser.skills.forEach((skill: string | Blob, index: any) => {

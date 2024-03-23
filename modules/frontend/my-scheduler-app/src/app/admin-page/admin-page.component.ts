@@ -19,6 +19,8 @@ export class AdminPageComponent {
     planSwitch: boolean = false;
     creditSwitch: boolean = false;
     scheduleSwitch: boolean = false;
+    staffSwitch: boolean = false;
+    userSwitch: boolean = false;
     client_list: any = []
     constructor(
                 public router: Router, 
@@ -64,6 +66,21 @@ export class AdminPageComponent {
       cancelScheduleMode(event: boolean) {
         this.scheduleSwitch = event;
       }
+
+      staffBool(){
+        this.staffSwitch = !this.staffSwitch
+      }
+      cancelStaffMode(event: boolean) {
+        this.staffSwitch = event;
+      }
+      userBool(){
+        this.userSwitch = !this.userSwitch
+      }
+      cancelUserMode(event: boolean) {
+        this.userSwitch = event;
+      }
+
+
 
       removeClient(clientId: string) {
         this.staffAccountService.removeClients(clientId).subscribe({

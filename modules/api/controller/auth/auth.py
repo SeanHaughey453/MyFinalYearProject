@@ -188,7 +188,7 @@ class Users(Resource):
         self.user_logic = UserLogic(self.resource, self.user)
 
     @jwt_required()
-    @role_required('staff')
+    @role_required('staff', 'admin')
     def get(self):
         response = self.user_logic.get_all_users()
         return response
@@ -217,7 +217,6 @@ class AllStaffMembersProtected(Resource):
         response = self.logic.get_all_staff_protected()
         return response
 
-    
 class ClientPlans(Resource):
     def __init__(self):
         self.resource = "users"
