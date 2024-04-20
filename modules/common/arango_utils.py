@@ -34,9 +34,7 @@ def open_connection(arango_url: str, logger: Any) -> Connection:
 
 
 def open_database(conn: Connection, name: str, logger: Any) -> Database:
-  '''Check if DB exists, if not then create it
-    this works well for first app run with fresh db
-  '''
+ 
   db = None
   if conn.hasDatabase(name):
     db = conn[name]
@@ -48,9 +46,7 @@ def open_database(conn: Connection, name: str, logger: Any) -> Database:
 
 
 def open_collection(db: Database, name: str, logger: Any) -> Collection:
-  '''Check if DB collection exists, if not then create it
-    this works well for first app run with fresh db
-  '''
+
   collection = None
   if db.hasCollection(name):
     collection = db[name]

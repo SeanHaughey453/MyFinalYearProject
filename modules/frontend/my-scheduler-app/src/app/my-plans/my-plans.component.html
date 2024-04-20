@@ -33,6 +33,7 @@
             <button class="btn btn-success me-2"  *ngIf="!isIncomplete1()" type="submit">Add to Client</button>
         </form>
       </div>
+      <hr>
       <div class="row">
         <h2>Create a Plan</h2>
         <form  [formGroup]="planForm"  (ngSubmit)="onSubmit()">

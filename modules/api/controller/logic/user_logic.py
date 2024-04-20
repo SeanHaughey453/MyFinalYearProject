@@ -4,8 +4,8 @@ from flask_jwt_extended import get_jwt_identity
 from api.controller.logic.base_logic import BaseLogic
 from api.error_handling import GeneralException, InvalidCredentials, ResourceConflictException, ResourceNotFoundException, UnauthorizedException
 from api.models.users import User
-from api.user_rsrc_manager import AdminUserRsrcManager, StaffUserRsrcManager, UserRsrcManager
-from api.resource_managers.booking_credit_resource_manager import BookingCreditRsrcManager
+from modules.api.resource_managers.user_rsrc_manager import AdminUserRsrcManager, StaffUserRsrcManager, UserRsrcManager
+from modules.api.resource_managers.booking_credit_rsrc_manager import BookingCreditRsrcManager
 from api.resource_managers.plan_rsrc_manager import PlanRsrcManager
 
 
@@ -52,9 +52,9 @@ class UserLogic(BaseLogic):
             response = self.rsrc_manager.update_rsrc(data, user_id)
             return response
 
-        def jwt_delete_user(self, user_id: str, username: str):
-            if not self.check_matching_id_and_username(username, user_id):
-                raise InvalidCredentials('User details do not match this account')
+        def delete_user(self, user_id: str):
+            user_to_delete = self.rsrc_manager.get_rsrc(user_id) #this is simple way to check if the user exists
+
             response = self.rsrc_manager.delete_rsrc(user_id)
             return response
 
@@ -151,8 +151,8 @@ class StaffUserLogic(UserLogic):
         }
         #self._is_current_user(username, current_user_jwt['user_id'])
         current_user = self.rsrc_manager.get_rsrc(current_user_jwt['user_id'])#if these users dont exist the validation will be handled in get_rsrc()
-        other_user = self.client_rsrc_manager.get_rsrc(other_user_id) if type_of_list == 'clients' \
-            else self.rsrc_manager.get_rsrc(other_user_id)
+        print(current_user_jwt,'\n', other_user_id,'\n', action,'\n', type_of_list)
+        other_user = self.client_rsrc_manager.get_rsrc(other_user_id) if type_of_list == 'clients' else self.rsrc_manager.get_rsrc(other_user_id)
         
         if action == 'append' and type_of_list == 'clients':
             if other_user['trainer'] != '':
@@ -168,8 +168,8 @@ class StaffUserLogic(UserLogic):
         
         eval(a_or_r_from_current_user_str)
         change_set[type_of_list] = current_user[type_of_list]
-
-        client_response = self.client_rsrc_manager.update_rsrc(client_change_set,other_user['id'] )
+        if type_of_list == 'clients':
+            client_response = self.client_rsrc_manager.update_rsrc(client_change_set,other_user['id'] )
         response = self.rsrc_manager.update_rsrc(change_set, current_user['id'])
         return response
     

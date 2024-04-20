@@ -85,11 +85,11 @@ def create_app() -> Flask:
     #Client Auth
     api.add_resource(Signup, '/v1/signup')
     api.add_resource(Login, '/v1/login')
-    api.add_resource(Account, '/v1/account/<username>', '/v1/account/edit/<username>', '/v1/account/delete/<username>')
+    api.add_resource(Account, '/v1/account/<username>', '/v1/account/edit/<username>', '/v1/user/delete/<id>')
     #Staff Auth
     api.add_resource(StaffSignup, '/v1/staff/signup')
     api.add_resource(StaffLogin, '/v1/staff/login')
-    api.add_resource(StaffAccount, '/v1/staff/account/<username>', '/v1/staff/account/edit/<username>', '/v1/staff/account/delete/<username>')
+    api.add_resource(StaffAccount, '/v1/staff/account/<username>', '/v1/staff/account/edit/<username>', '/v1/staff/delete/<id>')
     api.add_resource(StaffAmmendCoWorker, '/v1/staff/account/coworker/edit', '/v1/staff/account/coworker/delete')
     api.add_resource(StaffAmmendClient, '/v1/staff/account/client/edit', '/v1/staff/account/client/delete')
     api.add_resource(StaffAmmendClientsCredits, '/v1/credits/add/<clientId>/token/<bookingId>')
@@ -103,8 +103,6 @@ def create_app() -> Flask:
     api.add_resource(AdminSignup, '/v1/admin/signup')
     api.add_resource(AdminLogin, '/v1/admin/login')
     api.add_resource(AdminAccount, '/v1/admin/account/<username>', '/v1/admin/account/edit/<username>', '/v1/admin/account/delete/<username>')
-    
-    
     #Schedules
     api.add_resource(Schedules, schedulesUrl)
     api.add_resource(AdminSchedules, schedulesUrl+'/all')

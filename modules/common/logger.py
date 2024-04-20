@@ -23,7 +23,6 @@ class ScheduleLogger:
         self._logger = logger = logging.getLogger(name)
 
     def __getattr__(self, name: str) -> Any:
-        'Find name for logger if not provided to class'
         if hasattr(self._logger, name):
             return getattr(self._logger, name)
         else:

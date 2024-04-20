@@ -61,9 +61,9 @@ class Account(Resource):
 
     @jwt_required()
     @role_required('admin')
-    def delete(self, username: str):
+    def delete(self,id):
         current_user = get_jwt_identity()
-        self.user_logic.jwt_delete_user(current_user['user_id'], username)
+        self.user_logic.delete_user(id)
         return {'message': 'User deleted'}, 204
 
 class StaffSignup(Signup):

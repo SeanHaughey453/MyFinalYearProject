@@ -4,8 +4,8 @@ from typing import Any, Dict
 from flask_jwt_extended import get_jwt_identity
 from api.controller.logic.base_logic import BaseLogic
 from api.error_handling import ResourceConflictException, ResourceNotFoundException, UnauthorizedException
-from api.schedule_resource_manager import ScheduleResourceManager
-from api.user_rsrc_manager import StaffUserRsrcManager, UserRsrcManager
+from modules.api.resource_managers.schedule_rsrc_manager import ScheduleResourceManager
+from modules.api.resource_managers.user_rsrc_manager import StaffUserRsrcManager, UserRsrcManager
 
 
 class ScheduleLogic(BaseLogic):

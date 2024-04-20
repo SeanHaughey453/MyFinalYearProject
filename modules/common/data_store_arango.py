@@ -13,7 +13,6 @@ from common.logger import ScheduleLogger
 
 class DataStoreArangoDb:
 
-  'Data Store using arangodb as the backing store.'
   __slots__ = ("_logger", "_conn", "_db", "_collection")
 
   def __init__(self, arango_url: str, db_name: str, collection_name: str) -> None:
@@ -83,7 +82,6 @@ class DataStoreArangoDb:
       raise DocumentNotFoundError("Document with key of {} was not found during delete".format(key))
 
   def check_existance(self, key: str) -> bool:
-    '''Returns true if a collection with that id exists, otherwise returns false'''
     try:
       doc = self._collection.fetchDocument(key, rawResults=True)
       return True
@@ -91,7 +89,6 @@ class DataStoreArangoDb:
       return False
 
   def run_query(self, query: str, bindVars = None) -> List[Dict[str, Any]]:
-    """Executes an AQL query and returns the results as a list of dictionaries."""
     results = []
     try:
         print(bindVars)

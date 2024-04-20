@@ -21,6 +21,9 @@ export class NavComponent {
                 public router: Router) {}
 
     ngOnInit(): void {
+      console.log(this.staffAccountService.currentUser$)
+      console.log(this.accountService.currentUser$)
+      console.log(sessionStorage)
 
       }
       logout() {

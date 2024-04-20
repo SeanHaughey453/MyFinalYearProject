@@ -4,16 +4,15 @@ from deepmerge import always_merger
 from flask_jwt_extended import get_jwt_identity
 from api.error_handling import ResourceConflictException, UnauthorizedException
 from api.controller.logic.base_logic import BaseLogic
-from api.schedule_resource_manager import ScheduleResourceManager
-from api.user_rsrc_manager import StaffUserRsrcManager, UserRsrcManager
-from api.resource_managers.booking_credit_resource_manager import BookingCreditRsrcManager
+from modules.api.resource_managers.schedule_rsrc_manager import ScheduleResourceManager
+from modules.api.resource_managers.user_rsrc_manager import StaffUserRsrcManager, UserRsrcManager
+from modules.api.resource_managers.booking_credit_rsrc_manager import BookingCreditRsrcManager
 
 class ScheduleSubresourceLogic(BaseLogic):
     def __init__(self, resource, subresource):
         self.resource = resource
         self.subresource = subresource
         super().__init__(resource)
-        #overwrite resource manager for scheduler resource manager
         self.resource_manager = ScheduleResourceManager(resource)
 
 

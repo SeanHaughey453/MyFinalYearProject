@@ -6,6 +6,7 @@ import { MyPlanningComponent } from './my-planning/my-planning.component';
 import { MyTrackerComponent } from './my-tracker/my-tracker.component';
 import { PersonalTrainersComponent } from './personal-trainers/personal-trainers.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
+import { NavComponent } from './nav/nav.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'adminpage',
     component: AdminPageComponent
+  },
+  {
+    path: 'navigation',
+    component: NavComponent
   }
 ];
 

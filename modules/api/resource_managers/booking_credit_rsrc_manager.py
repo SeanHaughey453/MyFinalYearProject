@@ -1,6 +1,6 @@
 
 
-from api.rsrc_manager import ResourceManager
+from modules.api.resource_managers.rsrc_manager import ResourceManager
 
 
 class BookingCreditRsrcManager(ResourceManager):

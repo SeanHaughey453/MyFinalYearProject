@@ -1,7 +1,7 @@
 from flask_jwt_extended import create_access_token
 from api.error_handling import InvalidCredentials, ResourceConflictException, ResourceNotFoundException
 from api.models.users import User
-from api.rsrc_manager import ResourceManager
+from modules.api.resource_managers.rsrc_manager import ResourceManager
 from flask import current_app as app
 from typing import List
 

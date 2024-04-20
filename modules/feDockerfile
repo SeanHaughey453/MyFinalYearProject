@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:13.12.0-alpine
+#FROM node:13.12.0-alpine
 
 # set working directory
 RUN mkdir /app
@@ -10,12 +10,12 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install app dependencies
-# COPY ./frontend/package.json ./
-# COPY ./frontend/package-lock.json ./
-# COPY ./frontend/public ./public
-# COPY ./frontend/src ./src
+# COPY ./frontend/my-scheduler-app/package.json ./
+# COPY ./frontend/my-scheduler-app/package-lock.json ./
+# COPY ./frontend/my-scheduler-app/public ./public
+# COPY ./frontend/my-scheduler-app/src ./src
 
-COPY frontend/ /app
+COPY frontend/my-scheduler-app/ /app
 
 # install app
 RUN npm install

@@ -29,7 +29,7 @@ class BookingCredit(Resource):
         return response, 200
 
     @jwt_required()
-    @role_required('staff')
+    @role_required('admin')
     def delete(self, bookingCreditId: str):
         response = self.logic.delete(bookingCreditId)
         return response, 204

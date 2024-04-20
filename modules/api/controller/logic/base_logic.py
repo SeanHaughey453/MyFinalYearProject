@@ -1,14 +1,11 @@
 from typing import Any, Dict
 from api.json_schema.schema_validator import SchemaValidator
-from api.rsrc_manager import ResourceManager
+from modules.api.resource_managers.rsrc_manager import ResourceManager
 from common.logger import ScheduleLogger
 
 
 class BaseLogic():
-    ''' Base business logic, where we decide how we want to progress, validate and process a http request
-        Complete validation, implement logic and pass to the resource manager to svae to data stores
-
-        This base class will be extended by child classes to implement functionality based on specific resource needs '''
+    '''This base class will be extended by child classes to implement functionality to the application '''
     
     def __init__(self, resource):
         self.resource = resource

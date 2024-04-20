@@ -1,7 +1,7 @@
 <div class="row">
     <table>
         <tr>
-          <th>Plan Type</th>
+          <th>Credit Type</th>
           <th>ID</th>
         </tr>
           <tr *ngFor = "let credit of credit_list | async ">
@@ -29,15 +29,16 @@
       <button class="btn btn-success me-2"  *ngIf="!isIncomplete1()" type="submit">Add to Client</button>
   </form>
 </div>
+<hr>
 <div class="row">
   <h2>Create a Credit</h2>
   <form  [formGroup]="creditForm"  (ngSubmit)="onSubmit()">
       <div class="form-group">
-          <label for="planType">Plan type</label>
+          <label for="planType">Credit type</label>
           <input id="planType" rows="3" name="planType" class="form-control" formControlName="planType" 
           [ngClass]="{'error': isInvalid('planType')}">
       </div>
       <span *ngIf="isIncomplete()">You must complete all fields</span>
-      <button class="btn btn-success me-2"  *ngIf="!isIncomplete()" type="submit">Add Plan</button>
+      <button class="btn btn-success me-2"  *ngIf="!isIncomplete()" type="submit">Add Credit</button>
   </form>
 </div>

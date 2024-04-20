@@ -24,7 +24,7 @@ export class AdminStaffComponent {
 
   }
     removeStaff(planId: string) {
-      this.adminAccountService.deleteUser(planId).subscribe({
+      this.adminAccountService.deleteStaff(planId).subscribe({
         next: () => {
           location.reload(); 
         },
