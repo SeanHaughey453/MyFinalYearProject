@@ -4,8 +4,8 @@ from flask_jwt_extended import get_jwt_identity
 from api.controller.logic.base_logic import BaseLogic
 from api.error_handling import GeneralException, InvalidCredentials, ResourceConflictException, ResourceNotFoundException, UnauthorizedException
 from api.models.users import User
-from modules.api.resource_managers.user_rsrc_manager import AdminUserRsrcManager, StaffUserRsrcManager, UserRsrcManager
-from modules.api.resource_managers.booking_credit_rsrc_manager import BookingCreditRsrcManager
+from api.resource_managers.user_rsrc_manager import AdminUserRsrcManager, StaffUserRsrcManager, UserRsrcManager
+from api.resource_managers.booking_credit_rsrc_manager import BookingCreditRsrcManager
 from api.resource_managers.plan_rsrc_manager import PlanRsrcManager
 
 
@@ -140,8 +140,8 @@ class StaffUserLogic(UserLogic):
 
             can be used for both StaffAmmendClient and StaffAmmendCoWorker classes
 
-            NOTE TO SELF - i used eval because when i tried using get_attr it bombed out
-              as get_attr searches at a class level
+            I used eval because when i tried using get_attr it bombed out
+              as get_attr works from a class level
             '''
         
         a_or_r_from_current_user_str = f"current_user['{type_of_list}'].{action}(other_user['id'])"

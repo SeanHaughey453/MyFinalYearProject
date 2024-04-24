@@ -4,8 +4,8 @@ from typing import Any, Dict
 from flask_jwt_extended import get_jwt_identity
 from api.controller.logic.base_logic import BaseLogic
 from api.error_handling import ResourceConflictException, ResourceNotFoundException, UnauthorizedException
-from modules.api.resource_managers.schedule_rsrc_manager import ScheduleResourceManager
-from modules.api.resource_managers.user_rsrc_manager import StaffUserRsrcManager, UserRsrcManager
+from api.resource_managers.schedule_rsrc_manager import ScheduleResourceManager
+from api.resource_managers.user_rsrc_manager import StaffUserRsrcManager, UserRsrcManager
 
 
 class ScheduleLogic(BaseLogic):
@@ -83,7 +83,6 @@ class ScheduleLogic(BaseLogic):
         return data
 
     def _check_ownership(self, schedule_id: str):
-        '''check if user is staff of the schedule'''
         current_user = get_jwt_identity()
         print('current user', current_user)
         

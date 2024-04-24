@@ -1,6 +1,6 @@
 from typing import Any, Dict
 from api.json_schema.schema_validator import SchemaValidator
-from modules.api.resource_managers.rsrc_manager import ResourceManager
+from api.resource_managers.rsrc_manager import ResourceManager
 from common.logger import ScheduleLogger
 
 

@@ -1,4 +1,4 @@
-from modules.api.resource_managers.rsrc_manager import ResourceManager
+from api.resource_managers.rsrc_manager import ResourceManager
 
 
 class ScheduleResourceManager(ResourceManager):
@@ -7,7 +7,6 @@ class ScheduleResourceManager(ResourceManager):
         super().__init__(resource)
     
     def create_rsrc(self, json, id: str = None):
-        ''' Used when creating a fresh resource with no id'''
         return super().create_rsrc(json)
     
     def get_rsrc(self, resource_id: str = None):

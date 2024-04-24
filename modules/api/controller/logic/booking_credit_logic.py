@@ -3,7 +3,7 @@ from typing import Any, Dict
 from flask_jwt_extended import jwt_required
 from api.controller.common import role_required
 from api.controller.logic.base_logic import BaseLogic
-from modules.api.resource_managers.booking_credit_rsrc_manager import BookingCreditRsrcManager
+from api.resource_managers.booking_credit_rsrc_manager import BookingCreditRsrcManager
 
 
 class BookingCreditLogic(BaseLogic):

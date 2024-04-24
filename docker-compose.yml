@@ -30,14 +30,14 @@ services:
     networks:
       - pythonApi
   
-  # frontend:
-  #   build:
-  #     context: ./modules
-  #     dockerfile: fe2Dockerfile
-  #   image: frontend
-  #   ports:
-  #     - 4200:4200
-  #   depends_on:
-  #     - papi
-  #   networks:
-  #     - pythonApi
+  frontend:
+    build:
+      context: ./modules
+      dockerfile: fe2Dockerfile
+    image: frontend
+    ports:
+      - 4200:4200
+    depends_on:
+      - papi
+    networks:
+      - pythonApi

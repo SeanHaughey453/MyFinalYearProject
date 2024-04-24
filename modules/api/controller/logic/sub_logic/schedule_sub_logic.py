@@ -4,9 +4,9 @@ from deepmerge import always_merger
 from flask_jwt_extended import get_jwt_identity
 from api.error_handling import ResourceConflictException, UnauthorizedException
 from api.controller.logic.base_logic import BaseLogic
-from modules.api.resource_managers.schedule_rsrc_manager import ScheduleResourceManager
-from modules.api.resource_managers.user_rsrc_manager import StaffUserRsrcManager, UserRsrcManager
-from modules.api.resource_managers.booking_credit_rsrc_manager import BookingCreditRsrcManager
+from api.resource_managers.schedule_rsrc_manager import ScheduleResourceManager
+from api.resource_managers.user_rsrc_manager import StaffUserRsrcManager, UserRsrcManager
+from api.resource_managers.booking_credit_rsrc_manager import BookingCreditRsrcManager
 
 class ScheduleSubresourceLogic(BaseLogic):
     def __init__(self, resource, subresource):
@@ -17,7 +17,6 @@ class ScheduleSubresourceLogic(BaseLogic):
 
 
     def get(self, id: str = None, **kwargs):
-        '''Could've called datastore directly from http request but use base logic for continuity'''
         resource = self._get_resource(id)
         services = self._get_services(resource)
         return services
@@ -60,7 +59,6 @@ class ScheduleSubresourceLogic(BaseLogic):
         return schedule_resource
 
     def _check_ownership(self, schedule_id: str):
-        '''Check if user is owner of schedule'''
         current_user = get_jwt_identity()
         owned_weekly_schedules = self.resource_manager.get_by_user(current_user['user_id'])
         
@@ -112,7 +110,7 @@ class SubBookingSubresourceLogic(ScheduleSubresourceLogic):
             raise ResourceConflictException('This booking has already been taken')
         
     def _wrap_subresouce_in_resource(self, day:str ,hour:str , data: Dict[str, Any], schedule_resource:Dict[str,Any], **kwargs):
-        '''we needed to overwrite this function to prevent duplicate calls to the schedule resource'''
+        '''i needed to overwrite this function to prevent duplicate calls to the schedule resource'''
         schedule_resource[day][hour] = {}
         schedule_resource[day][hour] = data
         return schedule_resource
