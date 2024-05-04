@@ -111,7 +111,7 @@ export class AdminAccountService {
             'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
       });
-      return this.http.delete('http://127.0.0.1:5000/v1/users/delete/'+ removeUserId, {headers});
+      return this.http.delete('http://127.0.0.1:5000/v1/user/delete/'+ removeUserId, {headers});
     }
 
     deleteStaff(removeStaffId: string){

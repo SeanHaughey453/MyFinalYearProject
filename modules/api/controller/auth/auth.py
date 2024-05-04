@@ -37,7 +37,8 @@ class Login(Resource):
 
     def post(self):
         access_token = self.user_logic.get()
-        return {'access_token': access_token}, 200
+        return {'access_token': access_token,
+                'role': 'user'}, 200
 
 
 class Account(Resource):
@@ -79,6 +80,11 @@ class StaffLogin(Login):
         self.resource = "staff_users"
         self.user_logic = StaffUserLogic(self.resource, self.user)
 
+    def post(self):
+        access_token = self.user_logic.get()
+        return {'access_token': access_token,
+                'role': 'staff'}, 200
+
 class StaffAccount(Account):
     def __init__(self):
         super().__init__()
@@ -97,6 +103,11 @@ class AdminLogin(Login):
         super().__init__()
         self.resource = "admin"
         self.user_logic = StaffUserLogic(self.resource, self.user)
+    
+    def post(self):
+        access_token = self.user_logic.get()
+        return {'access_token': access_token,
+                'role': 'admin'}, 200
 
 class AdminAccount(Account):
     def __init__(self):

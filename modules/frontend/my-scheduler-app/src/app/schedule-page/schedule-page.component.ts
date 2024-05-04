@@ -68,7 +68,6 @@ export class ScheduleComponent implements OnInit, OnDestroy {
           if (!this.scheduleData[time]) {
             this.scheduleData[time] = {};
           }
-          // Check for different statuses such as "name", "placeholder", and "booked"
           let status;
           let name;
           if (dayData[time].hasOwnProperty('name')) {
@@ -111,10 +110,10 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     },
     (error) => {
       if (error.status === 401) {
-        this.openErrorModal('An issue happened with removing your booking'); // Display error message in a dialog
+        this.openErrorModal('An issue happened with removing your booking'); 
       } else {
         console.error('Booking error:', error);
-        // Handle other types of errors as needed
+
       }
     });
   }
@@ -127,10 +126,10 @@ export class ScheduleComponent implements OnInit, OnDestroy {
     },
     (error) => {
       if (error.status === 401) {
-        this.openErrorModal('An issue happened with removing your booking'); // Display error message in a dialog
+        this.openErrorModal('An issue happened with removing your booking'); 
       } else {
         console.error('Booking error:', error);
-        // Handle other types of errors as needed
+
       }
     });
   }

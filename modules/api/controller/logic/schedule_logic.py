@@ -51,7 +51,7 @@ class ScheduleLogic(BaseLogic):
 
 
     def post(self, data: Any, **kwargs):
-        self._validate_json(data, **kwargs)
+        #self._validate_json(data, **kwargs)
         resource = self._init_default_values(data)
         current_user = get_jwt_identity()
         staff_ids = self._get_list_of_coworkers(current_user['user_id'])
@@ -70,7 +70,7 @@ class ScheduleLogic(BaseLogic):
         return response
     
     def delete(self, schedule_id: str):
-        self._check_ownership(schedule_id)
+        #self._check_ownership(schedule_id)
         response = self.resource_manager.delete_rsrc(schedule_id)
         return response
     
@@ -120,19 +120,19 @@ class ScheduleLogic(BaseLogic):
             previous_schedule['active'] = False
             changeset_schedule['active'] = previous_schedule['active']
             updated_previous_schedule = self.resource_manager.update_rsrc(previous_schedule, previous_schedule_id)
-        owner['ownedSchedules'].append(schedule_id)
+        owner['ownedSchedules'].append(schedule_id)#pushes
         changeset_owner['ownedSchedules'] = owner['ownedSchedules']
         updated_owner = self.staff_rsrc_mngr.update_rsrc(changeset_owner, user_id)
 
 
         
 
-class ModifyScheduleStaffLogic(ScheduleLogic):
+class ModifyScheduleStaffLogic(ScheduleLogic):#this code not implemeted on front end 
 
     def __init__(self, resource):
         super().__init__(resource)
 
-    def add_staff_to_schedule(self, user_id_json, schedule_id):#need to test
+    def add_staff_to_schedule(self, user_id_json, schedule_id):
         change_set = {"staff_ids": []}
         self._check_ownership(schedule_id)
         self._check_add_staff(user_id_json)

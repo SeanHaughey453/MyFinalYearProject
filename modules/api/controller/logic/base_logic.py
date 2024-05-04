@@ -5,7 +5,7 @@ from common.logger import ScheduleLogger
 
 
 class BaseLogic():
-    '''This base class will be extended by child classes to implement functionality to the application '''
+    '''This base class will be extended by child classes '''
     
     def __init__(self, resource):
         self.resource = resource
